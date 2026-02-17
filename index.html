@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refract — Beta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #C9A84C;
+    --accent-light: #E8D5A0;
+    --accent-dim: #8B7332;
+    --bg: #0C0C0E;
+    --bg-card: #141416;
+    --bg-card-hover: #1A1A1E;
+    --text: #E8E6E1;
+    --text-dim: #8A8880;
+    --red: #C75050;
+    --green: #5BA65B;
+    --border: #2A2A2E;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 64px;
+    position: relative;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -32px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 1px;
+    background: var(--accent-dim);
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent-dim);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 6vw, 52px);
+    font-weight: 400;
+    color: var(--accent-light);
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+  }
+
+  .subtitle {
+    font-size: 17px;
+    color: var(--text-dim);
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  section { margin-bottom: 56px; }
+
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--accent-light);
+    margin-bottom: 16px;
+  }
+
+  h2 .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-dim);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  p { font-size: 15px; color: var(--text); margin-bottom: 14px; }
+  p.dim { color: var(--text-dim); }
+  strong { color: var(--accent-light); font-weight: 600; }
+
+  .before-after {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  @media (max-width: 520px) { .before-after { grid-template-columns: 1fr; } }
+
+  .ba-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+
+  .ba-card.before { border-top: 3px solid var(--red); }
+  .ba-card.after { border-top: 3px solid var(--green); }
+
+  .ba-card .ba-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .ba-card.before .ba-label { color: var(--red); }
+  .ba-card.after .ba-label { color: var(--green); }
+
+  .ba-card p { font-size: 13.5px; color: var(--text-dim); margin-bottom: 0; line-height: 1.7; }
+
+  .alert-mock {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    border-radius: 8px;
+    padding: 20px 22px;
+    margin: 24px 0;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .alert-mock.bullish { border-left-color: var(--green); }
+
+  .alert-mock .alert-header {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .alert-mock .alert-title { font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+
+  .alert-mock .alert-dir { font-family: 'JetBrains Mono', monospace; font-size: 12px; margin-bottom: 10px; }
+  .alert-mock .alert-dir.bearish { color: var(--red); }
+  .alert-mock .alert-dir.bullish { color: var(--green); }
+
+  .alert-mock .alert-reasoning { color: var(--text-dim); font-size: 13px; }
+
+  .alert-mock .alert-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  @media (max-width: 520px) { .features { grid-template-columns: 1fr; } }
+
+  .feat {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    transition: background 0.2s;
+  }
+
+  .feat:hover { background: var(--bg-card-hover); }
+  .feat .icon { font-size: 20px; margin-bottom: 8px; }
+  .feat .feat-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; color: var(--accent-light); }
+  .feat .feat-desc { font-size: 12.5px; color: var(--text-dim); line-height: 1.5; }
+
+  .pipeline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 24px 0;
+    flex-wrap: wrap;
+  }
+
+  .pipe-step {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-align: center;
+  }
+
+  .pipe-arrow { color: var(--accent-dim); font-size: 14px; }
+
+  .numbers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  @media (max-width: 520px) { .numbers { grid-template-columns: 1fr; } }
+
+  .num {
+    text-align: center;
+    padding: 18px 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .num .val { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--accent); }
+  .num .lbl { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+
+  .upcoming {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+
+  .upcoming-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 16px;
+  }
+
+  .audience-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  @media (max-width: 520px) { .audience-grid { grid-template-columns: 1fr; } }
+
+  .audience-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    text-align: center;
+  }
+
+  .audience-card .a-icon { font-size: 24px; margin-bottom: 8px; }
+  .audience-card .a-title { font-weight: 600; font-size: 13px; color: var(--accent-light); margin-bottom: 6px; }
+  .audience-card .a-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+
+  .feedback-list { margin: 16px 0 0 0; padding: 0; list-style: none; }
+
+  .feedback-list li {
+    font-size: 14px;
+    color: var(--text-dim);
+    padding: 6px 0 6px 20px;
+    position: relative;
+  }
+
+  .feedback-list li::before {
+    content: '\2192';
+    position: absolute;
+    left: 0;
+    color: var(--accent-dim);
+  }
+
+  .cta {
+    text-align: center;
+    margin-top: 48px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .cta a {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 14px 36px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.1s;
+  }
+
+  .cta a:hover { background: var(--accent-light); transform: translateY(-1px); }
+  .cta .note { font-size: 12px; color: var(--text-dim); margin-top: 12px; }
+
+  .disclaimer {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="badge">Beta Privata</div>
+    <h1>Refract</h1>
+    <p class="subtitle">Intelligence macroeconomica in tempo reale. Il contesto che ti manca, quando ti serve.</p>
+  </div>
+
+  <!-- Il problema -->
+  <section>
+    <h2><span class="label">Il problema</span>Tante notizie, poco senso</h2>
+    <p>Ogni giorno succedono cose che muovono i mercati. Dati sull'inflazione, decisioni delle banche centrali, crisi diplomatiche, politiche commerciali. Le notizie ci sono — arrivano da decine di fonti, in inglese, in ordine sparso, spesso contraddittorie.</p>
+    <p>Il problema non è trovarle. Il problema è capirle in tempo. Cosa significa quel dato? È positivo o negativo? Per cosa? E soprattutto: cosa cambia rispetto a ieri?</p>
+    <p>Chi segue i mercati per lavoro, per investimento, o anche solo per interesse, sa che collegare i puntini richiede tempo ed esperienza. Refract lo fa per te.</p>
+  </section>
+
+  <!-- La filosofia -->
+  <section>
+    <h2><span class="label">La filosofia</span>Il contesto, non la previsione</h2>
+    <p>Refract non prevede i prezzi. Nessuno può farlo in modo affidabile, e chi dice il contrario mente o si illude.</p>
+    <p>Quello che fa è darti il <strong>bias macro</strong>: il contesto della giornata, analizzato e spiegato. Oggi le condizioni favoriscono il rialzo o il ribasso? Perché? Quale evento ha cambiato il quadro?</p>
+    <p>È la differenza tra "l'oro sale" (previsione inutile) e "l'inflazione sotto le attese ha indebolito il dollaro e i rendimenti reali sono in calo — scenario favorevole per estensioni rialziste" (contesto che puoi usare).</p>
+    <p>Il bot analizza. Tu decidi.</p>
+  </section>
+
+  <!-- A chi serve -->
+  <section>
+    <h2><span class="label">A chi serve</span>Non solo per chi trada</h2>
+    <div class="audience-grid">
+      <div class="audience-card">
+        <div class="a-icon">📈</div>
+        <div class="a-title">Trader attivi</div>
+        <div class="a-desc">Bias operativo in tempo reale. Sai cosa è successo e in che direzione prima di aprire una posizione.</div>
+      </div>
+      <div class="audience-card">
+        <div class="a-icon">💼</div>
+        <div class="a-title">Investitori</div>
+        <div class="a-desc">Hai oro o altri asset in portafoglio e vuoi capire cosa muove il prezzo senza monitorare dieci fonti al giorno.</div>
+      </div>
+      <div class="audience-card">
+        <div class="a-icon">🌍</div>
+        <div class="a-title">Curiosi del macro</div>
+        <div class="a-desc">Ti interessa capire come economia e geopolitica si intrecciano. Intelligence accessibile, non riservata agli addetti ai lavori.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prima e dopo -->
+  <section>
+    <h2><span class="label">In pratica</span>Prima e dopo</h2>
+    <div class="before-after">
+      <div class="ba-card before">
+        <div class="ba-label">Senza</div>
+        <p>Esce un dato importante. Non lo vedi subito. Cerchi online, trovi opinioni contrastanti. Non capisci come impatta. Quando reagisci — se reagisci — il mercato si è già mosso.</p>
+      </div>
+      <div class="ba-card after">
+        <div class="ba-label">Con Refract</div>
+        <p>Il telefono vibra. Leggi: "CPI USA 2.4% vs atteso 2.6% — dato sotto consensus rafforza aspettative taglio Fed; rendimenti reali in calo favoriscono XAU/USD." Cosa è successo, perché conta, in che direzione. In cinque secondi.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- La soluzione -->
+  <section>
+    <h2><span class="label">La soluzione</span>Un analista che lavora in tempo reale</h2>
+    <p>Refract monitora fonti di news macro e geopolitiche internazionali, ogni due minuti. Quando una notizia è rilevante, un'intelligenza artificiale la analizza come farebbe un senior analyst: score di rilevanza, direzione, meccanismo di trasmissione, contesto.</p>
+    <p>Tu ricevi su Telegram solo ciò che conta, con l'analisi già fatta. Non devi leggere l'articolo. Il reasoning ti spiega in poche parole perché quella notizia è rilevante e come impatta.</p>
+  </section>
+
+  <!-- Pipeline -->
+  <section>
+    <h2><span class="label">Come funziona</span>La pipeline</h2>
+    <div class="pipeline">
+      <div class="pipe-step">Fonti internazionali<br><span style="color:var(--accent-dim)">ogni 2 min</span></div>
+      <span class="pipe-arrow">&rarr;</span>
+      <div class="pipe-step">Dedup<br><span style="color:var(--accent-dim)">5 livelli</span></div>
+      <span class="pipe-arrow">&rarr;</span>
+      <div class="pipe-step">Triage AI<br><span style="color:var(--accent-dim)">rilevante?</span></div>
+      <span class="pipe-arrow">&rarr;</span>
+      <div class="pipe-step">Analisi AI<br><span style="color:var(--accent-dim)">score + bias</span></div>
+      <span class="pipe-arrow">&rarr;</span>
+      <div class="pipe-step">Telegram<br><span style="color:var(--accent-dim)">alert</span></div>
+    </div>
+    <p class="dim">Ogni notizia passa attraverso filtri anti-duplicato, triage semantico e analisi AI prima di arrivarti. Il 90% viene scartato. Ricevi solo il segnale.</p>
+  </section>
+
+  <!-- Esempio -->
+  <section>
+    <h2><span class="label">Esempio</span>Come appare un alert</h2>
+    <div class="alert-mock">
+      <div class="alert-header">🔴 REFRACT GOLD</div>
+      <div class="alert-title">📰 Oro crolla sotto $5.000: festività cinesi pesano sulla domanda</div>
+      <div class="alert-dir bearish">📉 BEARISH · 🔥🔥</div>
+      <div class="alert-reasoning">💡 Calo domanda fisica asiatica riduce supporto; violazione livello psicologico $5.000 innesca bias short per flussi tecnici.</div>
+      <div class="alert-meta">🔗 Leggi · MarketWatch<br>🕒 News 08:58 · 🤖 Bot 09:01 CET</div>
+    </div>
+    <div class="alert-mock bullish">
+      <div class="alert-header">🟢 REFRACT GOLD</div>
+      <div class="alert-title">📰 CPI USA 2.4% vs atteso 2.6%: inflazione sotto le aspettative</div>
+      <div class="alert-dir bullish">📈 BULLISH · 🔥🔥🔥</div>
+      <div class="alert-reasoning">💡 Dato sotto consensus rafforza aspettative taglio Fed; rendimenti reali in calo favoriscono XAU/USD.</div>
+      <div class="alert-meta">🔗 Leggi · FXStreet<br>🕒 News 14:30 · 🤖 Bot 14:32 CET</div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section>
+    <h2><span class="label">Features</span>Cosa include</h2>
+    <div class="features">
+      <div class="feat">
+        <div class="icon">📡</div>
+        <div class="feat-title">Fonti real-time</div>
+        <div class="feat-desc">Fonti macro e geopolitiche internazionali, monitorate ogni 2 minuti. Copertura completa.</div>
+      </div>
+      <div class="feat">
+        <div class="icon">🤖</div>
+        <div class="feat-title">Analisi AI</div>
+        <div class="feat-desc">Score 0-100, direzione, urgenza, meccanismo di trasmissione. Ogni notizia analizzata in tempo reale, in italiano.</div>
+      </div>
+      <div class="feat">
+        <div class="icon">💰</div>
+        <div class="feat-title">Price alert</div>
+        <div class="feat-desc">Movimenti anomali del prezzo a 5min, 15min, 1h, 24h. Soglie calibrate, aggregazione intelligente.</div>
+      </div>
+      <div class="feat">
+        <div class="icon">📊</div>
+        <div class="feat-title">Daily digest</div>
+        <div class="feat-desc">Recap serale con il tema del giorno, gli eventi chiave, e uno snapshot multi-asset.</div>
+      </div>
+      <div class="feat">
+        <div class="icon">📋</div>
+        <div class="feat-title">Weekly digest</div>
+        <div class="feat-desc">Report settimanale: driver chiave, performance, catalizzatori della prossima settimana, bias direzionale.</div>
+      </div>
+      <div class="feat">
+        <div class="icon">🛡️</div>
+        <div class="feat-title">Filtro intelligente</div>
+        <div class="feat-desc">Dedup multi-livello, triage AI e gate dinamici. Ricevi 6-10 alert al giorno, non 50.</div>
+      </div>
+      <div class="feat">
+        <div class="icon">🌍</div>
+        <div class="feat-title">Macro + geopolitica</div>
+        <div class="feat-desc">Non solo dati economici. Conflitti, sanzioni, crisi diplomatiche — tutto ciò che muove i mercati, classificato e analizzato separatamente.</div>
+      </div>
+      <div class="feat">
+        <div class="icon">⚡</div>
+        <div class="feat-title">Latenza 2-5 minuti</div>
+        <div class="feat-desc">Dalla pubblicazione della notizia al tuo Telegram. Le fonti più veloci arrivano in meno di 3 minuti.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Numeri -->
+  <section>
+    <h2><span class="label">In numeri</span>La beta oggi</h2>
+    <div class="numbers">
+      <div class="num">
+        <div class="val">12</div>
+        <div class="lbl">Fonti monitorate</div>
+      </div>
+      <div class="num">
+        <div class="val">6-10</div>
+        <div class="lbl">Alert / giorno</div>
+      </div>
+      <div class="num">
+        <div class="val">~3 min</div>
+        <div class="lbl">Latenza media</div>
+      </div>
+    </div>
+    <p class="dim" style="text-align:center; font-size: 13px; margin-top: 8px;">Performance report con accuracy dettagliata disponibile a breve.</p>
+  </section>
+
+  <!-- Prossimamente -->
+  <section style="text-align: center;">
+    <h2><span class="label">Prossimamente</span>Stessa intelligence, altri mercati</h2>
+    <p class="dim">La stessa pipeline, calibrata su altri asset.</p>
+    <div class="upcoming">
+      <span class="upcoming-tag">💶 Refract FX</span>
+      <span class="upcoming-tag">₿ Refract BTC</span>
+    </div>
+  </section>
+
+  <!-- Cosa ti chiedo -->
+  <section>
+    <h2><span class="label">La beta</span>Cosa ti chiedo</h2>
+    <p>Usalo per una settimana. Poi dimmi tre cose:</p>
+    <ul class="feedback-list">
+      <li>Troppi messaggi, troppo pochi, o il giusto?</li>
+      <li>L'analisi ti è stata utile per capire cosa stava succedendo?</li>
+      <li>Cosa manca? Cosa cambieresti?</li>
+    </ul>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta">
+    <a href="https://t.me/YOUR_BOT_LINK">Entra nella Beta su Telegram</a>
+    <p class="note">Accesso gratuito durante la beta. Il tuo feedback costruisce il prodotto.</p>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    Refract fornisce analisi automatizzata a scopo informativo. Non è consulenza finanziaria.<br>
+    Le decisioni di investimento sono responsabilità esclusiva dell'utente.
+  </div>
+
+</div>
+
+</body>
+</html>

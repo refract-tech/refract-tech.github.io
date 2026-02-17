@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refract — Beta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #C9A84C;
+    --accent-light: #E8D5A0;
+    --accent-dim: #8B7332;
+    --bg: #0C0C0E;
+    --bg-card: #141416;
+    --bg-card-hover: #1A1A1E;
+    --text: #E8E6E1;
+    --text-dim: #8A8880;
+    --red: #C75050;
+    --green: #5BA65B;
+    --border: #2A2A2E;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 64px;
+    position: relative;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -32px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 1px;
+    background: var(--accent-dim);
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent-dim);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 6vw, 52px);
+    font-weight: 400;
+    color: var(--accent-light);
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+  }
+
+  .subtitle {
+    font-size: 17px;
+    color: var(--text-dim);
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  section { margin-bottom: 56px; }
+
+  h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--accent-light);
+    margin-bottom: 16px;
+  }
+
+  h2 .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-dim);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  p { font-size: 15px; color: var(--text); margin-bottom: 14px; }
+  p.dim { color: var(--text-dim); }
+  strong { color: var(--accent-light); font-weight: 600; }
+
+  .alert-mock {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    border-radius: 8px;
+    padding: 20px 22px;
+    margin: 24px 0;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .alert-mock.bullish { border-left-color: var(--green); }
+
+  .alert-mock .alert-header {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .alert-mock .alert-title { font-weight: 600; font-size: 15px; margin-bottom: 6px; }
+
+  .alert-mock .alert-dir { font-family: 'JetBrains Mono', monospace; font-size: 12px; margin-bottom: 10px; }
+  .alert-mock .alert-dir.bearish { color: var(--red); }
+  .alert-mock .alert-dir.bullish { color: var(--green); }
+
+  .alert-mock .alert-reasoning { color: var(--text-dim); font-size: 13px; }
+
+  .alert-mock .alert-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  @media (max-width: 520px) { .features { grid-template-columns: 1fr; } }
+
+  .feat {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    transition: background 0.2s;
+  }
+
+  .feat:hover { background: var(--bg-card-hover); }
+  .feat .icon { font-size: 20px; margin-bottom: 8px; }
+  .feat .feat-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; color: var(--accent-light); }
+  .feat .feat-desc { font-size: 12.5px; color: var(--text-dim); line-height: 1.5; }
+
+  .pipeline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 24px 0;
+    flex-wrap: wrap;
+  }
+
+  .pipe-step {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-align: center;
+  }
+
+  .pipe-arrow { color: var(--accent-dim); font-size: 14px; }
+
+  .numbers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  @media (max-width: 520px) { .numbers { grid-template-columns: 1fr; } }
+
+  .num {
+    text-align: center;
+    padding: 18px 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .num .val { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--accent); }
+  .num .lbl { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+
+  .upcoming {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+
+  .upcoming-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 16px;
+  }
+
+  .cta {
+    text-align: center;
+    margin-top: 48px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .cta a {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 14px 36px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.1s;
+  }
+
+  .cta a:hover { background: var(--accent-light); transform: translateY(-1px); }
+
+  .disclaimer {
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="badge">Beta · Side Project</div>
+    <h1>Refract</h1>
+    <p class="subtitle">Un esperimento di intelligence macroeconomica in tempo reale.</p>
+  </div>
+
+  <!-- Intro -->
+  <section>
+    <p>Se segui i mercati — per lavoro, per investimento, o per curiosità — sai quanto tempo ci vuole a collegare i puntini tra una notizia e l'altra. Esce un dato, apri tre siti, leggi opinioni contrastanti, e alla fine non sei sicuro di aver capito cosa è successo e come impatta.</p>
+    <p>Ho costruito un bot che fa questo lavoro. Monitora fonti di news macro e geopolitiche internazionali ogni due minuti. Quando qualcosa di rilevante succede, un'AI lo analizza e te lo manda su Telegram — con la direzione, il meccanismo, e il contesto. In italiano, in tempo reale.</p>
+    <p>Non prevede i prezzi. Ti dice cosa sta muovendo il mercato e perché. La differenza è importante.</p>
+  </section>
+
+  <!-- Pipeline -->
+  <section>
+    <h2><span class="label">Come funziona</span>La pipeline</h2>
+    <div class="pipeline">
+      <div class="pipe-step">News feed<br><span style="color:var(--accent-dim)">ogni 2 min</span></div>
+      <span class="pipe-arrow">&rarr;</span>
+      <div class="pipe-step">Dedup<br><span style="color:var(--accent-dim)">5 livelli</span></div>
+      <span class="pipe-arrow">&rarr;</span>
+      <div class="pipe-step">Triage AI<br><span style="color:var(--accent-dim)">rilevante?</span></div>
+      <span class="pipe-arrow">&rarr;</span>
+      <div class="pipe-step">Analisi AI<br><span style="color:var(--accent-dim)">score + bias</span></div>
+      <span class="pipe-arrow">&rarr;</span>
+      <div class="pipe-step">Telegram<br><span style="color:var(--accent-dim)">alert</span></div>
+    </div>
+    <p class="dim">Il 90% viene scartato. Ricevi solo quello che conta.</p>
+  </section>
+
+  <!-- Esempio -->
+  <section>
+    <h2><span class="label">Esempio</span>Come appare un alert</h2>
+    <div class="alert-mock">
+      <div class="alert-header">🔴 REFRACT GOLD</div>
+      <div class="alert-title">📰 Oro crolla sotto $5.000: festività cinesi pesano sulla domanda</div>
+      <div class="alert-dir bearish">📉 BEARISH · 🔥🔥</div>
+      <div class="alert-reasoning">💡 Calo domanda fisica asiatica riduce supporto; violazione livello psicologico $5.000 innesca bias short per flussi tecnici.</div>
+      <div class="alert-meta">🔗 Leggi · MarketWatch<br>🕒 News 08:58 · 🤖 Bot 09:01 CET</div>
+    </div>
+    <div class="alert-mock bullish">
+      <div class="alert-header">🟢 REFRACT GOLD</div>
+      <div class="alert-title">📰 CPI USA 2.4% vs atteso 2.6%: inflazione sotto le aspettative</div>
+      <div class="alert-dir bullish">📈 BULLISH · 🔥🔥🔥</div>
+      <div class="alert-reasoning">💡 Dato sotto consensus rafforza aspettative taglio Fed; rendimenti reali in calo favoriscono XAU/USD.</div>
+      <div class="alert-meta">🔗 Leggi · FXStreet<br>🕒 News 14:30 · 🤖 Bot 14:32 CET</div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section>
+    <h2><span class="label">Features</span>Cosa include</h2>
+    <div class="features">
+      <div class="feat">
+        <div class="icon">📡</div>
+        <div class="feat-title">Fonti real-time</div>
+        <div class="feat-desc">Fonti macro e geopolitiche internazionali, monitorate ogni 2 minuti. Copertura completa.</div>
+      </div>
+      <div class="feat">
+        <div class="icon">🤖</div>
+        <div class="feat-title">Analisi AI</div>
+        <div class="feat-desc">Score 0-100, direzione, urgenza, meccanismo di trasmissione. Ogni notizia analizzata in tempo reale, in italiano.</div>
+      </div>
+      <div class="feat">
+        <div class="icon">💰</div>
+        <div class="feat-title">Price alert</div>
+        <div class="feat-desc">Movimenti anomali del prezzo a 5min, 15min, 1h, 24h. Soglie calibrate, aggregazione intelligente.</div>
+      </div>
+      <div class="feat">
+        <div class="icon">📅</div>
+        <div class="feat-title">Calendario macro</div>
+        <div class="feat-desc">Gli eventi chiave della settimana che possono muovere il prezzo, con prezzo real-time. Un tap.</div>
+      </div>
+      <div class="feat">
+        <div class="icon">📊</div>
+        <div class="feat-title">Daily digest</div>
+        <div class="feat-desc">Recap serale con il tema del giorno, gli eventi chiave, e uno snapshot multi-asset.</div>
+      </div>
+      <div class="feat">
+        <div class="icon">📋</div>
+        <div class="feat-title">Weekly digest</div>
+        <div class="feat-desc">Report settimanale: driver chiave, performance, catalizzatori della prossima settimana, bias direzionale.</div>
+      </div>
+      <div class="feat">
+        <div class="icon">🛡️</div>
+        <div class="feat-title">Filtro intelligente</div>
+        <div class="feat-desc">Dedup multi-livello, triage AI e gate dinamici. Ricevi 6-10 news alert al giorno, non 50.</div>
+      </div>
+      <div class="feat">
+        <div class="icon">⚡</div>
+        <div class="feat-title">Latenza 2-5 minuti</div>
+        <div class="feat-desc">Dalla pubblicazione della notizia al tuo Telegram. Le fonti più veloci arrivano in meno di 3 minuti.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Numeri -->
+  <section>
+    <h2><span class="label">In numeri</span>Oggi</h2>
+    <div class="numbers">
+      <div class="num">
+        <div class="val">12</div>
+        <div class="lbl">Fonti monitorate</div>
+      </div>
+      <div class="num">
+        <div class="val">6-10</div>
+        <div class="lbl">News alert / giorno</div>
+      </div>
+      <div class="num">
+        <div class="val">~3 min</div>
+        <div class="lbl">Latenza media</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prossimamente -->
+  <section style="text-align: center;">
+    <h2><span class="label">Prossimamente</span>Stessa cosa, altri mercati</h2>
+    <div class="upcoming">
+      <span class="upcoming-tag">💶 Refract FX</span>
+      <span class="upcoming-tag">₿ Refract BTC</span>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta">
+    <a href="https://t.me/YOUR_BOT_LINK">Provalo su Telegram</a>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    Refract è un progetto personale che fornisce analisi automatizzata a scopo informativo.<br>
+    Non è consulenza finanziaria. Le decisioni di investimento sono responsabilità esclusiva dell'utente.
+  </div>
+
+</div>
+
+</body>
+</html>
