@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refract Gold — Come funziona</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface-2: #1a1a26;
+    --border: #2a2a3a;
+    --gold: #d4a843;
+    --gold-dim: #a07d2e;
+    --green: #34d399;
+    --red: #f87171;
+    --blue: #60a5fa;
+    --orange: #fb923c;
+    --purple: #a78bfa;
+    --text: #e8e8ed;
+    --text-dim: #8888a0;
+    --text-muted: #55556a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .header .brand {
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  .header h1 {
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--text) 0%, var(--text-dim) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .header .subtitle {
+    font-size: 17px;
+    color: var(--text-dim);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 64px;
+    padding: 24px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat { text-align: center; }
+  .stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--gold);
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 56px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .section .desc {
+    color: var(--text-dim);
+    font-size: 15px;
+    margin-bottom: 28px;
+    max-width: 700px;
+  }
+
+  /* Pipeline steps */
+  .pipeline {
+    position: relative;
+  }
+
+  .pipeline::before {
+    content: '';
+    position: absolute;
+    left: 23px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--gold), var(--border) 30%, var(--border) 70%, var(--green));
+  }
+
+  .step {
+    position: relative;
+    padding-left: 64px;
+    padding-bottom: 36px;
+  }
+
+  .step:last-child { padding-bottom: 0; }
+
+  .step-dot {
+    position: absolute;
+    left: 12px;
+    top: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .step-dot.source { background: var(--gold); color: var(--bg); }
+  .step-dot.filter { background: var(--orange); color: var(--bg); }
+  .step-dot.ai { background: var(--purple); color: var(--bg); }
+  .step-dot.dedup { background: var(--blue); color: var(--bg); }
+  .step-dot.delivery { background: var(--green); color: var(--bg); }
+
+  .step h3 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .step-tag {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  .tag-auto { background: rgba(96, 165, 250, 0.15); color: var(--blue); }
+  .tag-ai { background: rgba(167, 139, 250, 0.15); color: var(--purple); }
+  .tag-new { background: rgba(52, 211, 153, 0.15); color: var(--green); }
+
+  .step p {
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .step .example {
+    margin-top: 10px;
+    padding: 12px 16px;
+    background: var(--surface);
+    border-left: 3px solid var(--border);
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .step .example strong {
+    color: var(--text-dim);
+    font-style: normal;
+  }
+
+  /* Dedup deep dive */
+  .dedup-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 16px;
+  }
+
+  .dedup-layer {
+    display: flex;
+    align-items: stretch;
+    background: var(--surface);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .dedup-id {
+    width: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--surface-2);
+    border-right: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .dedup-content {
+    padding: 14px 18px;
+    flex: 1;
+  }
+
+  .dedup-content h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dedup-content p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .dedup-when {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  /* Feature vector card */
+  .fv-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  @media (max-width: 600px) {
+    .fv-grid { grid-template-columns: 1fr; }
+    .stats-bar { flex-wrap: wrap; gap: 24px; }
+  }
+
+  .fv-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+
+  .fv-card h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+
+  .fv-card p {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .fv-card .fv-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    background: var(--bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+
+  /* Flow diagram */
+  .flow-summary {
+    margin-top: 32px;
+    padding: 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+
+  .flow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .flow-row:last-child { margin-bottom: 0; }
+
+  .flow-box {
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .fb-source { background: rgba(212, 168, 67, 0.12); color: var(--gold); border: 1px solid rgba(212, 168, 67, 0.25); }
+  .fb-filter { background: rgba(251, 146, 60, 0.12); color: var(--orange); border: 1px solid rgba(251, 146, 60, 0.25); }
+  .fb-ai { background: rgba(167, 139, 250, 0.12); color: var(--purple); border: 1px solid rgba(167, 139, 250, 0.25); }
+  .fb-dedup { background: rgba(96, 165, 250, 0.12); color: var(--blue); border: 1px solid rgba(96, 165, 250, 0.25); }
+  .fb-gate { background: rgba(248, 113, 113, 0.12); color: var(--red); border: 1px solid rgba(248, 113, 113, 0.25); }
+  .fb-deliver { background: rgba(52, 211, 153, 0.12); color: var(--green); border: 1px solid rgba(52, 211, 153, 0.25); }
+
+  .flow-arrow {
+    color: var(--text-muted);
+    font-size: 16px;
+  }
+
+  .flow-label {
+    width: 100%;
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin: 4px 0 8px;
+    font-style: italic;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 20px 0;
+  }
+
+  .flow-numbers {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 8px;
+  }
+
+  .flow-num {
+    text-align: center;
+  }
+
+  .flow-num .big {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 500;
+  }
+
+  .flow-num .big.c-gold { color: var(--gold); }
+  .flow-num .big.c-red { color: var(--red); }
+  .flow-num .big.c-green { color: var(--green); }
+
+  .flow-num .label {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .flow-funnel {
+    color: var(--text-muted);
+    font-size: 24px;
+    padding: 0 12px;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  .footer span { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="brand">Refract Gold</div>
+    <h1>Da 280 news a 8 alert che contano</h1>
+    <p class="subtitle">Come un sistema a 10 livelli di filtro trasforma il rumore finanziario in segnali operativi per trader professionisti.</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-value">15</div>
+      <div class="stat-label">Feed RSS</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">~280</div>
+      <div class="stat-label">News / settimana</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">97%</div>
+      <div class="stat-label">Rumore filtrato</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">~8</div>
+      <div class="stat-label">Alert / giorno</div>
+    </div>
+  </div>
+
+  <!-- Pipeline Overview -->
+  <div class="section">
+    <div class="section-label">Panoramica</div>
+    <h2>Il viaggio di una news</h2>
+    <p class="desc">Ogni 2 minuti il sistema interroga 15 fonti finanziarie. Ogni news attraversa fino a 10 controlli prima di poter raggiungere il tuo telefono. Ecco i passaggi.</p>
+
+    <div class="pipeline">
+
+      <div class="step">
+        <div class="step-dot source">1</div>
+        <h3>Raccolta <span class="step-tag tag-auto">AUTOMATICO</span></h3>
+        <p>15 feed RSS interrogati ogni 2 minuti: Reuters, CNBC, ForexLive, FXStreet, MarketWatch, Bloomberg e altri. Ogni news viene salvata con timestamp, fonte e contenuto.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-dot filter">2</div>
+        <h3>Primo filtro: Dedup base <span class="step-tag tag-auto">AUTOMATICO</span></h3>
+        <p>Lo stesso articolo, stesso URL? Scartato. Titolo quasi identico nelle ultime ore? Scartato. Notizia più vecchia di 3 ore? Scartata. Questo elimina le copie ovvie.</p>
+        <div class="example"><strong>Bloccato:</strong> stessa notizia Reuters pubblicata anche su Google News con URL diverso ma titolo identico.</div>
+      </div>
+
+      <div class="step">
+        <div class="step-dot filter">3</div>
+        <h3>Secondo filtro: Keyword boost + triage <span class="step-tag tag-ai">AI</span></h3>
+        <p>Le news con parole chiave rilevanti (CPI, NFP, rate decision, tariff...) vengono marcate come prioritarie. Tutte le altre passano da un triage rapido: l'AI decide in blocchi da 10 se una news merita analisi approfondita o no.</p>
+        <div class="example"><strong>Bloccato:</strong> "Apple lancia nuovo iPhone" — irrilevante per l'oro. <strong>Passa:</strong> "Fed signals rate cut in June".</div>
+      </div>
+
+      <div class="step">
+        <div class="step-dot ai">4</div>
+        <h3>Analisi AI completa <span class="step-tag tag-ai">AI</span></h3>
+        <p>Le news sopravvissute vengono analizzate una per una dall'AI (Gemini 3 Flash). L'AI compila 18 campi strutturati: direzione (BULLISH/BEARISH/NEUTRAL), score di impatto (0-100), reasoning in italiano, tipo di evento, paese, meccanismo di trasmissione, dati numerici, e molto altro.</p>
+        <div class="example"><strong>Output:</strong> "PCE +2.9% vs 2.8% atteso → BEARISH 85, evento: INFLATION_DATA, paese: US, meccanismo: REAL_RATES, consenso: ABOVE"</div>
+      </div>
+
+      <div class="step">
+        <div class="step-dot ai">5</div>
+        <h3>Valutazione regime <span class="step-tag tag-new">v8.0</span></h3>
+        <p>Dopo l'analisi pura, l'AI fa una seconda valutazione: "questo impulso rischia di essere assorbito dal trend dominante?" Se sì, il messaggio include una nota di contesto. L'analisi originale resta intatta nel database — pura e non contaminata.</p>
+        <div class="example"><strong>Esempio:</strong> CPI sopra attese → BEARISH, ma l'AI nota che il trend strutturale rialzista potrebbe limitare il ritracciamento. L'utente vede BEARISH + la nota di contesto. Decide lui.</div>
+      </div>
+
+      <div class="step">
+        <div class="step-dot dedup">6</div>
+        <h3>Catena di deduplicazione (5 livelli)</h3>
+        <p>Qui avviene la magia. Anche se un evento supera l'analisi, deve passare 5 controlli anti-duplicato progressivi prima di essere inviato.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Dedup Deep Dive -->
+  <div class="section">
+    <div class="section-label">Anti-duplicazione</div>
+    <h2>5 livelli di dedup</h2>
+    <p class="desc">Il problema più insidioso: la stessa notizia arriva da fonti diverse, con titoli diversi, a distanze di minuti o ore. Servono 5 approcci diversi per catturarle tutte.</p>
+
+    <div class="dedup-stack">
+
+      <div class="dedup-layer">
+        <div class="dedup-id">4.5</div>
+        <div class="dedup-content">
+          <h4>Cross-cycle fingerprint <span class="dedup-when">3h</span></h4>
+          <p>Confronta ogni news con le ultime 3 ore di alert già inviati. Usa un'impronta digitale basata su numeri chiave, termini e direzione.</p>
+        </div>
+      </div>
+
+      <div class="dedup-layer">
+        <div class="dedup-id">4.5b</div>
+        <div class="dedup-content">
+          <h4>Hot-topic tracking <span class="dedup-when">12h</span></h4>
+          <p>Traccia gli argomenti caldi (es. "dazi", "Iran") per paese. Se lo stesso tema + paese è già stato coperto nelle ultime 12 ore, blocca.</p>
+        </div>
+      </div>
+
+      <div class="dedup-layer">
+        <div class="dedup-id">4.6</div>
+        <div class="dedup-content">
+          <h4>AI Dedup Judge <span class="step-tag tag-ai" style="font-size:9px">AI</span></h4>
+          <p>L'AI confronta la news con le ultime inviate e decide: "è un aggiornamento della stessa storia o un evento nuovo?" L'unico livello capace di capire che un'escalation militare NON è un duplicato di una minaccia diplomatica.</p>
+        </div>
+      </div>
+
+      <div class="dedup-layer">
+        <div class="dedup-id">4.7</div>
+        <div class="dedup-content">
+          <h4>Structured Dedup <span class="step-tag tag-new" style="font-size:9px">v8.0</span></h4>
+          <p>Il più potente. L'AI classifica ogni news con tipo evento + paese + periodo. Se il match è identico, blocca. "PCE dicembre da Reuters" e "Fed's preferred inflation gauge da CNBC" → stesso evento (INFLATION_DATA + US + DECEMBER), bloccato.</p>
+        </div>
+      </div>
+
+      <div class="dedup-layer">
+        <div class="dedup-id">URL</div>
+        <div class="dedup-content">
+          <h4>URL hash 24h <span class="dedup-when">24h</span></h4>
+          <p>Il più semplice: se lo stesso URL è già stato processato nelle ultime 24 ore, scarta immediatamente. Prima linea di difesa.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Gate System -->
+  <div class="section">
+    <div class="section-label">Controllo qualità</div>
+    <h2>Gate di protezione</h2>
+    <p class="desc">Anche dopo il dedup, una news deve superare i gate di protezione che evitano di inondare l'utente con troppi messaggi.</p>
+
+    <div class="fv-grid">
+      <div class="fv-card">
+        <h4>🎚️ Soglia dinamica</h4>
+        <p>Le prime 5 news passano a score 55+. Le successive servono 70+. Oltre le 8, serve 85+. Così le news migliori passano sempre, ma il volume resta gestibile.</p>
+        <span class="fv-tag">3 TIER</span>
+      </div>
+      <div class="fv-card">
+        <h4>⏱️ Cooldown 30 min</h4>
+        <p>Dopo ogni alert inviato, 30 minuti di silenzio. Solo news con score ≥90 possono bypassare il cooldown.</p>
+        <span class="fv-tag">ANTI-SPAM</span>
+      </div>
+      <div class="fv-card">
+        <h4>📊 Hard cap giornaliero</h4>
+        <p>Massimo 12 alert al giorno. Le news ad alta urgenza (ALTA) con score ≥75 possono superare il limite.</p>
+        <span class="fv-tag">MAX 12/GIORNO</span>
+      </div>
+      <div class="fv-card">
+        <h4>🏷️ Gate per categoria</h4>
+        <p>Macro: score minimo 50. Geopolitica: score minimo 75 (filtro più stretto per ridurre il rumore). Black Swan: nessun limite.</p>
+        <span class="fv-tag">PER TIPO</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature Vector -->
+  <div class="section">
+    <div class="section-label">Dataset</div>
+    <h2>Ogni alert è un vettore di 54 campi</h2>
+    <p class="desc">Non è solo un messaggio Telegram. Ogni news analizzata genera un record strutturato nel database con 54 colonne — pronto per analisi quantitativa e machine learning.</p>
+
+    <div class="fv-grid">
+      <div class="fv-card">
+        <h4>📰 Segnale puro</h4>
+        <p>Direzione, score, confidence, urgenza, categoria — l'impulso della news valutato in isolamento, senza contaminazioni.</p>
+      </div>
+      <div class="fv-card">
+        <h4>🏗️ Dati strutturati</h4>
+        <p>Tipo evento, paese, periodo, meccanismo di trasmissione, consensus surprise, dati numerici (attuale vs atteso vs precedente).</p>
+      </div>
+      <div class="fv-card">
+        <h4>📈 Contesto di mercato</h4>
+        <p>Prezzo oro, VIX, S&P 500, Dollar Index e petrolio al momento della news. Sessione di trading, latenza del feed.</p>
+      </div>
+      <div class="fv-card">
+        <h4>✅ Verifica ex-post</h4>
+        <p>Variazione prezzo a 1h, 4h, 24h. La call era corretta? Excess return vs baseline. Dati che misurano se il segnale ha valore reale.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Visual flow summary -->
+  <div class="section">
+    <div class="section-label">In sintesi</div>
+    <h2>Il funnel in numeri</h2>
+
+    <div class="flow-summary">
+      <div class="flow-row">
+        <span class="flow-box fb-source">15 Feed RSS</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-box fb-filter">Dedup base</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-box fb-ai">Triage AI</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-box fb-ai">Analisi completa</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-box fb-dedup">5× Dedup</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-box fb-gate">Gate</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-box fb-deliver">📱 Alert</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="flow-numbers">
+        <div class="flow-num">
+          <div class="big c-gold">~280</div>
+          <div class="label">news in ingresso</div>
+        </div>
+        <div class="flow-funnel">→</div>
+        <div class="flow-num">
+          <div class="big c-red">~210</div>
+          <div class="label">filtrate dal triage</div>
+        </div>
+        <div class="flow-funnel">→</div>
+        <div class="flow-num">
+          <div class="big c-red">~12</div>
+          <div class="label">bloccate dedup + gate</div>
+        </div>
+        <div class="flow-funnel">→</div>
+        <div class="flow-num">
+          <div class="big c-green">~58</div>
+          <div class="label">alert consegnati</div>
+        </div>
+      </div>
+
+      <div class="flow-label">Dati reali — settimana 14-22 febbraio 2026</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span>Refract Gold</span> — v8.0 · Pipeline con 10 livelli di filtro · 54 campi per alert · Febbraio 2026
+  </div>
+
+</div>
+
+</body>
+</html>
