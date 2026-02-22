@@ -283,6 +283,8 @@
   @media (max-width: 600px) {
     .fv-grid { grid-template-columns: 1fr; }
     .stats-bar { flex-wrap: wrap; gap: 24px; }
+    .flow-num .big { font-size: 24px; }
+    .flow-funnel { font-size: 18px; padding: 0 6px; }
   }
 
   .fv-card {
@@ -377,6 +379,24 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 8px;
+    flex-wrap: wrap;
+    gap: 8px 0;
+  }
+
+  @media (max-width: 600px) {
+    .flow-numbers {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 12px 4px;
+      justify-items: center;
+    }
+    .flow-numbers .flow-num:nth-child(1) { grid-column: 1; }
+    .flow-numbers .flow-funnel:nth-child(2) { grid-column: 2; }
+    .flow-numbers .flow-num:nth-child(3) { grid-column: 3; }
+    .flow-numbers .flow-funnel:nth-child(4) { grid-column: 1; grid-row: 2; visibility: hidden; }
+    .flow-numbers .flow-num:nth-child(5) { grid-column: 1; grid-row: 2; }
+    .flow-numbers .flow-funnel:nth-child(6) { grid-column: 2; grid-row: 2; }
+    .flow-numbers .flow-num:nth-child(7) { grid-column: 3; grid-row: 2; }
   }
 
   .flow-num {
