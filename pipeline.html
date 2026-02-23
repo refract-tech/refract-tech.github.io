@@ -467,6 +467,10 @@
       <div class="stat-value">~8</div>
       <div class="stat-label">Alert / giorno</div>
     </div>
+    <div class="stat">
+      <div class="stat-value">2</div>
+      <div class="stat-label">AI Agent</div>
+    </div>
   </div>
 
   <!-- Pipeline Overview -->
@@ -480,7 +484,7 @@
       <div class="step">
         <div class="step-dot source">1</div>
         <h3>Raccolta <span class="step-tag tag-auto">AUTOMATICO</span></h3>
-        <p>15 feed RSS interrogati ogni 2 minuti: Reuters, CNBC, ForexLive, FXStreet, MarketWatch, Bloomberg e altri. Ogni news viene salvata con timestamp, fonte e contenuto.</p>
+        <p>15 feed RSS interrogati ogni 2 minuti: Reuters, CNBC, ForexLive, FXStreet, MarketWatch, BBC World e altri. Ogni news viene salvata con timestamp, fonte e contenuto.</p>
       </div>
 
       <div class="step">
@@ -498,21 +502,21 @@
       </div>
 
       <div class="step">
-        <div class="step-dot ai">4</div>
-        <h3>Analisi AI completa <span class="step-tag tag-ai">AI</span></h3>
-        <p>Le news sopravvissute vengono analizzate una per una dall'AI (Gemini 3 Flash). L'AI compila 18 campi strutturati: direzione (BULLISH/BEARISH/NEUTRAL), score di impatto (0-100), reasoning in italiano, tipo di evento, paese, meccanismo di trasmissione, dati numerici, e molto altro.</p>
-        <div class="example"><strong>Output:</strong> "PCE +2.9% vs 2.8% atteso → BEARISH 85, evento: INFLATION_DATA, paese: US, meccanismo: REAL_RATES, consenso: ABOVE"</div>
+        <div class="step-dot ai">4a</div>
+        <h3>AI #1 — Classificazione <span class="step-tag tag-ai">AI</span></h3>
+        <p>Un'AI dedicata decide tutto: direzione (BULLISH/BEARISH/NEUTRAL), score di impatto (0-100), tipo di evento, paese, periodo, meccanismo di trasmissione, dati numerici, valutazione regime. 16 campi strutturati, zero testo. Solo decisioni. Se l'AI primaria non risponde, un modello di fallback subentra automaticamente.</p>
+        <div class="example"><strong>Output:</strong> BEARISH 85, evento: INFLATION_DATA, paese: US, meccanismo: REAL_RATES, consenso: ABOVE, regime_dampened: true</div>
       </div>
 
       <div class="step">
-        <div class="step-dot ai">5</div>
-        <h3>Valutazione regime <span class="step-tag tag-new">v8.0</span></h3>
-        <p>Dopo l'analisi pura, l'AI fa una seconda valutazione: "questo impulso rischia di essere assorbito dal trend dominante?" Se sì, il messaggio include una nota di contesto. L'analisi originale resta intatta nel database — pura e non contaminata.</p>
-        <div class="example"><strong>Esempio:</strong> CPI sopra attese → BEARISH, ma l'AI nota che il trend strutturale rialzista potrebbe limitare il ritracciamento. L'utente vede BEARISH + la nota di contesto. Decide lui.</div>
+        <div class="step-dot ai">4b</div>
+        <h3>AI #2 — Comunicazione <span class="step-tag tag-new">v8.1</span></h3>
+        <p>Una seconda AI riceve la classificazione e scrive l'alert: titolo in italiano, reasoning, nota di contesto. Il suo unico compito è comunicare — non decide, spiega. Se fallisce, la classificazione viene salvata nel database ma l'alert non viene inviato: meglio nessun messaggio che un messaggio incompleto.</p>
+        <div class="example"><strong>Output:</strong> "PCE +2.9% vs 2.8% atteso, sopra consensus. Pressione su rendimenti reali e dollaro."</div>
       </div>
 
       <div class="step">
-        <div class="step-dot dedup">6</div>
+        <div class="step-dot dedup">5</div>
         <h3>Catena di deduplicazione (5 livelli)</h3>
         <p>Qui avviene la magia. Anche se un evento supera l'analisi, deve passare 5 controlli anti-duplicato progressivi prima di essere inviato.</p>
       </div>
@@ -604,7 +608,7 @@
   <!-- Feature Vector -->
   <div class="section">
     <div class="section-label">Dataset</div>
-    <h2>Ogni alert è un vettore di 54 campi</h2>
+    <h2>Ogni alert è un vettore di 55 campi</h2>
     <p class="desc">Non è solo un messaggio Telegram. Ogni news analizzata genera un record strutturato nel database con 54 colonne — pronto per analisi quantitativa e machine learning.</p>
 
     <div class="fv-grid">
@@ -640,7 +644,7 @@
         <span class="flow-arrow">→</span>
         <span class="flow-box fb-ai">Triage AI</span>
         <span class="flow-arrow">→</span>
-        <span class="flow-box fb-ai">Analisi completa</span>
+        <span class="flow-box fb-ai">2× AI Call</span>
         <span class="flow-arrow">→</span>
         <span class="flow-box fb-dedup">5× Dedup</span>
         <span class="flow-arrow">→</span>
@@ -679,7 +683,7 @@
 
   <!-- Footer -->
   <div class="footer">
-    <span>Refract Gold</span> — v8.0 · Pipeline con 10 livelli di filtro · 54 campi per alert · Febbraio 2026
+    <span>Refract Gold</span> — v8.1 · Pipeline con 10 livelli di filtro · 2 AI agent · 55 campi per alert · Febbraio 2026
   </div>
 
 </div>
