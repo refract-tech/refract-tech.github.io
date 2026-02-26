@@ -425,11 +425,32 @@
     padding: 0 12px;
   }
 
+  /* Page nav */
+  .page-nav {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    margin-top: 48px;
+    padding: 20px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-nav a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .page-nav a:hover { color: var(--gold); }
+  .page-nav .current { color: var(--gold); font-weight: 500; }
+
   /* Footer */
   .footer {
-    margin-top: 64px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
+    margin-top: 32px;
     text-align: center;
     color: var(--text-muted);
     font-size: 12px;
@@ -445,8 +466,8 @@
   <!-- Header -->
   <div class="header">
     <div class="brand">Refract Gold</div>
-    <h1>Da 280 news a 8 alert che contano</h1>
-    <p class="subtitle">Come un sistema a 10 livelli di filtro trasforma il rumore finanziario in segnali operativi per trader professionisti.</p>
+    <h1>Da 490 news a 10 alert che contano</h1>
+    <p class="subtitle">Come un sistema a 11 livelli di filtro trasforma il rumore finanziario in segnali operativi per trader professionisti.</p>
   </div>
 
   <!-- Stats -->
@@ -456,15 +477,15 @@
       <div class="stat-label">Feed RSS</div>
     </div>
     <div class="stat">
-      <div class="stat-value">~280</div>
+      <div class="stat-value">~490</div>
       <div class="stat-label">News / settimana</div>
     </div>
     <div class="stat">
-      <div class="stat-value">97%</div>
+      <div class="stat-value">85%</div>
       <div class="stat-label">Rumore filtrato</div>
     </div>
     <div class="stat">
-      <div class="stat-value">~8</div>
+      <div class="stat-value">~10</div>
       <div class="stat-label">Alert / giorno</div>
     </div>
     <div class="stat">
@@ -504,15 +525,15 @@
       <div class="step">
         <div class="step-dot ai">4a</div>
         <h3>AI #1 — Classificazione <span class="step-tag tag-ai">AI</span></h3>
-        <p>Un'AI dedicata decide tutto: direzione (BULLISH/BEARISH/NEUTRAL), score di impatto (0-100), tipo di evento, paese, periodo, meccanismo di trasmissione, dati numerici, valutazione regime. 16 campi strutturati, zero testo. Solo decisioni. Se l'AI primaria non risponde, un modello di fallback subentra automaticamente.</p>
+        <p>Un'AI dedicata classifica: direzione (BULLISH/BEARISH/NEUTRAL), score di impatto (0-100), tipo di evento, paese, periodo, meccanismo di trasmissione, dati numerici, valutazione regime. 16 campi strutturati, zero testo. Solo decisioni. Se l'AI primaria non risponde, un modello di fallback subentra automaticamente.</p>
         <div class="example"><strong>Output:</strong> BEARISH 85, evento: INFLATION_DATA, paese: US, meccanismo: REAL_RATES, consenso: ABOVE, regime_dampened: true</div>
       </div>
 
       <div class="step">
         <div class="step-dot ai">4b</div>
-        <h3>AI #2 — Comunicazione <span class="step-tag tag-new">v8.1</span></h3>
-        <p>Una seconda AI riceve la classificazione e scrive l'alert: titolo in italiano, reasoning, nota di contesto. Il suo unico compito è comunicare — non decide, spiega. Se fallisce, la classificazione viene salvata nel database ma l'alert non viene inviato: meglio nessun messaggio che un messaggio incompleto.</p>
-        <div class="example"><strong>Output:</strong> "PCE +2.9% vs 2.8% atteso, sopra consensus. Pressione su rendimenti reali e dollaro."</div>
+        <h3>AI #2 — Comunicazione <span class="step-tag tag-new">v8.3</span></h3>
+        <p>Una seconda AI riceve la classificazione e scrive l'alert: titolo in italiano, reasoning, nota di contesto. Il suo unico compito è comunicare — non decide, spiega. Se il segnale va controcorrente rispetto al regime macro, aggiunge una nota di contesto con il fattore specifico che contrasta.</p>
+        <div class="example"><strong>Output:</strong> "PCE +2.9% vs 2.8% atteso, sopra consensus. ⚖️ Segnale in controtendenza: la domanda fisica asiatica e il deficit fiscale USA continuano a sostenere il metallo."</div>
       </div>
 
       <div class="step">
@@ -531,6 +552,14 @@
     <p class="desc">Il problema più insidioso: la stessa notizia arriva da fonti diverse, con titoli diversi, a distanze di minuti o ore. Servono 5 approcci diversi per catturarle tutte.</p>
 
     <div class="dedup-stack">
+
+      <div class="dedup-layer">
+        <div class="dedup-id">URL</div>
+        <div class="dedup-content">
+          <h4>URL hash 24h <span class="dedup-when">24h</span></h4>
+          <p>Il più semplice: se lo stesso URL è già stato processato nelle ultime 24 ore, scarta immediatamente. Prima linea di difesa.</p>
+        </div>
+      </div>
 
       <div class="dedup-layer">
         <div class="dedup-id">4.5</div>
@@ -564,14 +593,6 @@
         </div>
       </div>
 
-      <div class="dedup-layer">
-        <div class="dedup-id">URL</div>
-        <div class="dedup-content">
-          <h4>URL hash 24h <span class="dedup-when">24h</span></h4>
-          <p>Il più semplice: se lo stesso URL è già stato processato nelle ultime 24 ore, scarta immediatamente. Prima linea di difesa.</p>
-        </div>
-      </div>
-
     </div>
   </div>
 
@@ -583,9 +604,19 @@
 
     <div class="fv-grid">
       <div class="fv-card">
+        <h4>🏷️ Category gate</h4>
+        <p>Ogni news ha una categoria: macro, geopolitica, black swan. Ogni categoria ha una soglia minima diversa: macro richiede 50+, geo 75+, black swan passa sempre.</p>
+        <span class="fv-tag">MACRO 50 · GEO 75</span>
+      </div>
+      <div class="fv-card">
         <h4>🎚️ Soglia dinamica</h4>
-        <p>Le prime 5 news passano a score 55+. Le successive servono 70+. Oltre le 8, serve 85+. Così le news migliori passano sempre, ma il volume resta gestibile.</p>
+        <p>Le prime 5 news passano a score 55+. Dalla 6ª alla 8ª servono 70+. Dalla 9ª in poi, 75+. Le news migliori passano sempre, il volume resta gestibile.</p>
         <span class="fv-tag">3 TIER</span>
+      </div>
+      <div class="fv-card">
+        <h4>⚖️ Effective score</h4>
+        <p>Lo score viene corretto per urgenza: una news a bassa urgenza riceve un malus (−8 punti). Così "Goldman alza forecast petrolio" con score 55 e urgenza BASSA diventa 47 e non passa il gate.</p>
+        <span class="fv-tag">BASSA: −8</span>
       </div>
       <div class="fv-card">
         <h4>⏱️ Cooldown 30 min</h4>
@@ -597,24 +628,19 @@
         <p>Massimo 12 alert al giorno. Le news ad alta urgenza (ALTA) con score ≥75 possono superare il limite.</p>
         <span class="fv-tag">MAX 12/GIORNO</span>
       </div>
-      <div class="fv-card">
-        <h4>🏷️ Gate per categoria</h4>
-        <p>Macro: score minimo 50. Geopolitica: score minimo 75 (filtro più stretto per ridurre il rumore). Black Swan: nessun limite.</p>
-        <span class="fv-tag">PER TIPO</span>
-      </div>
     </div>
   </div>
 
   <!-- Feature Vector -->
   <div class="section">
     <div class="section-label">Dataset</div>
-    <h2>Ogni alert è un vettore di 55 campi</h2>
+    <h2>Ogni alert è un vettore di 56 campi</h2>
     <p class="desc">Non è solo un messaggio Telegram. Ogni news analizzata genera un record strutturato nel database con 54 colonne — pronto per analisi quantitativa e machine learning.</p>
 
     <div class="fv-grid">
       <div class="fv-card">
         <h4>📰 Segnale puro</h4>
-        <p>Direzione, score, confidence, urgenza, categoria — l'impulso della news valutato in isolamento, senza contaminazioni.</p>
+        <p>Direzione, score, effective_score, confidence, urgenza, categoria — l'impulso della news valutato in isolamento, corretto per urgenza.</p>
       </div>
       <div class="fv-card">
         <h4>🏗️ Dati strutturati</h4>
@@ -657,33 +683,35 @@
 
       <div class="flow-numbers">
         <div class="flow-num">
-          <div class="big c-gold">~280</div>
+          <div class="big c-gold">~490</div>
           <div class="label">news in ingresso</div>
         </div>
         <div class="flow-funnel">→</div>
         <div class="flow-num">
-          <div class="big c-red">~210</div>
-          <div class="label">filtrate dal triage</div>
+          <div class="big c-red">~100</div>
+          <div class="label">analizzate AI</div>
         </div>
         <div class="flow-funnel">→</div>
         <div class="flow-num">
-          <div class="big c-red">~12</div>
-          <div class="label">bloccate dedup + gate</div>
-        </div>
-        <div class="flow-funnel">→</div>
-        <div class="flow-num">
-          <div class="big c-green">~58</div>
+          <div class="big c-green">~72</div>
           <div class="label">alert consegnati</div>
         </div>
       </div>
 
-      <div class="flow-label">Dati reali — settimana 14-22 febbraio 2026</div>
+      <div class="flow-label">Dati reali — settimana 20-26 febbraio 2026</div>
     </div>
+  </div>
+
+  <!-- Nav -->
+  <div class="page-nav">
+    <a href="index.html">Home</a>
+    <a href="pipeline.html" class="current">Pipeline</a>
+    <a href="dataset.html">Dataset</a>
   </div>
 
   <!-- Footer -->
   <div class="footer">
-    <span>Refract Gold</span> — v8.1 · Pipeline con 10 livelli di filtro · 2 AI agent · 55 campi per alert · Febbraio 2026
+    <span>Refract Gold</span> — v8.3 · Pipeline con 11 livelli di filtro · 2 AI agent · 56 campi per alert · Febbraio 2026
   </div>
 
 </div>

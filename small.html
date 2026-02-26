@@ -135,6 +135,26 @@
 
   .alert-mock .alert-reasoning { color: var(--text-dim); font-size: 13px; }
 
+  .alert-mock .alert-note {
+    color: var(--text-dim);
+    font-size: 12px;
+    font-style: italic;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  .alert-mock .alert-impact {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    background: rgba(0,0,0,0.3);
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    display: inline-block;
+  }
+
   .alert-mock .alert-meta {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
@@ -289,25 +309,25 @@
       <span class="pipe-arrow">&rarr;</span>
       <div class="pipe-step">Telegram<br><span style="color:var(--accent-dim)">alert</span></div>
     </div>
-    <p class="dim">Il 90% viene scartato. Ricevi solo quello che conta.</p>
+    <p class="dim">L'85% viene scartato. Ricevi solo quello che conta.</p>
   </section>
 
   <!-- Esempio -->
   <section>
     <h2><span class="label">Esempio</span>Come appare un alert</h2>
     <div class="alert-mock">
-      <div class="alert-header">🔴 REFRACT GOLD</div>
-      <div class="alert-title">📰 Oro crolla sotto $5.000: festività cinesi pesano sulla domanda</div>
-      <div class="alert-dir bearish">📉 BEARISH · 🔥🔥</div>
-      <div class="alert-reasoning">💡 Calo domanda fisica asiatica riduce supporto; violazione livello psicologico $5.000 innesca bias short per flussi tecnici.</div>
-      <div class="alert-meta">🔗 Leggi · MarketWatch<br>🕒 News 08:58 · 🤖 Bot 09:01 CET</div>
+      <div class="alert-header">🔴 XAU/USD - BEARISH 📉 | Refract Gold</div>
+      <div class="alert-title">Oro crolla sotto $5.000: festività cinesi pesano sulla domanda</div>
+      <div class="alert-reasoning">Calo domanda fisica asiatica riduce supporto; violazione livello psicologico $5.000 innesca bias short per flussi tecnici.</div>
+      <div class="alert-impact">Impatto: ▰▰▱   Score: 68</div>
+      <div class="alert-meta">MarketWatch · Sessione EU · News 08:58</div>
     </div>
     <div class="alert-mock bullish">
-      <div class="alert-header">🟢 REFRACT GOLD</div>
-      <div class="alert-title">📰 CPI USA 2.4% vs atteso 2.6%: inflazione sotto le aspettative</div>
-      <div class="alert-dir bullish">📈 BULLISH · 🔥🔥🔥</div>
-      <div class="alert-reasoning">💡 Dato sotto consensus rafforza aspettative taglio Fed; rendimenti reali in calo favoriscono XAU/USD.</div>
-      <div class="alert-meta">🔗 Leggi · FXStreet<br>🕒 News 14:30 · 🤖 Bot 14:32 CET</div>
+      <div class="alert-header">🟢 XAU/USD - BULLISH 📈 | Refract Gold</div>
+      <div class="alert-title">CPI USA 2.4% vs atteso 2.6%: inflazione sotto le aspettative</div>
+      <div class="alert-reasoning">Dato sotto consensus rafforza aspettative taglio Fed; rendimenti reali in calo favoriscono XAU/USD.</div>
+      <div class="alert-impact">Impatto: ▰▰▰   Score: 85</div>
+      <div class="alert-meta">Reuters · Sessione US · News 14:30</div>
     </div>
   </section>
 
@@ -333,7 +353,7 @@
       <div class="feat">
         <div class="icon">📅</div>
         <div class="feat-title">Calendario macro</div>
-        <div class="feat-desc">Gli eventi chiave della settimana che possono muovere il prezzo, con prezzo real-time. Un tap.</div>
+        <div class="feat-desc">Gli eventi chiave della settimana che possono muovere il prezzo. Orari, forecast, precedente. Un tap.</div>
       </div>
       <div class="feat">
         <div class="icon">📊</div>
