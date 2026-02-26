@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Refract Gold — Dataset</title>
+<title>Refract Gold — Dataset (Full Reference)</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -43,7 +43,7 @@
   }
 
   .container {
-    max-width: 940px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 60px 24px 80px;
   }
@@ -79,14 +79,14 @@
   .header .subtitle {
     font-size: 16px;
     color: var(--text-dim);
-    max-width: 620px;
+    max-width: 700px;
     margin: 0 auto;
   }
 
   /* ── Metrics bar ── */
   .metrics-bar {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 1px;
     background: var(--border);
     border: 1px solid var(--border);
@@ -99,10 +99,6 @@
     .metrics-bar {
       grid-template-columns: repeat(3, 1fr);
     }
-    .metrics-bar .metric:nth-child(4),
-    .metrics-bar .metric:nth-child(5) {
-      grid-column: span 1;
-    }
   }
 
   .metric {
@@ -113,7 +109,7 @@
 
   .metric-val {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 600;
     color: var(--gold);
     line-height: 1;
@@ -122,7 +118,7 @@
   .metric-val.green { color: var(--green); }
 
   .metric-label {
-    font-size: 10.5px;
+    font-size: 10px;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -131,7 +127,7 @@
 
   /* ── Section ── */
   .section {
-    margin-bottom: 56px;
+    margin-bottom: 64px;
   }
 
   .section-tag {
@@ -154,7 +150,7 @@
     color: var(--text-dim);
     font-size: 14.5px;
     margin-bottom: 24px;
-    max-width: 700px;
+    max-width: 780px;
   }
 
   /* ── Schema table ── */
@@ -173,9 +169,7 @@
     border-bottom: none;
   }
 
-  .schema-group-header .icon {
-    font-size: 15px;
-  }
+  .schema-group-header .icon { font-size: 15px; }
 
   .schema-group-header .name {
     font-weight: 600;
@@ -201,7 +195,7 @@
 
   .schema-row {
     display: grid;
-    grid-template-columns: 200px 90px 1fr;
+    grid-template-columns: 210px 90px 1fr;
     gap: 0;
     border-bottom: 1px solid var(--border);
     font-size: 12.5px;
@@ -209,7 +203,7 @@
 
   .schema-row:last-child { border-bottom: none; }
 
-  @media (max-width: 640px) {
+  @media (max-width: 700px) {
     .schema-row {
       grid-template-columns: 1fr;
       gap: 2px;
@@ -244,6 +238,61 @@
     color: var(--text-dim);
     padding: 8px 14px;
     font-size: 12.5px;
+  }
+
+  /* ── Enum reference ── */
+  .enum-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  @media (max-width: 700px) {
+    .enum-grid { grid-template-columns: 1fr; }
+  }
+
+  .enum-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+
+  .enum-card h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--cyan);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .enum-card .enum-vals {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .enum-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+
+  .enum-val.highlight {
+    color: var(--gold);
+    border-color: var(--gold-dim);
+  }
+
+  .enum-desc {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    line-height: 1.5;
   }
 
   /* ── Accuracy panel ── */
@@ -285,7 +334,6 @@
   }
 
   .acc-row:last-child { border-bottom: none; }
-
   .acc-row .label { color: var(--text-dim); }
 
   .acc-row .value {
@@ -326,10 +374,18 @@
   .sample-header .badge {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
-    color: var(--green);
-    background: var(--green-dim);
     padding: 2px 8px;
     border-radius: 4px;
+  }
+
+  .sample-header .badge.delivered {
+    color: var(--green);
+    background: var(--green-dim);
+  }
+
+  .sample-header .badge.blocked {
+    color: var(--red);
+    background: var(--red-dim);
   }
 
   .sample-body {
@@ -346,6 +402,137 @@
   .sample-body .bool { color: var(--purple); }
   .sample-body .null { color: var(--text-muted); }
   .sample-body .comment { color: var(--text-muted); font-style: italic; }
+
+  /* ── Gate system ── */
+  .gate-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+    font-size: 12.5px;
+  }
+
+  .gate-table thead th {
+    background: var(--surface-2);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .gate-table tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .gate-table tbody tr:last-child td { border-bottom: none; }
+
+  .gate-table tbody tr:hover { background: var(--surface); }
+
+  .gate-table .gate-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .gate-table .gate-bypass {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--purple);
+  }
+
+  .gate-table .gate-log {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    background: var(--bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+
+  /* ── DB tables ── */
+  .db-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  @media (max-width: 700px) {
+    .db-grid { grid-template-columns: 1fr; }
+  }
+
+  .db-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .db-card h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--cyan);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .db-card p {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .db-card .db-cols {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+
+  /* ── SQL examples ── */
+  .sql-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 16px;
+  }
+
+  .sql-block-header {
+    padding: 10px 16px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .sql-block pre {
+    padding: 14px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    line-height: 1.7;
+    color: var(--text-dim);
+    overflow-x: auto;
+    margin: 0;
+  }
+
+  .sql-block pre .kw { color: var(--purple); }
+  .sql-block pre .fn { color: var(--gold); }
+  .sql-block pre .str { color: var(--green); }
+  .sql-block pre .cm { color: var(--text-muted); font-style: italic; }
 
   /* ── Quality controls ── */
   .quality-grid {
@@ -366,10 +553,7 @@
     padding: 18px;
   }
 
-  .q-card .q-icon {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
+  .q-card .q-icon { font-size: 20px; margin-bottom: 10px; }
 
   .q-card h4 {
     font-size: 13px;
@@ -418,9 +602,7 @@
   .app-card::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     height: 2px;
   }
 
@@ -440,16 +622,93 @@
   .app-card.next .app-status { color: var(--gold); }
   .app-card.future .app-status { color: var(--purple); }
 
-  .app-card h4 {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 6px;
+  .app-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .app-card p { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+
+  /* ── Schema evolution ── */
+  .evo-timeline {
+    position: relative;
+    padding-left: 28px;
+    margin-top: 20px;
   }
 
-  .app-card p {
-    font-size: 12.5px;
+  .evo-timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .evo-item {
+    position: relative;
+    margin-bottom: 24px;
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .evo-item::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 20px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--bg);
+  }
+
+  .evo-item .evo-ver {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .evo-item .evo-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
     color: var(--text-muted);
-    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+
+  .evo-item .evo-changes {
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  .evo-item .evo-changes code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--cyan);
+    background: var(--bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  /* ── Method note ── */
+  .method-note {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold-dim);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin-top: 20px;
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+
+  .method-note strong {
+    color: var(--text);
+    font-weight: 600;
   }
 
   /* ── Nav ── */
@@ -484,24 +743,6 @@
   }
 
   .footer em { color: var(--gold); font-style: normal; }
-
-  /* ── Methodology note ── */
-  .method-note {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--gold-dim);
-    border-radius: 0 8px 8px 0;
-    padding: 16px 20px;
-    margin-top: 20px;
-    font-size: 12.5px;
-    color: var(--text-dim);
-    line-height: 1.7;
-  }
-
-  .method-note strong {
-    color: var(--text);
-    font-weight: 600;
-  }
 </style>
 </head>
 <body>
@@ -510,9 +751,9 @@
 
   <!-- Header -->
   <div class="header">
-    <div class="brand">Refract Gold · Dataset</div>
-    <h1>Structured macro intelligence, <em>record per record</em></h1>
-    <p class="subtitle">Ogni news analizzata genera un vettore di 56 campi tipizzati: classificazione, dati strutturati, contesto di mercato, verifica ex-post. Pronto per analisi quantitativa.</p>
+    <div class="brand">Refract Gold · Dataset · Full Reference</div>
+    <h1>Schema completo, <em>campo per campo</em></h1>
+    <p class="subtitle">Reference tecnica per il dataset Refract Gold. 56 campi tipizzati, 11 tabelle, 11 gate di filtraggio. Ogni campo documentato con tipo, valori ammessi e semantica.</p>
   </div>
 
   <!-- Key metrics -->
@@ -526,8 +767,12 @@
       <div class="metric-label">Record totali</div>
     </div>
     <div class="metric">
-      <div class="metric-val green">80%</div>
-      <div class="metric-label">Accuracy @24h</div>
+      <div class="metric-val">11</div>
+      <div class="metric-label">Tabelle DB</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val">6</div>
+      <div class="metric-label">Campi ENUM</div>
     </div>
     <div class="metric">
       <div class="metric-val">v3</div>
@@ -539,136 +784,471 @@
     </div>
   </div>
 
-  <!-- Schema Catalog -->
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SCHEMA COMPLETO -->
+  <!-- ═══════════════════════════════════════════ -->
   <div class="section">
     <div class="section-tag">Schema</div>
-    <h2>Catalogo campi</h2>
-    <p class="desc">Ogni record segue uno schema versionato e validato. I campi sono organizzati in 6 gruppi funzionali — dal segnale grezzo alla verifica ex-post del price impact. Qui i campi chiave per gruppo; il catalogo completo è disponibile su richiesta.</p>
+    <h2>Catalogo completo — 56 campi</h2>
+    <p class="desc">Ogni record nella tabella <code>alerts</code> segue uno schema versionato e validato. I 56 campi sono organizzati in 8 gruppi funzionali. Tutti i campi sono documentati.</p>
 
-    <!-- Group: Metadata -->
+    <!-- Group 1: Infrastructure -->
     <div class="schema-group">
       <div class="schema-group-header">
-        <span class="icon">🔖</span>
-        <span class="name">Metadata</span>
-        <span class="count">8 campi</span>
+        <span class="icon">🔧</span>
+        <span class="name">Infrastruttura</span>
+        <span class="count">4 campi</span>
       </div>
       <div class="schema-fields">
         <div class="schema-row">
-          <span class="sf">schema_version</span><span class="st">TEXT</span><span class="sd">Versione dello schema al momento dell'analisi — traccia evoluzioni</span>
+          <span class="sf">id</span><span class="st">INTEGER PK</span><span class="sd">Chiave primaria auto-incrementale</span>
         </div>
         <div class="schema-row">
-          <span class="sf">prompt_hash</span><span class="st">TEXT</span><span class="sd">SHA-256 del prompt AI — ogni modifica al prompt è tracciata nel dataset</span>
+          <span class="sf">timestamp</span><span class="st">DATETIME</span><span class="sd">Momento dell'inserimento nel DB (UTC, auto-generato)</span>
         </div>
         <div class="schema-row">
-          <span class="sf">model_used</span><span class="st">TEXT</span><span class="sd">Modello AI primario o fallback che ha prodotto l'analisi</span>
+          <span class="sf">asset</span><span class="st">TEXT</span><span class="sd">Asset tracciato — attualmente <code>XAU/USD</code></span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">schema_version</span><span class="st">INTEGER</span><span class="sd">Generazione dello schema: 1 (pre-v8), 2 (v8.0), 3 (v8.0-C+)</span>
         </div>
       </div>
     </div>
 
-    <!-- Group: AI Classification -->
+    <!-- Group 2: Core News -->
+    <div class="schema-group">
+      <div class="schema-group-header">
+        <span class="icon">📰</span>
+        <span class="name">News source</span>
+        <span class="count">8 campi</span>
+      </div>
+      <div class="schema-fields">
+        <div class="schema-row">
+          <span class="sf">source</span><span class="st">TEXT</span><span class="sd">Tipo sorgente: <code>RSS</code>, <code>Twitter</code>, <code>Calendar</code></span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">feed_name</span><span class="st">TEXT</span><span class="sd">Nome del feed (es. <code>ForexLive</code>, <code>Reuters</code>, <code>CNBC</code>)</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">title</span><span class="st">TEXT</span><span class="sd">Titolo originale inglese della notizia</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">url</span><span class="st">TEXT</span><span class="sd">URL della fonte (nullable per price alert)</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">content</span><span class="st">TEXT</span><span class="sd">Corpo dell'articolo, troncato a 1000 caratteri</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">published_at</span><span class="st">DATETIME</span><span class="sd">Data/ora di pubblicazione originale dalla fonte</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">is_emergency</span><span class="st">BOOLEAN</span><span class="sd">Legacy (sempre 0). Mantenuto per backward-compatibility</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">broadcast_status</span><span class="st">TEXT</span><span class="sd"><code>pending</code> | <code>in_progress</code> | <code>completed</code> — stato di consegna</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Group 3: AI Classification -->
     <div class="schema-group">
       <div class="schema-group-header">
         <span class="icon">🧠</span>
-        <span class="name">Classificazione AI</span>
-        <span class="count">10 campi</span>
+        <span class="name">Classificazione AI (Call 1)</span>
+        <span class="count">7 campi</span>
       </div>
       <div class="schema-fields">
         <div class="schema-row">
-          <span class="sf">direction</span><span class="st">ENUM</span><span class="sd">BULLISH | BEARISH | NEUTRAL</span>
+          <span class="sf">relevance_score</span><span class="st">INTEGER</span><span class="sd">0-100. Score grezzo di impatto sulla price action</span>
         </div>
         <div class="schema-row">
-          <span class="sf">relevance_score</span><span class="st">INTEGER</span><span class="sd">0-100, impatto stimato sulla price action</span>
+          <span class="sf">urgency</span><span class="st">ENUM</span><span class="sd"><code>ALTA</code> | <code>MEDIA</code> | <code>BASSA</code> — temporalità dell'impatto</span>
         </div>
         <div class="schema-row">
-          <span class="sf">effective_score</span><span class="st">INTEGER</span><span class="sd">Score corretto per urgenza (BASSA: −8) — il gate usa questo, non il raw</span>
+          <span class="sf">direction</span><span class="st">ENUM</span><span class="sd"><code>BULLISH</code> | <code>BEARISH</code> | <code>NEUTRAL</code> — direzione attesa</span>
         </div>
         <div class="schema-row">
-          <span class="sf">regime_dampened</span><span class="st">BOOLEAN</span><span class="sd">True se la direction contrasta il regime macro corrente</span>
+          <span class="sf">confidence</span><span class="st">INTEGER</span><span class="sd">0-100. Livello di certezza dell'AI nella propria classificazione</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">category</span><span class="st">ENUM</span><span class="sd"><code>macro</code> | <code>geopolitica</code> | <code>black_swan</code></span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">reasoning</span><span class="st">TEXT</span><span class="sd">Spiegazione in italiano del meccanismo causa-effetto (da Call 2)</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">context</span><span class="st">TEXT</span><span class="sd">Contesto di mercato rilevante (da Call 2)</span>
         </div>
       </div>
     </div>
 
-    <!-- Group: Structured Data -->
+    <!-- Group 4: AI Communication -->
+    <div class="schema-group">
+      <div class="schema-group-header">
+        <span class="icon">💬</span>
+        <span class="name">Comunicazione AI (Call 2)</span>
+        <span class="count">3 campi</span>
+      </div>
+      <div class="schema-fields">
+        <div class="schema-row">
+          <span class="sf">title_it</span><span class="st">TEXT</span><span class="sd">Titolo in italiano, riformulato per impatto e chiarezza</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">effective_score</span><span class="st">INTEGER</span><span class="sd"><code>relevance_score + urgency_modifier</code> (BASSA: -8). Usato dai gate, non il raw</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">prompt_hash_comm</span><span class="st">TEXT</span><span class="sd">SHA-256 del prompt Call 2 (Communication). Traccia modifiche prompt</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Group 5: Feature Vector -->
     <div class="schema-group">
       <div class="schema-group-header">
         <span class="icon">🏗️</span>
-        <span class="name">Dati strutturati</span>
-        <span class="count">8 campi</span>
+        <span class="name">Feature vector AI</span>
+        <span class="count">12 campi</span>
       </div>
       <div class="schema-fields">
         <div class="schema-row">
-          <span class="sf">transmission</span><span class="st">TEXT</span><span class="sd">Meccanismo: REAL_RATES, USD_STRENGTH, SAFE_HAVEN, PHYSICAL_DEMAND...</span>
+          <span class="sf">regime_dampened</span><span class="st">BOOLEAN</span><span class="sd">True se la direction contrasta il regime macro corrente</span>
         </div>
         <div class="schema-row">
-          <span class="sf">consensus_surprise</span><span class="st">ENUM</span><span class="sd">ABOVE | BELOW | INLINE | N/A</span>
+          <span class="sf">event_type</span><span class="st">ENUM</span><span class="sd">Tipo evento — 15 valori (vedi sezione Enum Reference)</span>
         </div>
         <div class="schema-row">
-          <span class="sf">data_actual / expected / previous</span><span class="st">TEXT</span><span class="sd">Tripletta dati macro normalizzata (es. "2.4%" / "2.6%" / "2.7%")</span>
+          <span class="sf">country</span><span class="st">TEXT</span><span class="sd">Paese/regione: <code>US</code>, <code>EU</code>, <code>CHINA</code>, <code>UK</code>, <code>JAPAN</code>...</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">period</span><span class="st">TEXT</span><span class="sd">Periodo del dato: <code>JANUARY</code>, <code>Q4_2025</code>, <code>MONTHLY</code>...</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">implied_mechanism</span><span class="st">ENUM</span><span class="sd">Canale di trasmissione al prezzo dell'oro — 15 valori</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">consensus_surprise</span><span class="st">ENUM</span><span class="sd"><code>ABOVE</code> | <code>BELOW</code> | <code>INLINE</code> | <code>N/A</code></span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">actual_value</span><span class="st">TEXT</span><span class="sd">Valore effettivo del dato macro (es. <code>2.4%</code>)</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">expected_value</span><span class="st">TEXT</span><span class="sd">Valore atteso dal consensus (es. <code>2.6%</code>)</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">prior_value</span><span class="st">TEXT</span><span class="sd">Valore del periodo precedente (es. <code>2.7%</code>)</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">has_numeric_data</span><span class="st">BOOLEAN</span><span class="sd">True se la notizia contiene dati numerici strutturati</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">ai_model_version</span><span class="st">TEXT</span><span class="sd">Modello AI usato (es. <code>gemini-3-flash</code>, <code>grok-4.1-fast</code>)</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">prompt_hash</span><span class="st">TEXT</span><span class="sd">SHA-256 del prompt Call 1 (Classification). Ogni modifica tracciata</span>
         </div>
       </div>
     </div>
 
-    <!-- Group: Market Context -->
+    <!-- Group 6: Code Fields -->
     <div class="schema-group">
       <div class="schema-group-header">
-        <span class="icon">📈</span>
-        <span class="name">Contesto di mercato</span>
-        <span class="count">8 campi</span>
+        <span class="icon">⚙️</span>
+        <span class="name">Code fields (computed)</span>
+        <span class="count">7 campi</span>
       </div>
       <div class="schema-fields">
         <div class="schema-row">
-          <span class="sf">gold_price_at_news</span><span class="st">FLOAT</span><span class="sd">Prezzo XAU/USD al momento dell'analisi</span>
+          <span class="sf">display_direction</span><span class="st">TEXT</span><span class="sd">Direzione formattata per Telegram (override possibile)</span>
         </div>
         <div class="schema-row">
-          <span class="sf">trading_session</span><span class="st">ENUM</span><span class="sd">ASIA | EU | US</span>
+          <span class="sf">source_tier</span><span class="st">INTEGER</span><span class="sd">Tier del feed: 1 (premium), 2 (standard), 3 (secondario)</span>
         </div>
         <div class="schema-row">
-          <span class="sf">feed_latency_sec</span><span class="st">INTEGER</span><span class="sd">Secondi tra pubblicazione e acquisizione — misura la freshness</span>
+          <span class="sf">market_session</span><span class="st">TEXT</span><span class="sd">Sessione di mercato: <code>London</code>, <code>NY</code>, <code>Tokyo</code>, <code>Sydney</code></span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">feed_latency_sec</span><span class="st">REAL</span><span class="sd">Secondi tra pubblicazione originale e acquisizione RSS</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">news_language</span><span class="st">TEXT</span><span class="sd">Lingua rilevata: <code>en</code>, <code>it</code>, <code>fr</code>...</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">event_cluster_id</span><span class="st">TEXT</span><span class="sd">UUID del cluster di dedup strutturato (eventi correlati)</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">source_first_mover</span><span class="st">BOOLEAN</span><span class="sd">True se questo feed ha riportato l'evento per primo nel cluster</span>
         </div>
       </div>
     </div>
 
-    <!-- Group: Gate & Delivery -->
+    <!-- Group 7: Gate & Delivery -->
     <div class="schema-group">
       <div class="schema-group-header">
         <span class="icon">🚦</span>
-        <span class="name">Gate & Delivery</span>
-        <span class="count">8 campi</span>
+        <span class="name">Gate &amp; Delivery</span>
+        <span class="count">4 campi</span>
       </div>
       <div class="schema-fields">
         <div class="schema-row">
-          <span class="sf">delivered</span><span class="st">BOOLEAN</span><span class="sd">True se l'alert è stato inviato via Telegram</span>
+          <span class="sf">broadcast_status</span><span class="st">TEXT</span><span class="sd"><code>completed</code> = consegnato. <code>pending</code> = digest-only (bloccato da gate)</span>
         </div>
         <div class="schema-row">
-          <span class="sf">gate_blocked_by</span><span class="st">TEXT</span><span class="sd">Gate che ha bloccato — ogni filtro è tracciabile</span>
+          <span class="sf">gate_blocked_by</span><span class="st">TEXT</span><span class="sd">Nome del gate che ha bloccato (vedi sezione 11-Gate System)</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">duplicate_count</span><span class="st">INTEGER</span><span class="sd">Numero di duplicati bloccati dal cluster dedup di questo evento</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">users_notified</span><span class="st">INTEGER</span><span class="sd">Utenti Telegram che hanno ricevuto l'alert (0 se digest-only)</span>
         </div>
       </div>
     </div>
 
-    <!-- Group: Price Verification -->
+    <!-- Group 8: Backfill & Verification -->
     <div class="schema-group">
       <div class="schema-group-header">
         <span class="icon">✅</span>
         <span class="name">Verifica prezzo ex-post</span>
-        <span class="count">8 campi</span>
+        <span class="count">11 campi</span>
       </div>
       <div class="schema-fields">
         <div class="schema-row">
-          <span class="sf">move_24h_pct</span><span class="st">FLOAT</span><span class="sd">Variazione % del prezzo a 24h dall'alert</span>
+          <span class="sf">price_at_alert</span><span class="st">REAL</span><span class="sd">Prezzo XAU/USD al momento dell'analisi</span>
         </div>
         <div class="schema-row">
-          <span class="sf">direction_correct_24h</span><span class="st">BOOLEAN</span><span class="sd">True se la direction predetta corrisponde al movimento reale</span>
+          <span class="sf">price_1h</span><span class="st">REAL</span><span class="sd">Prezzo 1 ora dopo l'alert</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">price_4h</span><span class="st">REAL</span><span class="sd">Prezzo 4 ore dopo l'alert</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">price_24h</span><span class="st">REAL</span><span class="sd">Prezzo 24 ore dopo l'alert</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">direction_correct_1h</span><span class="st">BOOLEAN</span><span class="sd">True se il prezzo si è mosso nella direzione predetta @1h</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">direction_correct_24h</span><span class="st">BOOLEAN</span><span class="sd">True se il prezzo si è mosso nella direzione predetta @24h</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">excess_return_1h</span><span class="st">REAL</span><span class="sd">Rendimento in eccesso vs baseline move (%)</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">market_open</span><span class="st">BOOLEAN</span><span class="sd">Mercato aperto al momento dell'alert?</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">vix_at_news</span><span class="st">REAL</span><span class="sd">VIX (indice volatilità) al momento della notizia</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">dxy_at_news</span><span class="st">REAL</span><span class="sd">US Dollar Index al momento della notizia</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">oil_at_news</span><span class="st">REAL</span><span class="sd">Prezzo petrolio al momento della notizia</span>
         </div>
       </div>
     </div>
 
   </div>
 
-  <!-- Accuracy -->
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- ENUM REFERENCE -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-tag">Enum Reference</div>
+    <h2>Valori ammessi per campo</h2>
+    <p class="desc">Ogni campo ENUM accetta solo valori predefiniti, validati da Pydantic prima del salvataggio. Nessun testo libero dove potrebbe finire output AI malformato.</p>
+
+    <div class="enum-grid">
+      <div class="enum-card">
+        <h4>direction</h4>
+        <div class="enum-vals">
+          <span class="enum-val highlight">BULLISH</span>
+          <span class="enum-val highlight">BEARISH</span>
+          <span class="enum-val">NEUTRAL</span>
+        </div>
+        <p class="enum-desc">Direzione attesa del prezzo XAU/USD. NEUTRAL raro (&lt;5% dei record).</p>
+      </div>
+
+      <div class="enum-card">
+        <h4>urgency</h4>
+        <div class="enum-vals">
+          <span class="enum-val highlight">ALTA</span>
+          <span class="enum-val">MEDIA</span>
+          <span class="enum-val">BASSA</span>
+        </div>
+        <p class="enum-desc">Temporalità dell'impatto. BASSA riceve -8 allo score effettivo nel gate dinamico.</p>
+      </div>
+
+      <div class="enum-card">
+        <h4>category</h4>
+        <div class="enum-vals">
+          <span class="enum-val">macro</span>
+          <span class="enum-val">geopolitica</span>
+          <span class="enum-val highlight">black_swan</span>
+        </div>
+        <p class="enum-desc">Determina la soglia: macro &ge;50, geo &ge;75, black_swan &ge;0 (passa sempre). Geo filtrata aggressivamente.</p>
+      </div>
+
+      <div class="enum-card">
+        <h4>consensus_surprise</h4>
+        <div class="enum-vals">
+          <span class="enum-val">ABOVE</span>
+          <span class="enum-val">BELOW</span>
+          <span class="enum-val">INLINE</span>
+          <span class="enum-val">N/A</span>
+        </div>
+        <p class="enum-desc">Confronto dato vs consensus. N/A per eventi non-data (speech, geopolitica).</p>
+      </div>
+
+      <div class="enum-card">
+        <h4>event_type</h4>
+        <div class="enum-vals">
+          <span class="enum-val">RATE_DECISION</span>
+          <span class="enum-val">INFLATION_DATA</span>
+          <span class="enum-val">EMPLOYMENT_DATA</span>
+          <span class="enum-val">GDP_DATA</span>
+          <span class="enum-val">TRADE_POLICY</span>
+          <span class="enum-val">TRADE_BALANCE</span>
+          <span class="enum-val">CONSUMER_DATA</span>
+          <span class="enum-val">MANUFACTURING_DATA</span>
+          <span class="enum-val">HOUSING_DATA</span>
+          <span class="enum-val">CENTRAL_BANK_SPEECH</span>
+          <span class="enum-val">GEOPOLITICAL_EVENT</span>
+          <span class="enum-val">FISCAL_POLICY</span>
+          <span class="enum-val">COMMODITY_SUPPLY</span>
+          <span class="enum-val">MARKET_DYNAMICS_AND_FLOWS</span>
+          <span class="enum-val">OTHER</span>
+        </div>
+        <p class="enum-desc">15 tipi. Usato per structured dedup: stesso (event_type, country, period) = stesso evento.</p>
+      </div>
+
+      <div class="enum-card">
+        <h4>implied_mechanism</h4>
+        <div class="enum-vals">
+          <span class="enum-val">REAL_RATES</span>
+          <span class="enum-val">DXY_STRENGTH</span>
+          <span class="enum-val">DXY_WEAKNESS</span>
+          <span class="enum-val">RISK_PREMIUM</span>
+          <span class="enum-val">SAFE_HAVEN_FLOW</span>
+          <span class="enum-val">SUPPLY_SHOCK</span>
+          <span class="enum-val">DEMAND_SHIFT</span>
+          <span class="enum-val">MONETARY_POLICY</span>
+          <span class="enum-val">FISCAL_POLICY</span>
+          <span class="enum-val">TRADE_DISRUPTION</span>
+          <span class="enum-val">ENERGY_PRICES</span>
+          <span class="enum-val">INST_BUYING</span>
+          <span class="enum-val">INST_SELLING</span>
+          <span class="enum-val">CURRENCY_DEBASEMENT</span>
+          <span class="enum-val">INFLATION_EXPECT</span>
+        </div>
+        <p class="enum-desc">15 canali di trasmissione. Come la notizia impatta il prezzo dell'oro. Feature ad alto valore per modelli predittivi.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- 11-GATE SYSTEM -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-tag">Filtraggio</div>
+    <h2>11-Gate delivery system</h2>
+    <p class="desc">Ogni alert analizzato passa attraverso 11 gate in sequenza. Ogni gate ha una condizione di blocco, bypass opzionali, e un identificativo tracciato nel campo <code>gate_blocked_by</code>. Il campo registra quale gate ha bloccato: chi passa tutti e 11 viene consegnato.</p>
+
+    <table class="gate-table">
+      <thead>
+        <tr>
+          <th>Gate</th>
+          <th>Condizione di blocco</th>
+          <th>Bypass</th>
+          <th>Log</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="gate-id">-1</td>
+          <td>URL gi&agrave; presente nel DB (24h)</td>
+          <td>&mdash;</td>
+          <td><span class="gate-log">RE-DELIVERY BLOCKED</span></td>
+        </tr>
+        <tr>
+          <td class="gate-id">COMM</td>
+          <td>Reasoning vuoto (Call 2 fallita)</td>
+          <td>&mdash;</td>
+          <td><span class="gate-log">COMM-FAILED</span></td>
+        </tr>
+        <tr>
+          <td class="gate-id">0</td>
+          <td>ALTA con score &lt; 75</td>
+          <td>&mdash;</td>
+          <td><span class="gate-log">ALTA downgraded</span></td>
+        </tr>
+        <tr>
+          <td class="gate-id">CAT</td>
+          <td>Score &lt; soglia categoria (macro: 50, geo: 75, bs: 0)</td>
+          <td><span class="gate-bypass">ALTA non-downgraded</span></td>
+          <td><span class="gate-log">CATEGORY-GATE</span></td>
+        </tr>
+        <tr>
+          <td class="gate-id">1</td>
+          <td>Hard cap: alerts_today &ge; 12</td>
+          <td><span class="gate-bypass">ALTA + score &ge; 75</span></td>
+          <td><span class="gate-log">HARD-CAP</span></td>
+        </tr>
+        <tr>
+          <td class="gate-id">2</td>
+          <td>Score &lt; 50 (threshold base)</td>
+          <td><span class="gate-bypass">ALTA non-downgraded</span></td>
+          <td><span class="gate-log">THRESHOLD: Rejected</span></td>
+        </tr>
+        <tr>
+          <td class="gate-id">3</td>
+          <td>Effective score &lt; tier dinamico<br>(tier1: 55, tier2: 70, tier3: 75)</td>
+          <td><span class="gate-bypass">ALTA non-downgraded</span></td>
+          <td><span class="gate-log">Dynamic reject</span></td>
+        </tr>
+        <tr>
+          <td class="gate-id">3b</td>
+          <td>Cooldown: &lt; 30min dall'ultimo alert</td>
+          <td><span class="gate-bypass">score &ge; 90</span></td>
+          <td><span class="gate-log">Cooldown</span></td>
+        </tr>
+        <tr>
+          <td class="gate-id">4.5</td>
+          <td>Delivery dedup (fuzzy title, numeri, data-release, hot-topic 12h)</td>
+          <td><span class="gate-bypass">BLACK_SWAN</span></td>
+          <td><span class="gate-log">DELIVERY-DEDUP</span></td>
+        </tr>
+        <tr>
+          <td class="gate-id">4.6</td>
+          <td>AI semantic dedup (12h, confronto titoli via LLM)</td>
+          <td><span class="gate-bypass">BLACK_SWAN</span></td>
+          <td><span class="gate-log">AI-DEDUP-GATE</span></td>
+        </tr>
+        <tr>
+          <td class="gate-id">4.7</td>
+          <td>Structured dedup: (event_type + country + period) — 24h macro, 2h geo</td>
+          <td><span class="gate-bypass">BLACK_SWAN</span></td>
+          <td><span class="gate-log">STRUCTURED-DEDUP</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="method-note" style="margin-top:20px">
+      <strong>Dynamic tier scoring (Gate 3).</strong>
+      Lo score effettivo = <code>relevance_score + urgency_modifier</code> (BASSA: -8, MEDIA: 0, ALTA: 0).
+      La soglia cresce con il numero di alert gi&agrave; inviati nel giorno:
+      Tier 1 (0-5 alert): &ge;55 &middot; Tier 2 (6-8): &ge;70 &middot; Tier 3 (9+): &ge;75.
+      Questo protegge dalla saturazione: pi&ugrave; alert passano, pi&ugrave; la barra si alza.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- ACCURACY -->
+  <!-- ═══════════════════════════════════════════ -->
   <div class="section">
     <div class="section-tag">Performance</div>
     <h2>Accuracy e metodologia</h2>
-    <p class="desc">Il dataset include verifica ex-post automatica. Ogni alert con score ≥60 riceve backfill dei prezzi a 1h, 4h e 24h. Accuracy calcolata come: il prezzo si è mosso nella direzione predetta?</p>
+    <p class="desc">Il dataset include verifica ex-post automatica. Ogni alert con score &ge;60 riceve backfill dei prezzi a 1h, 4h e 24h. Accuracy = il prezzo si &egrave; mosso nella direzione predetta?</p>
 
     <div class="accuracy-grid">
       <div class="acc-card">
@@ -712,68 +1292,287 @@
     </div>
 
     <div class="method-note">
-      <strong>Nota sulla BEARISH accuracy.</strong> Il dataset è stato raccolto durante un mercato strutturalmente rialzista (oro +8% nel periodo). I call BEARISH sono quasi tutti "corretti nel segnale, sbagliati nel contesto" — il dato è negativo per l'oro, ma il trend domina. Il sistema gestisce questo con un flag <code>regime_dampened</code>: l'alert passa ma con una nota che il macro regime contrasta il segnale. Per un modello ML, il regime_dampened è un feature ad alto valore predittivo: filtrando i BEARISH con regime_dampened=true, l'accuracy residua sale significativamente.
+      <strong>Nota sulla BEARISH accuracy.</strong> Il dataset &egrave; stato raccolto durante un mercato strutturalmente rialzista (oro +8% nel periodo). I call BEARISH sono quasi tutti "corretti nel segnale, sbagliati nel contesto" — il dato &egrave; negativo per l'oro, ma il trend domina. Il sistema gestisce questo con un flag <code>regime_dampened</code>: l'alert passa ma con una nota che il macro regime contrasta il segnale. Per un modello ML, <code>regime_dampened</code> &egrave; un feature ad alto valore predittivo: filtrando i BEARISH con regime_dampened=true, l'accuracy residua sale significativamente.
     </div>
   </div>
 
-  <!-- Sample Record -->
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SAMPLE RECORDS (2) -->
+  <!-- ═══════════════════════════════════════════ -->
   <div class="section">
-    <div class="section-tag">Esempio</div>
-    <h2>Record tipo</h2>
-    <p class="desc">Un singolo record nel database. Ogni news analizzata produce un vettore completo — che passi i gate o meno.</p>
+    <div class="section-tag">Esempi</div>
+    <h2>Due record a confronto</h2>
+    <p class="desc">Un alert consegnato via Telegram e uno bloccato dal gate dinamico — entrambi presenti nel dataset con tutti i 56 campi compilati. Il dataset cattura tutto, non solo i "vincitori".</p>
 
+    <!-- Record 1: Delivered -->
     <div class="sample-record">
       <div class="sample-header">
         <span class="title">alerts.db → record #427</span>
-        <span class="badge">DELIVERED</span>
+        <span class="badge delivered">DELIVERED</span>
       </div>
       <div class="sample-body">
-        <span class="comment">// Metadata</span><br>
+        <span class="comment">// Infrastruttura</span><br>
         <span class="key">id</span>: <span class="num">427</span><br>
         <span class="key">timestamp</span>: <span class="str">"2026-02-21T14:32:00Z"</span><br>
-        <span class="key">source</span>: <span class="str">"reuters"</span><br>
-        <span class="key">schema_version</span>: <span class="str">"3"</span><br>
-        <span class="key">prompt_hash</span>: <span class="str">"a3f8c2...b7d1"</span><br>
+        <span class="key">asset</span>: <span class="str">"XAU/USD"</span><br>
+        <span class="key">schema_version</span>: <span class="num">3</span><br>
         <br>
-        <span class="comment">// Classificazione AI</span><br>
-        <span class="key">direction</span>: <span class="str">"BEARISH"</span><br>
+        <span class="comment">// News source</span><br>
+        <span class="key">source</span>: <span class="str">"RSS"</span><br>
+        <span class="key">feed_name</span>: <span class="str">"Reuters"</span><br>
+        <span class="key">title</span>: <span class="str">"US CPI rises 2.8% in January, above 2.6% forecast"</span><br>
+        <span class="key">url</span>: <span class="str">"https://reuters.com/markets/..."</span><br>
+        <span class="key">published_at</span>: <span class="str">"2026-02-21T14:30:15Z"</span><br>
+        <span class="key">broadcast_status</span>: <span class="str">"completed"</span><br>
+        <br>
+        <span class="comment">// Classificazione AI (Call 1)</span><br>
         <span class="key">relevance_score</span>: <span class="num">85</span><br>
-        <span class="key">effective_score</span>: <span class="num">85</span><br>
-        <span class="key">confidence</span>: <span class="str">"ALTA"</span><br>
         <span class="key">urgency</span>: <span class="str">"ALTA"</span><br>
-        <span class="key">category</span>: <span class="str">"MACRO_DATA"</span><br>
+        <span class="key">direction</span>: <span class="str">"BEARISH"</span><br>
+        <span class="key">confidence</span>: <span class="num">88</span><br>
+        <span class="key">category</span>: <span class="str">"macro"</span><br>
+        <br>
+        <span class="comment">// Comunicazione AI (Call 2)</span><br>
+        <span class="key">title_it</span>: <span class="str">"CPI USA 2.8% vs atteso 2.6%: inflazione sopra le attese"</span><br>
+        <span class="key">reasoning</span>: <span class="str">"Dato sopra consensus rafforza aspettative hawkish Fed; rendimenti reali in rialzo pesano su XAU/USD."</span><br>
+        <span class="key">effective_score</span>: <span class="num">85</span><br>
+        <span class="key">prompt_hash_comm</span>: <span class="str">"e7b2f1...4c8a"</span><br>
+        <br>
+        <span class="comment">// Feature vector</span><br>
+        <span class="key">regime_dampened</span>: <span class="bool">true</span><br>
         <span class="key">event_type</span>: <span class="str">"INFLATION_DATA"</span><br>
         <span class="key">country</span>: <span class="str">"US"</span><br>
-        <span class="key">regime_dampened</span>: <span class="bool">true</span><br>
-        <br>
-        <span class="comment">// Dati strutturati</span><br>
-        <span class="key">transmission</span>: <span class="str">"REAL_RATES"</span><br>
+        <span class="key">period</span>: <span class="str">"JANUARY"</span><br>
+        <span class="key">implied_mechanism</span>: <span class="str">"REAL_RATES"</span><br>
         <span class="key">consensus_surprise</span>: <span class="str">"ABOVE"</span><br>
-        <span class="key">data_actual</span>: <span class="str">"2.8%"</span><br>
-        <span class="key">data_expected</span>: <span class="str">"2.6%"</span><br>
-        <span class="key">data_previous</span>: <span class="str">"2.6%"</span><br>
-        <span class="key">event_period</span>: <span class="str">"JANUARY"</span><br>
+        <span class="key">actual_value</span>: <span class="str">"2.8%"</span><br>
+        <span class="key">expected_value</span>: <span class="str">"2.6%"</span><br>
+        <span class="key">prior_value</span>: <span class="str">"2.6%"</span><br>
+        <span class="key">has_numeric_data</span>: <span class="bool">true</span><br>
+        <span class="key">ai_model_version</span>: <span class="str">"gemini-3-flash"</span><br>
+        <span class="key">prompt_hash</span>: <span class="str">"a3f8c2...b7d1"</span><br>
         <br>
-        <span class="comment">// Contesto di mercato</span><br>
-        <span class="key">gold_price_at_news</span>: <span class="num">2936.40</span><br>
-        <span class="key">trading_session</span>: <span class="str">"US"</span><br>
+        <span class="comment">// Code fields</span><br>
+        <span class="key">source_tier</span>: <span class="num">1</span><br>
+        <span class="key">market_session</span>: <span class="str">"NY"</span><br>
         <span class="key">feed_latency_sec</span>: <span class="num">127</span><br>
+        <span class="key">source_first_mover</span>: <span class="bool">true</span><br>
         <br>
         <span class="comment">// Verifica ex-post</span><br>
         <span class="key">price_at_alert</span>: <span class="num">2936.40</span><br>
+        <span class="key">price_1h</span>: <span class="num">2921.55</span><br>
+        <span class="key">price_4h</span>: <span class="num">2928.80</span><br>
         <span class="key">price_24h</span>: <span class="num">2954.12</span><br>
-        <span class="key">move_24h_pct</span>: <span class="num">+0.60</span><br>
-        <span class="key">direction_correct_24h</span>: <span class="bool">false</span>
-        <span class="comment"> // regime dominante</span>
+        <span class="key">direction_correct_1h</span>: <span class="bool">true</span>  <span class="comment">// -0.5%</span><br>
+        <span class="key">direction_correct_24h</span>: <span class="bool">false</span> <span class="comment">// regime dominante</span><br>
+        <span class="key">users_notified</span>: <span class="num">3</span>
+      </div>
+    </div>
+
+    <!-- Record 2: Digest-only (blocked) -->
+    <div class="sample-record">
+      <div class="sample-header">
+        <span class="title">alerts.db → record #633</span>
+        <span class="badge blocked">DIGEST-ONLY</span>
+      </div>
+      <div class="sample-body">
+        <span class="comment">// Infrastruttura</span><br>
+        <span class="key">id</span>: <span class="num">633</span><br>
+        <span class="key">timestamp</span>: <span class="str">"2026-02-26T14:35:00Z"</span><br>
+        <span class="key">asset</span>: <span class="str">"XAU/USD"</span><br>
+        <span class="key">schema_version</span>: <span class="num">3</span><br>
+        <br>
+        <span class="comment">// News source</span><br>
+        <span class="key">source</span>: <span class="str">"RSS"</span><br>
+        <span class="key">feed_name</span>: <span class="str">"ForexLive"</span><br>
+        <span class="key">title</span>: <span class="str">"US initial jobless claims 212K vs 217K expected"</span><br>
+        <span class="key">broadcast_status</span>: <span class="str">"pending"</span> <span class="comment">// mai consegnato</span><br>
+        <br>
+        <span class="comment">// Classificazione AI</span><br>
+        <span class="key">relevance_score</span>: <span class="num">60</span><br>
+        <span class="key">urgency</span>: <span class="str">"BASSA"</span><br>
+        <span class="key">direction</span>: <span class="str">"BEARISH"</span><br>
+        <span class="key">confidence</span>: <span class="num">65</span><br>
+        <span class="key">category</span>: <span class="str">"macro"</span><br>
+        <br>
+        <span class="comment">// Score effettivo e gate</span><br>
+        <span class="key">effective_score</span>: <span class="num">52</span> <span class="comment">// 60 + (-8) BASSA modifier</span><br>
+        <span class="key">gate_blocked_by</span>: <span class="str">"DYNAMIC"</span> <span class="comment">// eff 52 &lt; tier2 70</span><br>
+        <span class="key">users_notified</span>: <span class="num">0</span><br>
+        <br>
+        <span class="comment">// Feature vector (presente anche per digest-only)</span><br>
+        <span class="key">event_type</span>: <span class="str">"EMPLOYMENT_DATA"</span><br>
+        <span class="key">country</span>: <span class="str">"US"</span><br>
+        <span class="key">consensus_surprise</span>: <span class="str">"BELOW"</span><br>
+        <span class="key">actual_value</span>: <span class="str">"212K"</span><br>
+        <span class="key">expected_value</span>: <span class="str">"217K"</span><br>
+        <span class="key">implied_mechanism</span>: <span class="str">"REAL_RATES"</span><br>
+        <span class="key">regime_dampened</span>: <span class="bool">true</span><br>
+        <br>
+        <span class="comment">// Backfill (presente anche per digest-only, score &ge;60)</span><br>
+        <span class="key">price_at_alert</span>: <span class="num">2912.30</span><br>
+        <span class="key">price_1h</span>: <span class="num">2916.45</span><br>
+        <span class="key">direction_correct_1h</span>: <span class="bool">false</span><br>
+        <span class="key">direction_correct_24h</span>: <span class="null">null</span> <span class="comment">// backfill pending</span>
+      </div>
+    </div>
+
+    <div class="method-note">
+      <strong>Perch&eacute; il dataset completo conta.</strong> Il record #633 non &egrave; mai stato consegnato, ma &egrave; nel dataset con lo stesso schema del #427. Questo permette di analizzare: "I segnali bloccati dai gate avrebbero avuto ragione?" — una domanda impossibile senza i digest-only. Il 85% del dataset &egrave; composto da record bloccati, ognuno con feature vector e backfill completo.
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- DB ARCHITECTURE -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-tag">Database</div>
+    <h2>Architettura — 11 tabelle</h2>
+    <p class="desc">SQLite con WAL mode per accesso concorrente. Ogni connessione applica <code>PRAGMA journal_mode=WAL</code> e <code>busy_timeout=5000</code>. Le tabelle supportano la pipeline end-to-end: dall'ingestion alla verifica.</p>
+
+    <div class="db-grid">
+      <div class="db-card">
+        <h4>alerts</h4>
+        <p>Tabella principale. 56 colonne, 640+ record. Contiene ogni news analizzata (delivered + digest-only).</p>
+        <div class="db-cols">56 colonne · PK: id</div>
+      </div>
+      <div class="db-card">
+        <h4>broadcast_log</h4>
+        <p>Traccia ogni invio Telegram. Crash recovery: se il bot crasha dopo il salvataggio ma prima dell'invio, riparte da qui.</p>
+        <div class="db-cols">5 colonne · UK: (alert_id, chat_id)</div>
+      </div>
+      <div class="db-card">
+        <h4>daily_summaries</h4>
+        <p>Digest giornalieri generati da AI. Uno per giorno per asset. Include snapshot multi-asset.</p>
+        <div class="db-cols">7 colonne · UK: (date, asset)</div>
+      </div>
+      <div class="db-card">
+        <h4>weekly_digests</h4>
+        <p>Report settimanali. Driver, performance, catalizzatori, bias direzionale. Include delta week-over-week.</p>
+        <div class="db-cols">9 colonne · UK: (week_end, asset)</div>
+      </div>
+      <div class="db-card">
+        <h4>dedup_cache</h4>
+        <p>Cache di dedup URL/title per il primo filtro della pipeline. Evita di riprocessare news gi&agrave; viste.</p>
+        <div class="db-cols">5 colonne · IDX: timestamp</div>
+      </div>
+      <div class="db-card">
+        <h4>feed_health</h4>
+        <p>Stato di salute dei feed RSS. Failure consecutive, auto-disable/re-enable con backoff esponenziale.</p>
+        <div class="db-cols">5 colonne · PK: url</div>
+      </div>
+      <div class="db-card">
+        <h4>delivered_buffer</h4>
+        <p>Fingerprint degli alert consegnati per cross-cycle dedup: title, direction, numeri, termini chiave, paesi.</p>
+        <div class="db-cols">7 colonne · IDX: created_at</div>
+      </div>
+      <div class="db-card">
+        <h4>price_history</h4>
+        <p>Dati prezzo da Finnhub (BINANCE:PAXGUSDT). Usati per price alert e backfill.</p>
+        <div class="db-cols">4 colonne · IDX: (symbol, timestamp)</div>
+      </div>
+      <div class="db-card">
+        <h4>user_status</h4>
+        <p>Stato utenti Telegram. Active/inactive per GDPR compliance. Opt-out via /stop.</p>
+        <div class="db-cols">3 colonne · PK: chat_id</div>
+      </div>
+      <div class="db-card">
+        <h4>bot_state</h4>
+        <p>Key-value persistente. Stato del bot tra restart: ultimo calendario, ultimo alert, cluster dedup attivi.</p>
+        <div class="db-cols">2 colonne · PK: key</div>
+      </div>
+      <div class="db-card">
+        <h4>feedback</h4>
+        <p>Feedback utenti sugli alert (up/down). Un voto per utente per alert, con constraint CHECK.</p>
+        <div class="db-cols">5 colonne · UK: (alert_id, chat_id)</div>
       </div>
     </div>
   </div>
 
-  <!-- Data Quality -->
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SQL QUERY EXAMPLES -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-tag">Query</div>
+    <h2>Esempi di analisi SQL</h2>
+    <p class="desc">Il dataset &egrave; direttamente interrogabile. Ecco i template per le analisi pi&ugrave; rilevanti — le stesse che usiamo internamente per calibrare i gate e validare il sistema.</p>
+
+    <div class="sql-block">
+      <div class="sql-block-header">Accuracy per direction e timeframe</div>
+      <pre><span class="kw">SELECT</span>
+  direction,
+  <span class="fn">COUNT</span>(*) <span class="kw">AS</span> total,
+  <span class="fn">ROUND</span>(<span class="fn">AVG</span>(direction_correct_1h) * 100, 1) <span class="kw">AS</span> acc_1h,
+  <span class="fn">ROUND</span>(<span class="fn">AVG</span>(direction_correct_24h) * 100, 1) <span class="kw">AS</span> acc_24h
+<span class="kw">FROM</span> alerts
+<span class="kw">WHERE</span> price_at_alert <span class="kw">IS NOT NULL</span>
+  <span class="kw">AND</span> direction <span class="kw">IN</span> (<span class="str">'BULLISH'</span>, <span class="str">'BEARISH'</span>)
+<span class="kw">GROUP BY</span> direction;</pre>
+    </div>
+
+    <div class="sql-block">
+      <div class="sql-block-header">Impatto regime_dampened sulla accuracy</div>
+      <pre><span class="kw">SELECT</span>
+  direction,
+  regime_dampened,
+  <span class="fn">COUNT</span>(*) <span class="kw">AS</span> n,
+  <span class="fn">ROUND</span>(<span class="fn">AVG</span>(direction_correct_24h) * 100, 1) <span class="kw">AS</span> acc_24h
+<span class="kw">FROM</span> alerts
+<span class="kw">WHERE</span> direction_correct_24h <span class="kw">IS NOT NULL</span>
+<span class="kw">GROUP BY</span> direction, regime_dampened
+<span class="kw">ORDER BY</span> direction, regime_dampened;</pre>
+    </div>
+
+    <div class="sql-block">
+      <div class="sql-block-header">Distribuzione gate — cosa blocca e quanto</div>
+      <pre><span class="kw">SELECT</span>
+  <span class="fn">COALESCE</span>(gate_blocked_by, <span class="str">'DELIVERED'</span>) <span class="kw">AS</span> gate,
+  <span class="fn">COUNT</span>(*) <span class="kw">AS</span> n,
+  <span class="fn">ROUND</span>(<span class="fn">COUNT</span>(*) * 100.0 / (<span class="kw">SELECT COUNT</span>(*) <span class="kw">FROM</span> alerts), 1) <span class="kw">AS</span> pct
+<span class="kw">FROM</span> alerts
+<span class="kw">GROUP BY</span> gate_blocked_by
+<span class="kw">ORDER BY</span> n <span class="kw">DESC</span>;</pre>
+    </div>
+
+    <div class="sql-block">
+      <div class="sql-block-header">Accuracy per fascia di score</div>
+      <pre><span class="kw">SELECT</span>
+  <span class="kw">CASE</span>
+    <span class="kw">WHEN</span> relevance_score >= 80 <span class="kw">THEN</span> <span class="str">'80-100'</span>
+    <span class="kw">WHEN</span> relevance_score >= 60 <span class="kw">THEN</span> <span class="str">'60-79'</span>
+    <span class="kw">ELSE</span> <span class="str">'&lt;60'</span>
+  <span class="kw">END AS</span> score_range,
+  <span class="fn">COUNT</span>(*) <span class="kw">AS</span> n,
+  <span class="fn">ROUND</span>(<span class="fn">AVG</span>(direction_correct_24h) * 100, 1) <span class="kw">AS</span> acc_24h
+<span class="kw">FROM</span> alerts
+<span class="kw">WHERE</span> direction_correct_24h <span class="kw">IS NOT NULL</span>
+<span class="kw">GROUP BY</span> score_range
+<span class="kw">ORDER BY</span> score_range <span class="kw">DESC</span>;</pre>
+    </div>
+
+    <div class="sql-block">
+      <div class="sql-block-header">Falsi negativi — digest-only che avrebbero avuto ragione</div>
+      <pre><span class="cm">-- Alert bloccati dai gate ma con price move nella direzione giusta</span>
+<span class="kw">SELECT</span>
+  id, title, relevance_score, gate_blocked_by,
+  direction, direction_correct_24h,
+  <span class="fn">ROUND</span>((price_24h - price_at_alert) / price_at_alert * 100, 2) <span class="kw">AS</span> move_pct
+<span class="kw">FROM</span> alerts
+<span class="kw">WHERE</span> broadcast_status = <span class="str">'pending'</span>
+  <span class="kw">AND</span> direction_correct_24h = 1
+  <span class="kw">AND</span> relevance_score >= 60
+<span class="kw">ORDER BY</span> <span class="fn">ABS</span>(move_pct) <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> 20;</pre>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- DATA QUALITY -->
+  <!-- ═══════════════════════════════════════════ -->
   <div class="section">
     <div class="section-tag">Integrità</div>
-    <h2>Controlli qualità</h2>
-    <p class="desc">Il dataset non è un dump grezzo. Ogni record passa attraverso validazione, normalizzazione e versionamento prima di entrare nel database.</p>
+    <h2>Controlli qualit&agrave;</h2>
+    <p class="desc">Il dataset non &egrave; un dump grezzo. Ogni record passa attraverso validazione Pydantic, normalizzazione e versionamento prima di entrare nel database.</p>
 
     <div class="quality-grid">
       <div class="q-card">
@@ -785,62 +1584,113 @@
       <div class="q-card">
         <div class="q-icon">🧬</div>
         <h4>Prompt hash</h4>
-        <p>L'hash SHA-256 del prompt AI è salvato con ogni record. Se il prompt cambia, il dataset lo registra — fondamentale per A/B testing e analisi di regressione.</p>
-        <span class="q-tag">prompt_hash: a3f8c2...</span>
+        <p>L'hash SHA-256 del prompt AI &egrave; salvato con ogni record. Due hash separati: Call 1 (classificazione) e Call 2 (comunicazione). Fondamentale per A/B testing.</p>
+        <span class="q-tag">prompt_hash + prompt_hash_comm</span>
       </div>
       <div class="q-card">
         <div class="q-icon">📐</div>
-        <h4>Validazione campi</h4>
-        <p>Direction solo BULLISH/BEARISH/NEUTRAL. Score 0-100. Urgency e confidence solo ALTA/MEDIA/BASSA. Nessun campo libero dove potrebbe finire output malformato.</p>
-        <span class="q-tag">ENUM-constrained</span>
+        <h4>Validazione Pydantic</h4>
+        <p>Direction, urgency, category, event_type, consensus_surprise — tutti vincolati da ENUM. Score 0-100. Nessun campo libero dove potrebbe finire output malformato.</p>
+        <span class="q-tag">6 campi ENUM-constrained</span>
       </div>
       <div class="q-card">
         <div class="q-icon">🔢</div>
-        <h4>Normalizzazione numerica</h4>
-        <p>I dati macroeconomici (CPI, GDP, NFP) vengono estratti e normalizzati in campi separati: actual, expected, previous. Confronto consensus automatico.</p>
-        <span class="q-tag">actual vs expected vs previous</span>
+        <h4>Normalizzazione dati</h4>
+        <p>I dati macroeconomici vengono estratti in campi separati: actual_value, expected_value, prior_value. Confronto consensus automatico in consensus_surprise.</p>
+        <span class="q-tag">tripletta actual/expected/prior</span>
       </div>
       <div class="q-card">
         <div class="q-icon">♻️</div>
-        <h4>Fallback AI</h4>
-        <p>Se il modello primario non risponde, un fallback subentra. Il campo model_used registra quale modello ha effettivamente prodotto l'analisi — nessun dato perso.</p>
-        <span class="q-tag">model_used tracked</span>
+        <h4>Fallback AI tracciato</h4>
+        <p>Se il modello primario non risponde, un fallback subentra. <code>ai_model_version</code> registra quale modello ha prodotto l'analisi. Nessun dato perso.</p>
+        <span class="q-tag">ai_model_version tracked</span>
       </div>
       <div class="q-card">
         <div class="q-icon">📊</div>
         <h4>Backfill automatico</h4>
-        <p>Ogni alert con score ≥60 riceve i prezzi a 1h, 4h, 24h tramite job asincrono. La verifica ex-post è automatica e copre sia delivered che digest-only.</p>
-        <span class="q-tag">score ≥60 → backfill</span>
+        <p>Ogni alert con score &ge;60 riceve prezzi a 1h, 4h, 24h + multi-asset (VIX, DXY, oil). Sia delivered che digest-only.</p>
+        <span class="q-tag">score &ge;60 → 11 campi backfill</span>
       </div>
     </div>
   </div>
 
-  <!-- Applications -->
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SCHEMA EVOLUTION -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-tag">Evoluzione</div>
+    <h2>Storia dello schema</h2>
+    <p class="desc">Lo schema &egrave; evoluto in 3 generazioni. Ogni record conserva il <code>schema_version</code> che lo ha generato, permettendo analisi cross-version.</p>
+
+    <div class="evo-timeline">
+      <div class="evo-item">
+        <div class="evo-ver">Schema v1</div>
+        <div class="evo-date">Pre-v8.0 · Febbraio 2026 (prima settimana)</div>
+        <div class="evo-changes">
+          18 colonne base. News source + classificazione AI + backfill prezzi.<br>
+          Un singolo prompt AI per analisi. Nessun feature vector.
+        </div>
+      </div>
+      <div class="evo-item">
+        <div class="evo-ver">Schema v2</div>
+        <div class="evo-date">v8.0 · Febbraio 2026 (seconda settimana)</div>
+        <div class="evo-changes">
+          +12 campi: feature vector AI (<code>event_type</code>, <code>country</code>, <code>period</code>, <code>implied_mechanism</code>, <code>consensus_surprise</code>, tripletta dati, <code>has_numeric_data</code>).<br>
+          +7 campi: code fields (<code>source_tier</code>, <code>market_session</code>, <code>feed_latency_sec</code>, <code>event_cluster_id</code>, <code>source_first_mover</code>).<br>
+          Abilitato structured dedup, regime analysis.
+        </div>
+      </div>
+      <div class="evo-item">
+        <div class="evo-ver">Schema v3</div>
+        <div class="evo-date">v8.0-C+ · Febbraio 2026 (attuale)</div>
+        <div class="evo-changes">
+          Split analysis: Call 1 (Classificazione, 16 campi) → Call 2 (Comunicazione, title_it/reasoning/context).<br>
+          +<code>prompt_hash_comm</code>: hash separato per il prompt di comunicazione.<br>
+          +<code>effective_score</code>: score corretto per urgency modifier.<br>
+          +<code>schema_version</code>: campo esplicito (prima implicito dalla presenza dei campi).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- APPLICATIONS -->
+  <!-- ═══════════════════════════════════════════ -->
   <div class="section">
     <div class="section-tag">Applicazioni</div>
     <h2>Cosa puoi costruire con questi dati</h2>
-    <p class="desc">Il dataset non è solo un log. È un'infrastruttura per analisi quantitativa su macro intelligence.</p>
+    <p class="desc">Il dataset non &egrave; solo un log. &Egrave; un'infrastruttura per analisi quantitativa su macro intelligence.</p>
 
     <div class="app-grid">
       <div class="app-card live">
         <div class="app-status">Attivo</div>
         <h4>Signal validation</h4>
-        <p>Il dataset valida sé stesso: "Quando il sistema dice BULLISH 80+, il prezzo sale?" Con 640+ record e backfill automatico, la risposta è verificabile e aggiornata quotidianamente.</p>
+        <p>Il dataset valida s&eacute; stesso: "Quando il sistema dice BULLISH 80+, il prezzo sale?" Con 640+ record e backfill automatico, la risposta &egrave; verificabile e aggiornata quotidianamente.</p>
       </div>
       <div class="app-card live">
         <div class="app-status">Attivo</div>
         <h4>Regime analysis</h4>
-        <p>Il flag regime_dampened + direction + price_24h permette di quantificare: in un regime rialzista, quanto vale un segnale bearish? È noise o counter-signal?</p>
+        <p>Il flag regime_dampened + direction + price_24h permette di quantificare: in un regime rialzista, quanto vale un segnale bearish? &Egrave; noise o counter-signal?</p>
+      </div>
+      <div class="app-card live">
+        <div class="app-status">Attivo</div>
+        <h4>Gate calibration</h4>
+        <p>I digest-only con backfill mostrano i "falsi negativi" — segnali corretti bloccati dal gate. Permette di calibrare soglie, modifier e cooldown con dati reali.</p>
       </div>
       <div class="app-card next">
         <div class="app-status">Prossimo</div>
         <h4>Macro-filtered backtesting</h4>
         <p>Combinare pattern tecnici (OHLCV) con il contesto macro del dataset. "Questo pattern ha win rate 68% overall, ma 82% quando il macro era BULLISH." Nessun tool retail lo fa.</p>
       </div>
+      <div class="app-card next">
+        <div class="app-status">Prossimo</div>
+        <h4>Feed performance ranking</h4>
+        <p>Incrociare feed_name + source_first_mover + direction_correct per scoprire quale feed &egrave; pi&ugrave; affidabile, pi&ugrave; veloce, e genera i segnali con accuracy pi&ugrave; alta.</p>
+      </div>
       <div class="app-card future">
         <div class="app-status">Roadmap</div>
         <h4>Predictive modeling</h4>
-        <p>56 features tipizzate per record, con target variable (direction_correct_24h). Con 2000+ record, il dataset sarà sufficiente per modelli di classificazione supervisionata.</p>
+        <p>56 features tipizzate per record, con target variable (direction_correct_24h). Con 2000+ record, il dataset sar&agrave; sufficiente per modelli di classificazione supervisionata.</p>
       </div>
     </div>
   </div>
@@ -854,7 +1704,7 @@
 
   <!-- Footer -->
   <div class="footer">
-    <em>Refract Gold</em> — Dataset v3 · 56 campi · 640+ record · Aggiornato febbraio 2026
+    <em>Refract Gold</em> — Dataset v3 · 56 campi · 11 tabelle · 640+ record · Full technical reference · Febbraio 2026
   </div>
 
 </div>
