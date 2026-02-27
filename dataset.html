@@ -7,10 +7,10 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #08080c;
-    --surface: #101018;
-    --surface-2: #181824;
-    --surface-3: #1e1e2e;
+    --bg: #0C0C0E;
+    --surface: #141416;
+    --surface-2: #1A1A1E;
+    --surface-3: #222226;
     --border: #252538;
     --border-light: #303048;
     --gold: #d4a843;
@@ -475,6 +475,13 @@
   .page-nav a:hover { color: var(--gold); }
   .page-nav .current { color: var(--gold); font-weight: 500; }
 
+  .page-nav.top-nav {
+    margin-top: 0;
+    margin-bottom: 32px;
+    padding-top: 0;
+    border-top: none;
+  }
+
   /* ── Footer ── */
   .footer {
     margin-top: 32px;
@@ -507,6 +514,13 @@
 <body>
 
 <div class="container">
+
+  <!-- Top Nav -->
+  <div class="page-nav top-nav">
+    <a href="index.html">Home</a>
+    <a href="pipeline.html">Pipeline</a>
+    <a href="dataset.html" class="current">Dataset</a>
+  </div>
 
   <!-- Header -->
   <div class="header">

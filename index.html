@@ -359,6 +359,13 @@
   .page-nav a:hover { color: var(--accent); }
   .page-nav .current { color: var(--accent); font-weight: 500; }
 
+  .page-nav.top-nav {
+    margin-top: 0;
+    margin-bottom: 32px;
+    padding-top: 0;
+    border-top: none;
+  }
+
   /* Roadmap */
   .roadmap {
     margin-top: 24px;
@@ -479,6 +486,13 @@
     <p class="subtitle">Intelligence macroeconomica in tempo reale. Il contesto che ti manca, quando ti serve.</p>
   </div>
 
+  <!-- Top Nav -->
+  <div class="page-nav top-nav">
+    <a href="index.html" class="current">Home</a>
+    <a href="pipeline.html">Pipeline</a>
+    <a href="dataset.html">Dataset</a>
+  </div>
+
   <!-- Il problema -->
   <section>
     <h2><span class="label">Il problema</span>Tante notizie, poco senso</h2>
@@ -584,7 +598,7 @@
       <div class="feat">
         <div class="icon">📡</div>
         <div class="feat-title">Fonti real-time</div>
-        <div class="feat-desc">Fonti macro e geopolitiche internazionali, monitorate ogni 2 minuti. Copertura completa.</div>
+        <div class="feat-desc">Fonti macro e geopolitiche internazionali, monitorate ogni 2 minuti. Dalla pubblicazione al tuo Telegram in pochi minuti.</div>
       </div>
       <div class="feat">
         <div class="icon">🤖</div>
@@ -617,9 +631,9 @@
         <div class="feat-desc">Quando un segnale va controcorrente rispetto al macro, il bot lo segnala con una nota di contesto. Sai sempre se il trend è con te o contro.</div>
       </div>
       <div class="feat">
-        <div class="icon">⚡</div>
-        <div class="feat-title">Bassa latenza</div>
-        <div class="feat-desc">Dalla pubblicazione della notizia al tuo Telegram in pochi minuti. Monitoraggio continuo, consegna rapida.</div>
+        <div class="icon">📊</div>
+        <div class="feat-title">Refract Index <span style="font-size:10px;color:var(--accent);font-weight:400;">soon</span></div>
+        <div class="feat-desc">Un indice 0-100 che sintetizza il sentiment macro della giornata, settimana e mese. Il polso del mercato in un numero, con commento AI.</div>
       </div>
     </div>
   </section>
@@ -688,13 +702,13 @@
         <div class="phase-content">
           <div class="phase-tag future">Fase 3 · Visione</div>
           <h3>Backtesting tecnico-storico con filtro macro</h3>
-          <p>Il dataset macro di Refract diventa un filtro per il backtesting tecnico. Ogni pattern su dati OHLCV viene incrociato con il contesto macro al momento dell'occorrenza: regime, direzione, evento. Il risultato: statistiche condizionate. "Questo pattern ha win rate 68%, ma 82% quando il macro era BULLISH e non c'erano dati in uscita." L'analisi tecnica vede il pattern — il contesto macro ne rivela il significato.</p>
+          <p>I pattern tecnici hanno win rate diversi a seconda del contesto macro in cui si verificano. Refract incrocia i dati di prezzo con il suo dataset di intelligence macro e risponde a una domanda che oggi nessun tool retail fa: <em>"questo setup ha funzionato il 68% delle volte, ma l'82% quando il contesto macro era favorevole."</em></p>
           <div class="phase-detail">
-            <span>📊 Pattern engine su dati storici</span>
-            <span>🔗 Join temporale con dataset macro</span>
-            <span>📈 Statistiche segmentate per regime</span>
-            <span>🧪 Validazione statistica per condizione macro</span>
-            <span>⚡ Signal generation in tempo reale</span>
+            <span>📊 Pattern di prezzo su dati storici</span>
+            <span>🌐 Contesto macro di ogni occorrenza</span>
+            <span>📈 Win rate filtrato per regime di mercato</span>
+            <span>🧪 Validazione su dati reali, non teorie</span>
+            <span>⚡ Segnali in tempo reale con filtro macro</span>
           </div>
         </div>
       </div>

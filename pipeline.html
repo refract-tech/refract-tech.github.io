@@ -7,9 +7,9 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0f;
-    --surface: #12121a;
-    --surface-2: #1a1a26;
+    --bg: #0C0C0E;
+    --surface: #141416;
+    --surface-2: #1A1A1E;
     --border: #2a2a3a;
     --gold: #d4a843;
     --gold-dim: #a07d2e;
@@ -448,6 +448,13 @@
   .page-nav a:hover { color: var(--gold); }
   .page-nav .current { color: var(--gold); font-weight: 500; }
 
+  .page-nav.top-nav {
+    margin-top: 0;
+    margin-bottom: 32px;
+    padding-top: 0;
+    border-top: none;
+  }
+
   /* Footer */
   .footer {
     margin-top: 32px;
@@ -462,6 +469,13 @@
 <body>
 
 <div class="container">
+
+  <!-- Top Nav -->
+  <div class="page-nav top-nav">
+    <a href="index.html">Home</a>
+    <a href="pipeline.html" class="current">Pipeline</a>
+    <a href="dataset.html">Dataset</a>
+  </div>
 
   <!-- Header -->
   <div class="header">
