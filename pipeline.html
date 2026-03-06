@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Refract Gold — Come funziona</title>
+<title>Refract™ Gold — Come funziona</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -479,9 +479,9 @@
 
   <!-- Header -->
   <div class="header">
-    <div class="brand">Refract Gold</div>
-    <h1>Da 490 news a 10 alert che contano</h1>
-    <p class="subtitle">Come un sistema a 11 livelli di filtro trasforma il rumore finanziario in segnali operativi per trader professionisti.</p>
+    <div class="brand">Refract™ Gold</div>
+    <h1>Da 490 news a 5-12 alert che contano</h1>
+    <p class="subtitle">Come un sistema a 14 livelli di filtro trasforma il rumore finanziario in segnali operativi per trader professionisti.</p>
   </div>
 
   <!-- Stats -->
@@ -499,7 +499,7 @@
       <div class="stat-label">Rumore filtrato</div>
     </div>
     <div class="stat">
-      <div class="stat-value">~10</div>
+      <div class="stat-value">5-12</div>
       <div class="stat-label">Alert / giorno</div>
     </div>
     <div class="stat">
@@ -512,7 +512,7 @@
   <div class="section">
     <div class="section-label">Panoramica</div>
     <h2>Il viaggio di una news</h2>
-    <p class="desc">Ogni 2 minuti il sistema interroga 15 fonti finanziarie. Ogni news attraversa fino a 10 controlli prima di poter raggiungere il tuo telefono. Ecco i passaggi.</p>
+    <p class="desc">Ogni 2 minuti il sistema interroga 15 fonti finanziarie. Ogni news attraversa fino a 14 controlli prima di poter raggiungere il tuo telefono. Ecco i passaggi.</p>
 
     <div class="pipeline">
 
@@ -539,13 +539,13 @@
       <div class="step">
         <div class="step-dot ai">4a</div>
         <h3>AI #1 — Classificazione <span class="step-tag tag-ai">AI</span></h3>
-        <p>Un'AI dedicata classifica: direzione (BULLISH/BEARISH/NEUTRAL), score di impatto (0-100), tipo di evento, paese, periodo, meccanismo di trasmissione, dati numerici, valutazione regime. 16 campi strutturati, zero testo. Solo decisioni. Se l'AI primaria non risponde, un modello di fallback subentra automaticamente.</p>
+        <p>Un'AI dedicata classifica: direzione (BULLISH/BEARISH/NEUTRAL), score di impatto (0-100), tipo di evento, paese, periodo, meccanismo di trasmissione, regime, canale causale, narrativa. 21 campi strutturati, zero testo. Solo decisioni. Se l'AI primaria non risponde, un modello di fallback subentra automaticamente.</p>
         <div class="example"><strong>Output:</strong> BEARISH 85, evento: INFLATION_DATA, paese: US, meccanismo: REAL_RATES, consenso: ABOVE, regime_dampened: true</div>
       </div>
 
       <div class="step">
         <div class="step-dot ai">4b</div>
-        <h3>AI #2 — Comunicazione <span class="step-tag tag-new">v8.3</span></h3>
+        <h3>AI #2 — Comunicazione <span class="step-tag tag-new">v9.8</span></h3>
         <p>Una seconda AI riceve la classificazione e scrive l'alert: titolo in italiano, reasoning, nota di contesto. Il suo unico compito è comunicare — non decide, spiega. Se il segnale va controcorrente rispetto al regime macro, aggiunge una nota di contesto con il fattore specifico che contrasta.</p>
         <div class="example"><strong>Output:</strong> "PCE +2.9% vs 2.8% atteso, sopra consensus. ⚖️ Segnale in controtendenza: la domanda fisica asiatica e il deficit fiscale USA continuano a sostenere il metallo."</div>
       </div>
@@ -623,6 +623,11 @@
         <span class="fv-tag">MACRO 50 · GEO 75</span>
       </div>
       <div class="fv-card">
+        <h4>📊 Hard cap + Overflow</h4>
+        <p>Massimo 12 alert al giorno. Dopo il cap, solo news con score ≥90 possono passare (overflow gate). Evita che un giorno intenso diventi rumore.</p>
+        <span class="fv-tag">MAX 12 · OVERFLOW 90</span>
+      </div>
+      <div class="fv-card">
         <h4>🎚️ Soglia dinamica</h4>
         <p>Le prime 5 news passano a score 55+. Dalla 6ª alla 8ª servono 70+. Dalla 9ª in poi, 75+. Le news migliori passano sempre, il volume resta gestibile.</p>
         <span class="fv-tag">3 TIER</span>
@@ -633,14 +638,24 @@
         <span class="fv-tag">BASSA: −8</span>
       </div>
       <div class="fv-card">
+        <h4>🔴 ALTA cooldown</h4>
+        <p>News ad alta urgenza hanno un cooldown dedicato di 15 minuti. Solo score ≥95 bypassa. Evita cluster di breaking news sullo stesso evento.</p>
+        <span class="fv-tag">15 MIN · BYPASS 95</span>
+      </div>
+      <div class="fv-card">
         <h4>⏱️ Cooldown 30 min</h4>
-        <p>Dopo ogni alert inviato, 30 minuti di silenzio. Solo news con score ≥90 possono bypassare il cooldown.</p>
+        <p>Dopo ogni alert inviato, 30 minuti di silenzio. Solo news con score ≥90 e urgenza ALTA possono bypassare il cooldown.</p>
         <span class="fv-tag">ANTI-SPAM</span>
       </div>
       <div class="fv-card">
-        <h4>📊 Hard cap giornaliero</h4>
-        <p>Massimo 12 alert al giorno. Le news ad alta urgenza (ALTA) con score ≥75 possono superare il limite.</p>
-        <span class="fv-tag">MAX 12/GIORNO</span>
+        <h4>🌍 Geo cooldown</h4>
+        <p>Minimo 90 minuti tra alert geopolitici. Le crisi generano decine di news follow-up — questo gate le filtra lasciando passare solo sviluppi significativi.</p>
+        <span class="fv-tag">90 MIN GEO</span>
+      </div>
+      <div class="fv-card">
+        <h4>🔄 Structured dedup</h4>
+        <p>Dedup basata sui campi strutturati: tipo evento + paese + periodo. Finestre differenziate: macro 24h, geo 4h. Il PCE di dicembre da Reuters e da CNBC sono lo stesso evento.</p>
+        <span class="fv-tag">MACRO 24H · GEO 4H</span>
       </div>
     </div>
   </div>
@@ -648,8 +663,8 @@
   <!-- Feature Vector -->
   <div class="section">
     <div class="section-label">Dataset</div>
-    <h2>Ogni alert è un vettore di 56 campi</h2>
-    <p class="desc">Non è solo un messaggio Telegram. Ogni news analizzata genera un record strutturato nel database con 54 colonne — pronto per analisi quantitativa e machine learning.</p>
+    <h2>Ogni alert è un vettore di 62+ campi</h2>
+    <p class="desc">Non è solo un messaggio Telegram. Ogni news analizzata genera un record strutturato nel database con 62+ colonne — pronto per analisi quantitativa e machine learning.</p>
 
     <div class="fv-grid">
       <div class="fv-card">
@@ -662,11 +677,11 @@
       </div>
       <div class="fv-card">
         <h4>📈 Contesto di mercato</h4>
-        <p>Prezzo oro, VIX, S&P 500, Dollar Index e petrolio al momento della news. Sessione di trading, latenza del feed.</p>
+        <p>Prezzo oro, VIX, Dollar Index, RSI, distanza SMA20, eventi concorrenti. 12 indicatori catturati al momento della news per contestualizzare il segnale.</p>
       </div>
       <div class="fv-card">
-        <h4>✅ Verifica ex-post</h4>
-        <p>Variazione prezzo a 1h, 4h, 24h. La call era corretta? Excess return vs baseline. Dati che misurano se il segnale ha valore reale.</p>
+        <h4>✅ Verifica ex-post + MFE</h4>
+        <p>Variazione prezzo a 1h, 4h, 24h. Maximum Favorable Excursion (prezzo massimo/minimo raggiunto in 24h). Excess return vs baseline. Direction accuracy verificabile.</p>
       </div>
     </div>
   </div>
@@ -707,12 +722,12 @@
         </div>
         <div class="flow-funnel">→</div>
         <div class="flow-num">
-          <div class="big c-green">~72</div>
+          <div class="big c-green">~56</div>
           <div class="label">alert consegnati</div>
         </div>
       </div>
 
-      <div class="flow-label">Dati reali — settimana 20-26 febbraio 2026</div>
+      <div class="flow-label">Dati medi — media settimanale su 3 settimane</div>
     </div>
   </div>
 
@@ -725,7 +740,7 @@
 
   <!-- Footer -->
   <div class="footer">
-    <span>Refract Gold</span> — v8.3 · Pipeline con 11 livelli di filtro · 2 AI agent · 56 campi per alert · Febbraio 2026
+    <span>Refract™ Gold</span> — v9.8 · Pipeline con 14 livelli di filtro · 2 AI agent · 62+ campi per alert · Marzo 2026
   </div>
 
 </div>

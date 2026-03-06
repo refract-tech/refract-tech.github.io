@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Refract Gold — Dataset</title>
+<title>Refract™ Gold — Dataset</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -524,27 +524,27 @@
 
   <!-- Header -->
   <div class="header">
-    <div class="brand">Refract Gold · Dataset</div>
+    <div class="brand">Refract™ Gold · Dataset</div>
     <h1>Structured macro intelligence, <em>record per record</em></h1>
-    <p class="subtitle">Ogni news analizzata genera un vettore di 56 campi tipizzati: classificazione, dati strutturati, contesto di mercato, verifica ex-post. Pronto per analisi quantitativa.</p>
+    <p class="subtitle">Ogni news analizzata genera un vettore di 62+ campi tipizzati: classificazione, dati strutturati, contesto di mercato, verifica ex-post con MFE. Pronto per analisi quantitativa.</p>
   </div>
 
   <!-- Key metrics -->
   <div class="metrics-bar">
     <div class="metric">
-      <div class="metric-val">56</div>
+      <div class="metric-val">62+</div>
       <div class="metric-label">Campi / record</div>
     </div>
     <div class="metric">
-      <div class="metric-val">640+</div>
+      <div class="metric-val">1500+</div>
       <div class="metric-label">Record totali</div>
     </div>
     <div class="metric">
-      <div class="metric-val green">80%</div>
-      <div class="metric-label">Accuracy @24h</div>
+      <div class="metric-val">14</div>
+      <div class="metric-label">Gate di filtro</div>
     </div>
     <div class="metric">
-      <div class="metric-val">v3</div>
+      <div class="metric-val">v4</div>
       <div class="metric-label">Schema</div>
     </div>
     <div class="metric">
@@ -611,7 +611,7 @@
       </div>
       <div class="schema-fields">
         <div class="schema-row">
-          <span class="sf">transmission</span><span class="st">TEXT</span><span class="sd">Meccanismo: REAL_RATES, USD_STRENGTH, SAFE_HAVEN, PHYSICAL_DEMAND...</span>
+          <span class="sf">transmission</span><span class="st">TEXT</span><span class="sd">Ipotesi strutturata sul canale di trasmissione macro→prezzo: REAL_RATES, USD_STRENGTH, SAFE_HAVEN, PHYSICAL_DEMAND...</span>
         </div>
         <div class="schema-row">
           <span class="sf">consensus_surprise</span><span class="st">ENUM</span><span class="sd">ABOVE | BELOW | INLINE | N/A</span>
@@ -627,7 +627,7 @@
       <div class="schema-group-header">
         <span class="icon">📈</span>
         <span class="name">Contesto di mercato</span>
-        <span class="count">8 campi</span>
+        <span class="count">12 campi</span>
       </div>
       <div class="schema-fields">
         <div class="schema-row">
@@ -638,6 +638,15 @@
         </div>
         <div class="schema-row">
           <span class="sf">feed_latency_sec</span><span class="st">INTEGER</span><span class="sd">Secondi tra pubblicazione e acquisizione — misura la freshness</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">rsi_at_alert</span><span class="st">FLOAT</span><span class="sd">RSI(14) calcolato sulle candele 1h al momento dell'alert</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">sma20_distance_pct</span><span class="st">FLOAT</span><span class="sd">Distanza % del prezzo dalla SMA(20) — misura estensione dal trend</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">concurrent_events_count</span><span class="st">INTEGER</span><span class="sd">Numero di alert nelle ultime 2h — misura densità di eventi</span>
         </div>
       </div>
     </div>
@@ -663,8 +672,8 @@
     <div class="schema-group">
       <div class="schema-group-header">
         <span class="icon">✅</span>
-        <span class="name">Verifica prezzo ex-post</span>
-        <span class="count">8 campi</span>
+        <span class="name">Verifica prezzo ex-post + MFE</span>
+        <span class="count">12 campi</span>
       </div>
       <div class="schema-fields">
         <div class="schema-row">
@@ -673,6 +682,15 @@
         <div class="schema-row">
           <span class="sf">direction_correct_24h</span><span class="st">BOOLEAN</span><span class="sd">True se la direction predetta corrisponde al movimento reale</span>
         </div>
+        <div class="schema-row">
+          <span class="sf">price_max_24h</span><span class="st">FLOAT</span><span class="sd">Massimo prezzo raggiunto nelle 24h — Maximum Favorable Excursion</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">price_max_24h_at</span><span class="st">DATETIME</span><span class="sd">Timestamp del picco — quando il prezzo ha raggiunto il massimo</span>
+        </div>
+        <div class="schema-row">
+          <span class="sf">excess_return_1h</span><span class="st">FLOAT</span><span class="sd">Rendimento in eccesso rispetto al baseline a 1h</span>
+        </div>
       </div>
     </div>
 
@@ -680,53 +698,62 @@
 
   <!-- Accuracy -->
   <div class="section">
-    <div class="section-tag">Performance</div>
-    <h2>Accuracy e metodologia</h2>
-    <p class="desc">Il dataset include verifica ex-post automatica. Ogni alert con score ≥60 riceve backfill dei prezzi a 1h, 4h e 24h. Accuracy calcolata come: il prezzo si è mosso nella direzione predetta?</p>
+    <div class="section-tag">Trasparenza completa</div>
+    <h2>Accuracy e limitazioni</h2>
+    <p class="desc">I numeri grezzi, con metodologia e contesto. Ogni alert con score ≥60 riceve backfill automatico dei prezzi a 1h, 4h, 24h + MFE (max/min con timing). Accuracy = il prezzo si è mosso nella direzione predetta?</p>
 
     <div class="accuracy-grid">
       <div class="acc-card">
-        <h4>📊 Accuracy per timeframe</h4>
+        <h4>📊 Direction accuracy</h4>
         <div class="acc-row">
-          <span class="label">Direction @1h</span>
-          <span class="value warn">52%</span>
+          <span class="label">Overall @1h</span>
+          <span class="value warn">51.5%</span>
         </div>
         <div class="acc-row">
-          <span class="label">Direction @24h (overall)</span>
-          <span class="value warn">44%</span>
+          <span class="label">Overall @24h</span>
+          <span class="value warn">45.5%</span>
         </div>
         <div class="acc-row">
-          <span class="label">Direction @24h (BULLISH)</span>
-          <span class="value good">80%</span>
+          <span class="label">BULLISH @24h</span>
+          <span class="value warn">57.8%</span>
         </div>
         <div class="acc-row">
-          <span class="label">Direction @24h (BEARISH)</span>
-          <span class="value neutral">~15%</span>
+          <span class="label">BEARISH @24h</span>
+          <span class="value neutral">34.2%</span>
+        </div>
+        <div class="acc-row">
+          <span class="label">Benchmark naive (always BULL)</span>
+          <span class="value neutral">~60%</span>
         </div>
       </div>
       <div class="acc-card">
         <h4>🔍 Pipeline metrics</h4>
         <div class="acc-row">
-          <span class="label">Delivery rate</span>
-          <span class="value neutral">15%</span>
+          <span class="label">Record totali (3 settimane)</span>
+          <span class="value neutral">1500+</span>
         </div>
         <div class="acc-row">
-          <span class="label">News / settimana</span>
-          <span class="value neutral">~490</span>
+          <span class="label">Alert consegnati</span>
+          <span class="value neutral">212</span>
         </div>
         <div class="acc-row">
           <span class="label">Alert / giorno (media)</span>
-          <span class="value neutral">~10</span>
+          <span class="value neutral">~13</span>
         </div>
         <div class="acc-row">
           <span class="label">Rumore filtrato</span>
           <span class="value good">85%</span>
         </div>
+        <div class="acc-row">
+          <span class="label">Backfill coverage @24h</span>
+          <span class="value neutral">44%</span>
+        </div>
       </div>
     </div>
 
     <div class="method-note">
-      <strong>Nota sulla BEARISH accuracy.</strong> Il dataset è stato raccolto durante un mercato strutturalmente rialzista (oro +8% nel periodo). I call BEARISH sono quasi tutti "corretti nel segnale, sbagliati nel contesto" — il dato è negativo per l'oro, ma il trend domina. Il sistema gestisce questo con un flag <code>regime_dampened</code>: l'alert passa ma con una nota che il macro regime contrasta il segnale. Per un modello ML, il regime_dampened è un feature ad alto valore predittivo: filtrando i BEARISH con regime_dampened=true, l'accuracy residua sale significativamente.
+      <strong>Contesto critico.</strong> Il dataset è stato raccolto durante un mercato strutturalmente rialzista con una crisi geopolitica maggiore (Iran, feb-mar 2026). Il benchmark naive "dì sempre BULLISH" produce ~60% di accuracy — il delta con il 57.8% BULLISH del sistema è quasi zero. Il sistema non è un predittore direzionale — è un <strong>classificatore di contesto macro</strong>. L'accuracy grezza non è la metrica giusta per valutarlo, ed è intellettualmente onesto dirlo.<br><br>
+      <strong>Il valore reale del dataset</strong> non è la direction accuracy — è il feature vector. 62+ campi tipizzati per record, <code>regime_dampened</code> come feature ad alto valore predittivo, meccanismo di trasmissione, consensus surprise, MFE con timing del picco. Dati strutturati per costruire modelli migliori di questo.
     </div>
   </div>
 
@@ -738,47 +765,47 @@
 
     <div class="sample-record">
       <div class="sample-header">
-        <span class="title">alerts.db → record #427</span>
+        <span class="title">alerts.db → record #759</span>
         <span class="badge">DELIVERED</span>
       </div>
       <div class="sample-body">
         <span class="comment">// Metadata</span><br>
-        <span class="key">id</span>: <span class="num">427</span><br>
-        <span class="key">timestamp</span>: <span class="str">"2026-02-21T14:32:00Z"</span><br>
-        <span class="key">source</span>: <span class="str">"reuters"</span><br>
-        <span class="key">schema_version</span>: <span class="str">"3"</span><br>
-        <span class="key">prompt_hash</span>: <span class="str">"a3f8c2...b7d1"</span><br>
+        <span class="key">id</span>: <span class="num">759</span><br>
+        <span class="key">timestamp</span>: <span class="str">"2026-02-28T06:46:18Z"</span><br>
+        <span class="key">source</span>: <span class="str">"RSS"</span><br>
+        <span class="key">schema_version</span>: <span class="num">3</span><br>
+        <span class="key">prompt_hash</span>: <span class="str">"e7b2a1...c4f9"</span><br>
         <br>
-        <span class="comment">// Classificazione AI</span><br>
-        <span class="key">direction</span>: <span class="str">"BEARISH"</span><br>
-        <span class="key">relevance_score</span>: <span class="num">85</span><br>
-        <span class="key">effective_score</span>: <span class="num">85</span><br>
-        <span class="key">confidence</span>: <span class="str">"ALTA"</span><br>
+        <span class="comment">// Classificazione AI (point-in-time, immutabile)</span><br>
+        <span class="key">direction</span>: <span class="str">"NEUTRAL"</span><br>
+        <span class="key">relevance_score</span>: <span class="num">98</span><br>
+        <span class="key">effective_score</span>: <span class="num">98</span><br>
+        <span class="key">confidence</span>: <span class="num">100</span><br>
         <span class="key">urgency</span>: <span class="str">"ALTA"</span><br>
-        <span class="key">category</span>: <span class="str">"MACRO_DATA"</span><br>
-        <span class="key">event_type</span>: <span class="str">"INFLATION_DATA"</span><br>
-        <span class="key">country</span>: <span class="str">"US"</span><br>
-        <span class="key">regime_dampened</span>: <span class="bool">true</span><br>
+        <span class="key">category</span>: <span class="str">"geopolitica"</span><br>
+        <span class="key">event_type</span>: <span class="str">"GEOPOLITICAL_EVENT"</span><br>
+        <span class="key">country</span>: <span class="str">"IL"</span><br>
+        <span class="key">geo_bias</span>: <span class="str">"BULLISH"</span>
+        <span class="comment"> // safe-haven demand</span><br>
+        <span class="key">regime_dampened</span>: <span class="bool">false</span><br>
         <br>
         <span class="comment">// Dati strutturati</span><br>
-        <span class="key">transmission</span>: <span class="str">"REAL_RATES"</span><br>
-        <span class="key">consensus_surprise</span>: <span class="str">"ABOVE"</span><br>
-        <span class="key">data_actual</span>: <span class="str">"2.8%"</span><br>
-        <span class="key">data_expected</span>: <span class="str">"2.6%"</span><br>
-        <span class="key">data_previous</span>: <span class="str">"2.6%"</span><br>
-        <span class="key">event_period</span>: <span class="str">"JANUARY"</span><br>
+        <span class="key">transmission_channel</span>: <span class="str">"SAFE_HAVEN"</span><br>
         <br>
         <span class="comment">// Contesto di mercato</span><br>
-        <span class="key">gold_price_at_news</span>: <span class="num">2936.40</span><br>
-        <span class="key">trading_session</span>: <span class="str">"US"</span><br>
-        <span class="key">feed_latency_sec</span>: <span class="num">127</span><br>
+        <span class="key">price_at_alert</span>: <span class="num">5354.98</span><br>
+        <span class="key">market_session</span>: <span class="str">"Asia"</span><br>
+        <span class="key">feed_latency_sec</span>: <span class="num">764.9</span><br>
+        <span class="key">concurrent_events_count</span>: <span class="num">0</span><br>
         <br>
-        <span class="comment">// Verifica ex-post</span><br>
-        <span class="key">price_at_alert</span>: <span class="num">2936.40</span><br>
-        <span class="key">price_24h</span>: <span class="num">2954.12</span><br>
-        <span class="key">move_24h_pct</span>: <span class="num">+0.60</span><br>
-        <span class="key">direction_correct_24h</span>: <span class="bool">false</span>
-        <span class="comment"> // regime dominante</span>
+        <span class="comment">// Verifica ex-post (backfill automatico)</span><br>
+        <span class="key">price_24h</span>: <span class="num">5363.65</span><br>
+        <span class="key">direction_correct_24h</span>: <span class="bool">true</span>
+        <span class="comment"> // geo_bias BULLISH → prezzo salito</span><br>
+        <span class="key">price_max_24h</span>: <span class="num">5589.37</span>
+        <span class="comment"> // +4.4% MFE</span><br>
+        <span class="key">price_max_24h_at</span>: <span class="str">"2026-02-28T09:46:07Z"</span><br>
+        <span class="key">excess_return_1h</span>: <span class="num">+0.19</span>
       </div>
     </div>
   </div>
@@ -791,10 +818,16 @@
 
     <div class="quality-grid">
       <div class="q-card">
+        <div class="q-icon">⏱️</div>
+        <h4>Point-in-time integrity</h4>
+        <p>Ogni classificazione è immutabile dal momento della pubblicazione. Il record riflette l'analisi del sistema PRIMA di conoscere l'esito sul prezzo. Nessuna modifica retroattiva — prerequisito per backtesting senza look-ahead bias.</p>
+        <span class="q-tag">NO LOOK-AHEAD</span>
+      </div>
+      <div class="q-card">
         <div class="q-icon">🔒</div>
         <h4>Schema versionato</h4>
         <p>Ogni record salva la versione dello schema usata. I cambiamenti allo schema sono tracciati — puoi filtrare per versione e confrontare periodi diversi.</p>
-        <span class="q-tag">schema_version: 3</span>
+        <span class="q-tag">schema_version: 4</span>
       </div>
       <div class="q-card">
         <div class="q-icon">🧬</div>
@@ -839,7 +872,7 @@
       <div class="app-card live">
         <div class="app-status">Attivo</div>
         <h4>Signal validation</h4>
-        <p>Il dataset valida sé stesso: "Quando il sistema dice BULLISH 80+, il prezzo sale?" Con 640+ record e backfill automatico, la risposta è verificabile e aggiornata quotidianamente.</p>
+        <p>Il dataset valida sé stesso: "Quando il sistema dice BULLISH 80+, il prezzo sale?" Con 1500+ record e backfill automatico, la risposta è verificabile e aggiornata quotidianamente.</p>
       </div>
       <div class="app-card live">
         <div class="app-status">Attivo</div>
@@ -854,9 +887,11 @@
       <div class="app-card future">
         <div class="app-status">Roadmap</div>
         <h4>Predictive modeling</h4>
-        <p>56 features tipizzate per record, con target variable (direction_correct_24h). Con 2000+ record, il dataset sarà sufficiente per modelli di classificazione supervisionata.</p>
+        <p>62+ features tipizzate per record, con target variable (direction_correct_24h). Con 2000+ record, il dataset sarà sufficiente per modelli di classificazione supervisionata.</p>
       </div>
     </div>
+
+    <p class="desc" style="margin-top: 24px; margin-bottom: 0;">Accesso API e dataset completo disponibili per ricercatori e professionisti quantitativi — <a href="mailto:info@refractmacro.com" style="color: var(--gold); text-decoration: none;">info@refractmacro.com</a></p>
   </div>
 
   <!-- Nav -->
@@ -868,7 +903,7 @@
 
   <!-- Footer -->
   <div class="footer">
-    <em>Refract Gold</em> — Dataset v3 · 56 campi · 640+ record · Aggiornato febbraio 2026
+    <em>Refract™ Gold</em> — Dataset v4 · 62+ campi · 1500+ record · Aggiornato marzo 2026
   </div>
 
 </div>

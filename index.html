@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Refract — Beta</title>
+<title>Refract™ — Beta</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -150,6 +150,7 @@
   }
 
   .alert-mock.bullish { border-left-color: var(--green); }
+  .alert-mock.daily { border-left-color: var(--accent); }
 
   .alert-mock .alert-header {
     font-family: 'JetBrains Mono', monospace;
@@ -195,6 +196,19 @@
     padding-top: 10px;
     border-top: 1px solid var(--border);
   }
+
+  .alert-mock .alert-snapshot {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    line-height: 1.6;
+  }
+
+  .alert-mock .snap-up { color: var(--green); }
+  .alert-mock .snap-down { color: var(--red); }
 
   .features {
     display: grid;
@@ -482,7 +496,7 @@
   <!-- Hero -->
   <div class="hero">
     <div class="badge">Beta · Side Project</div>
-    <h1>Refract</h1>
+    <h1>Refract™</h1>
     <p class="subtitle">Intelligence macroeconomica in tempo reale. Il contesto che ti manca, quando ti serve.</p>
   </div>
 
@@ -498,13 +512,13 @@
     <h2><span class="label">Il problema</span>Tante notizie, poco senso</h2>
     <p>Ogni giorno succedono cose che muovono i mercati. Dati sull'inflazione, decisioni delle banche centrali, crisi diplomatiche, politiche commerciali. Le notizie ci sono — arrivano da decine di fonti, in inglese, in ordine sparso, spesso contraddittorie.</p>
     <p>Il problema non è trovarle. Il problema è capirle in tempo. Cosa significa quel dato? È positivo o negativo? Per cosa? E soprattutto: cosa cambia rispetto a ieri?</p>
-    <p>Chi segue i mercati per lavoro, per investimento, o anche solo per interesse, sa che collegare i puntini richiede tempo ed esperienza. Refract lo fa per te.</p>
+    <p>Chi segue i mercati per lavoro, per investimento, o anche solo per interesse, sa che collegare i puntini richiede tempo ed esperienza. Refract™ lo fa per te.</p>
   </section>
 
   <!-- La filosofia -->
   <section>
     <h2><span class="label">La filosofia</span>Il contesto, non la previsione</h2>
-    <p>Refract non prevede i prezzi. Nessuno può farlo in modo affidabile, e chi dice il contrario mente o si illude.</p>
+    <p>Refract™ non prevede i prezzi. Nessuno può farlo in modo affidabile, e chi dice il contrario mente o si illude.</p>
     <p>Quello che fa è darti il <strong>bias macro</strong>: il contesto della giornata, analizzato e spiegato. Oggi le condizioni favoriscono il rialzo o il ribasso? Perché? Quale evento ha cambiato il quadro?</p>
     <p>È la differenza tra "l'oro sale" (previsione inutile) e "l'inflazione sotto le attese ha indebolito il dollaro e i rendimenti reali sono in calo — scenario favorevole per estensioni rialziste" (contesto che puoi usare).</p>
     <p>Il bot analizza. Tu decidi.</p>
@@ -573,21 +587,29 @@
 
   <!-- Esempio -->
   <section>
-    <h2><span class="label">Esempio</span>Come appare un alert</h2>
+    <h2><span class="label">Esempi reali</span>Come appare su Telegram</h2>
     <div class="alert-mock bullish">
-      <div class="alert-header">🟢 XAU/USD - BULLISH 📈 | Refract Gold</div>
+      <div class="alert-header">🟢 XAU/USD - BULLISH 📈 | Refract™ Gold</div>
       <div class="alert-title">CPI USA 2.4% vs atteso 2.6%: inflazione sotto le aspettative</div>
       <div class="alert-reasoning">Dato sotto consensus rafforza aspettative taglio Fed; rendimenti reali in calo favoriscono XAU/USD.</div>
       <div class="alert-impact">Impatto: ▰▰▰   Score: 85</div>
       <div class="alert-meta"><a href="#" style="color:var(--accent);text-decoration:none;">Reuters</a> · Sessione US · News 14:30</div>
     </div>
     <div class="alert-mock">
-      <div class="alert-header">🔴 XAU/USD - BEARISH 📉 | Refract Gold</div>
+      <div class="alert-header">🔴 XAU/USD - BEARISH 📉 | Refract™ Gold</div>
       <div class="alert-title">PCE +2.9% vs 2.8% atteso: inflazione sopra consensus</div>
       <div class="alert-reasoning">Pressione su rendimenti reali e dollaro. Aspettative taglio Fed in calo.</div>
       <div class="alert-note">Nota: Segnale in controtendenza. Il regime macro resta rialzista: domanda fisica asiatica e deficit fiscale USA continuano a sostenere il metallo.</div>
       <div class="alert-impact">Impatto: ▰▰▱   Score: 72</div>
       <div class="alert-meta"><a href="#" style="color:var(--accent);text-decoration:none;">CNBC</a> · Sessione US · News 14:32</div>
+    </div>
+    <div class="alert-mock daily">
+      <div class="alert-header">📊 Daily Summary · 03 Mar 2026</div>
+      <div class="alert-reasoning">L'inflazione dell'Eurozona al 1,9% ha superato le attese, alimentando pressioni sui tassi insieme ai toni restrittivi di esponenti della Fed. Tuttavia, il tema dominante è l'escalation bellica tra USA, Israele e Iran con la chiusura dello Stretto di Hormuz. L'oro ha ceduto il 4,40%: il premio al rischio è stato annullato dal rafforzamento del dollaro e dall'impennata dei rendimenti dei Treasury, spinti dai timori inflattivi legati al balzo del greggio e dello shock energetico.</div>
+      <div class="alert-snapshot">
+        <span class="snap-down">📉 Oro $5,113 (-4.40%)</span> · <span class="snap-down">📉 Argento $74.64 (-8.50%)</span> · <span class="snap-up">📈 Dollaro $27.48 (+0.53%)</span><br>
+        <span class="snap-down">📉 Treasury $89.42 (-0.22%)</span> · <span class="snap-down">📉 S&P 500 $680 (-0.92%)</span> · <span class="snap-up">📈 Petrolio $90.25 (+3.51%)</span>
+      </div>
     </div>
   </section>
 
@@ -618,7 +640,7 @@
       <div class="feat">
         <div class="icon">🛡️</div>
         <div class="feat-title">Filtro intelligente</div>
-        <div class="feat-desc">Dedup multi-livello, triage AI, gate dinamici e score corretto per urgenza. Ricevi 8-10 alert al giorno, non 50.</div>
+        <div class="feat-desc">14 gate di protezione, dedup AI, score corretto per urgenza. 5-12 alert al giorno. Presto: volume personalizzabile per utente.</div>
       </div>
       <div class="feat">
         <div class="icon">💰</div>
@@ -632,8 +654,18 @@
       </div>
       <div class="feat">
         <div class="icon">📊</div>
-        <div class="feat-title">Refract Index <span style="font-size:10px;color:var(--accent);font-weight:400;">soon</span></div>
-        <div class="feat-desc">Un indice 0-100 che sintetizza il sentiment macro della giornata, settimana e mese. Il polso del mercato in un numero, con commento AI.</div>
+        <div class="feat-title">Refract™ Index <span style="font-size:10px;color:var(--green);font-weight:400;">LIVE</span></div>
+        <div class="feat-desc">Indice 0-100 che sintetizza il sentiment macro daily, weekly e monthly. Bayesiano, con decay temporale e geo-weight calibrato.</div>
+      </div>
+      <div class="feat">
+        <div class="icon">🕐</div>
+        <div class="feat-title">Session briefing</div>
+        <div class="feat-desc">Briefing pre-trading per sessione (Asia, EU, US): prezzo, bias, top event, Index, prossimo catalyst. AI summary a chiusura sessione.</div>
+      </div>
+      <div class="feat">
+        <div class="icon">📡</div>
+        <div class="feat-title">TradingView webhook</div>
+        <div class="feat-desc">Collega un alert TradingView e ricevi il contesto macro in tempo reale. L'alert tecnico diventa un segnale macro-aware.</div>
       </div>
     </div>
   </section>
@@ -647,12 +679,12 @@
         <div class="lbl">Fonti monitorate</div>
       </div>
       <div class="num">
-        <div class="val">8-10</div>
+        <div class="val">5-12</div>
         <div class="lbl">Alert / giorno</div>
       </div>
       <div class="num">
-        <div class="val green">80%</div>
-        <div class="lbl">BULLISH @24h</div>
+        <div class="val">1500+</div>
+        <div class="lbl">Record nel dataset</div>
       </div>
       <div class="num">
         <div class="val">24/7</div>
@@ -664,7 +696,7 @@
   <!-- Roadmap -->
   <section>
     <h2><span class="label">Roadmap</span>Tre fasi, un'unica visione</h2>
-    <p>Refract non è solo un bot di alert. È un'infrastruttura di intelligence macro che cresce per fasi.</p>
+    <p>Refract™ non è solo un bot di alert. È un'infrastruttura di intelligence macro che cresce per fasi.</p>
 
     <div class="roadmap">
       <div class="phase done">
@@ -675,7 +707,7 @@
         <div class="phase-content">
           <div class="phase-tag done">Fase 1 · Completata</div>
           <h3>Gold Intelligence</h3>
-          <p>Pipeline completa su XAU/USD: 15 fonti, doppia AI, 5 livelli di dedup, gate dinamici, dataset strutturato con 56 campi e verifica ex-post. 640+ record, 80% accuracy @24h su call BULLISH. Calendario macro settimanale, daily e weekly digest.</p>
+          <p>Pipeline completa su XAU/USD: 15 fonti, doppia AI, 14 gate di protezione, dataset strutturato con 62+ campi e verifica ex-post automatica. 1500+ record in 3 settimane. Session briefing, Refract™ Index, calendario macro, daily e weekly digest, TradingView webhook.</p>
         </div>
       </div>
 
@@ -685,9 +717,9 @@
           <div class="phase-line"></div>
         </div>
         <div class="phase-content">
-          <div class="phase-tag next">Fase 2 · Prossima</div>
+          <div class="phase-tag next">Fase 2 · In corso</div>
           <h3>Multi-asset: FX e BTC</h3>
-          <p>La stessa pipeline calibrata su EUR/USD e BTC/USD. Stessa architettura, prompt e soglie specifiche per asset. Session-based briefing: /asia, /eu, /us — il contesto macro della sessione in 5 secondi.</p>
+          <p>La stessa pipeline calibrata su EUR/USD e BTC/USD. Stessa architettura, prompt e soglie specifiche per asset. L'infrastruttura multi-asset è già nel codice — ogni nuovo asset richiede solo un file YAML di configurazione.</p>
           <div class="phase-assets">
             <span class="asset-tag">💶 Refract FX</span>
             <span class="asset-tag">₿ Refract BTC</span>
@@ -701,29 +733,17 @@
         </div>
         <div class="phase-content">
           <div class="phase-tag future">Fase 3 · Visione</div>
-          <h3>Backtesting tecnico-storico con filtro macro</h3>
-          <p>I pattern tecnici hanno win rate diversi a seconda del contesto macro in cui si verificano. Refract incrocia i dati di prezzo con il suo dataset di intelligence macro e risponde a una domanda che oggi nessun tool retail offre out-of-the-box: <em>"questo setup ha funzionato il 68% delle volte, ma l'82% quando il contesto macro era favorevole."</em></p>
+          <h3>Dataset premium e API</h3>
+          <p>Il dataset strutturato diventa un prodotto: accesso API per quant, ricercatori e fund. 62+ campi tipizzati per record, regime di mercato, meccanismo di trasmissione, verifica ex-post con MFE — dati che non esistono altrove in questa forma. Il target: permettere modelli di classificazione macro-condizionata su dati reali.</p>
           <div class="phase-detail">
-            <span>📊 Pattern di prezzo su dati storici</span>
-            <span>🌐 Contesto macro di ogni occorrenza</span>
-            <span>📈 Win rate filtrato per regime di mercato</span>
-            <span>🧪 Validazione su dati reali, non teorie</span>
-            <span>⚡ Segnali in tempo reale con filtro macro</span>
+            <span>🔗 API REST per accesso programmatico al dataset</span>
+            <span>📊 Feature vector completo per ogni evento macro</span>
+            <span>🧠 Modelli di classificazione regime-condizionata</span>
+            <span>📈 Backtest con filtro macro su dati proprietari</span>
           </div>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- Cosa ti chiedo -->
-  <section>
-    <h2><span class="label">La beta</span>Cosa ti chiedo</h2>
-    <p>Usalo per una settimana. Poi dimmi tre cose:</p>
-    <ul class="feedback-list">
-      <li>Troppi messaggi, troppo pochi, o il giusto?</li>
-      <li>L'analisi ti è stata utile per capire cosa stava succedendo?</li>
-      <li>Cosa manca? Cosa cambieresti?</li>
-    </ul>
   </section>
 
   <!-- CTA -->
@@ -740,8 +760,9 @@
 
   <!-- Disclaimer -->
   <div class="disclaimer">
-    Refract fornisce analisi automatizzata a scopo informativo. Non è consulenza finanziaria.<br>
-    Le decisioni di investimento sono responsabilità esclusiva dell'utente.
+    Refract™ fornisce analisi automatizzata a scopo informativo. Non è consulenza finanziaria.<br>
+    Le decisioni di investimento sono responsabilità esclusiva dell'utente.<br><br>
+    <span style="color: var(--text-dim); font-size: 13px;">Contatti: <a href="mailto:info@refractmacro.com" style="color: var(--accent); text-decoration: none;">info@refractmacro.com</a></span>
   </div>
 
 </div>
