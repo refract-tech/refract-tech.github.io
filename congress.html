@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Congressional Stock Trading Tracker — Ricerca Completa</title>
+<style>
+  :root {
+    --bg: #0C0C0E;
+    --surface: #141418;
+    --border: #2a2a30;
+    --gold: #C9A84C;
+    --gold-dim: #8a7435;
+    --text: #e0e0e0;
+    --text-dim: #888;
+    --link: #6caceb;
+    --green: #4ade80;
+    --red: #f87171;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 2rem 1rem;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 {
+    font-size: 1.8rem;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid var(--gold-dim);
+    padding-bottom: 0.8rem;
+  }
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+  h2 {
+    font-size: 1.3rem;
+    color: var(--gold);
+    margin: 2.5rem 0 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 {
+    font-size: 1.05rem;
+    color: #ccc;
+    margin: 1.5rem 0 0.5rem;
+  }
+  p { margin-bottom: 1rem; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: #f0f0f0; }
+  code {
+    background: #1e1e24;
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    font-size: 0.88em;
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+  }
+  pre {
+    background: #1e1e24;
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    border: 1px solid var(--border);
+  }
+  pre code { background: none; padding: 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+  th, td {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border);
+    text-align: left;
+  }
+  th {
+    background: #1a1a20;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  tr:nth-child(even) { background: #12121a; }
+  .callout {
+    background: #1a1a20;
+    border-left: 3px solid var(--gold);
+    padding: 1rem 1.2rem;
+    margin: 1.5rem 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .callout-red {
+    border-left-color: var(--red);
+  }
+  .callout-green {
+    border-left-color: var(--green);
+  }
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .toc a { display: block; padding: 0.3rem 0; color: var(--text-dim); }
+  .toc a:hover { color: var(--gold); }
+  .tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 0.15em 0.5em;
+    border-radius: 3px;
+    margin-right: 0.3rem;
+  }
+  .tag-free { background: #1a3a1a; color: var(--green); }
+  .tag-paid { background: #3a1a1a; color: var(--red); }
+  .tag-api { background: #1a2a3a; color: var(--link); }
+  footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 0.85rem;
+  }
+  @media (max-width: 600px) {
+    body { padding: 1rem 0.5rem; }
+    h1 { font-size: 1.4rem; }
+    table { font-size: 0.8rem; }
+    th, td { padding: 0.4rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Congressional Stock Trading Tracker con Esecuzione Automatizzata</h1>
+<p class="subtitle">Deep Research — Marzo 2026 · Fonti dati, architettura, broker API, panorama competitivo, considerazioni legali per l'Italia</p>
+
+<div class="toc">
+  <strong style="color:var(--gold)">Indice</strong>
+  <a href="#fonti">1. Fonti dati: siti ufficiali e aggregatori</a>
+  <a href="#latenza">2. La finestra dei 45 giorni e la catena di latenza</a>
+  <a href="#social">3. Fonti social e alternative</a>
+  <a href="#aggregatori">4. Confronto aggregatori e API</a>
+  <a href="#struttura">5. Struttura dati delle disclosure</a>
+  <a href="#top-trader">6. I migliori trader del Congresso</a>
+  <a href="#broker">7. Broker e paper trading: Alpaca, IBKR, OANDA</a>
+  <a href="#agente">8. Architettura dell'agente di trading</a>
+  <a href="#competitori">9. Panorama competitivo</a>
+  <a href="#legale">10. Aspetti legali e fiscali per l'Italia</a>
+  <a href="#claude-code">11. Implementazione con Claude Code</a>
+  <a href="#conclusioni">12. Conclusioni e raccomandazioni</a>
+</div>
+
+<!-- SECTION 1 -->
+<h2 id="fonti">1. Fonti dati: siti ufficiali e aggregatori</h2>
+
+<p>Le disclosure sulle transazioni finanziarie dei congressisti vengono pubblicate attraverso due sistemi separati con formati diversi — questa è la sfida implementativa principale.</p>
+
+<h3>House Financial Disclosures</h3>
+<p><a href="https://disclosures-clerk.house.gov" target="_blank">disclosures-clerk.house.gov</a> fornisce archivi ZIP annuali contenenti indici XML con metadati. I dati effettivi di ogni filing si trovano in un PDF all'indirizzo <code>/public_disc/financial-pdfs/{ANNO}/{DocID}.pdf</code>. I PDF compilati elettronicamente contengono testo estraibile (usa <code>pdfplumber</code> o <code>tabula-py</code>); i filing scannerizzati più vecchi richiedono OCR tramite <code>pytesseract</code>. <strong>Non esiste API, né feed RSS</strong> — solo download di ZIP e recupero individuale di PDF.</p>
+
+<p>Esiste uno <a href="https://gist.github.com/dannguyen/994bfe5a4a1e9ba6c73f21046e31e86c" target="_blank">scraper open-source per la House</a> che gestisce il form ASPX con ViewState.</p>
+
+<h3>Senate Electronic Financial Disclosures</h3>
+<p><a href="https://efdsearch.senate.gov" target="_blank">efdsearch.senate.gov</a> è significativamente più facile da parsare. I report compilati elettronicamente si presentano come <strong>HTML strutturato</strong> con tabelle di transazioni parsabili direttamente via BeautifulSoup. Il sito richiede però l'accettazione di un checkbox JavaScript, rendendo necessario Selenium per l'accesso automatizzato.</p>
+
+<p>Uno <a href="https://github.com/jeremiak/us-senate-financial-disclosure-scraper" target="_blank">scraper per il Senato</a> su GitHub gestisce questo flusso automaticamente.</p>
+
+<div class="callout">
+<strong>Nota importante:</strong> SEC EDGAR non ospita le disclosure congressuali — questi filing vanno al Clerk della House e al Secretary del Senate, non alla SEC. I Form 4 su EDGAR riguardano gli insider aziendali, un dataset complementare ma separato.
+</div>
+
+<!-- SECTION 2 -->
+<h2 id="latenza">2. La finestra dei 45 giorni e la catena di latenza</h2>
+
+<p>La catena completa di latenza dal trade al segnale operativo:</p>
+
+<table>
+  <tr><th>Fase</th><th>Caso migliore</th><th>Tipico</th><th>Caso peggiore</th></tr>
+  <tr><td>Trade → Filing (STOCK Act: max 45gg)</td><td>1 giorno</td><td>25-35 giorni</td><td>Mesi (multa solo $200)</td></tr>
+  <tr><td>Filing → Sito ufficiale</td><td>Stesso giorno</td><td>1-2 giorni</td><td>3-5 giorni</td></tr>
+  <tr><td>Sito ufficiale → Rilevazione aggregatore</td><td>1 ora</td><td>6-24 ore</td><td>48 ore</td></tr>
+  <tr><td>Aggregatore → Social media/alert</td><td>Minuti</td><td>1-6 ore</td><td>12 ore</td></tr>
+  <tr><td><strong>Totale</strong></td><td><strong>~2 giorni</strong></td><td><strong>28-40 giorni</strong></td><td><strong>Mesi+</strong></td></tr>
+</table>
+
+<p>La stragrande maggioranza del ritardo sta nella Fase 1. <strong>Nessuna tecnologia può accelerare la finestra legale di filing.</strong> I ritardi sono diffusi — Rep. Byron Donalds non ha dichiarato 100+ transazioni, Rep. Julia Letlow ne ha mancate 210. La multa è solo <strong>$200 per violazione</strong> e può essere cancellata.</p>
+
+<div class="callout callout-green">
+<strong>L'edge non è nella velocità — è nell'intelligenza dello scoring.</strong> Dato che tutti ricevono gli stessi dati nella stessa finestra di ~24 ore, la differenziazione viene da: correlazione trade-commissioni, rilevazione cluster (più congressisti sullo stesso titolo), scoring per accuratezza storica del membro, e segnalazione di trade che precedono azioni legislative note.
+</div>
+
+<!-- SECTION 3 -->
+<h2 id="social">3. Fonti social e alternative</h2>
+
+<p>Gli account Twitter/X principali per il tracking in tempo reale:</p>
+
+<table>
+  <tr><th>Account</th><th>Follower</th><th>Note</th></tr>
+  <tr><td><a href="https://x.com/unusual_whales" target="_blank">@unusual_whales</a></td><td>2M+</td><td>Il più seguito, copre anche options flow</td></tr>
+  <tr><td><a href="https://x.com/pelositracker" target="_blank">@pelositracker</a></td><td>1.4M+</td><td>Focalizzato su Pelosi ma copre altri</td></tr>
+  <tr><td><a href="https://x.com/QuiverCongress" target="_blank">@QuiverCongress</a></td><td>—</td><td>Post automatizzati da Quiver Quantitative</td></tr>
+  <tr><td><a href="https://x.com/CapitolTrades" target="_blank">@CapitolTrades</a></td><td>—</td><td>Account ufficiale Capitol Trades</td></tr>
+</table>
+
+<p><strong>Costi API X/Twitter:</strong> Il tier Basic costa <strong>$200/mese</strong> per 15.000 letture tweet. Alternative gratuite: notifiche push native per account specifici, oppure provider terzi come <a href="https://twitterapi.io" target="_blank">TwitterAPI.io</a> a $0.15 per 1.000 tweet. Nitter è stato dismesso a febbraio 2024 ed è inaffidabile per produzione. <a href="https://scalereal.com/backend/2023/04/04/million-tweets-and-counting-how-snscrape-can-help-you-scrape-big-data-on-twitter.html" target="_blank">Snscrape</a> funziona ancora ma viola i ToS di X.</p>
+
+<!-- SECTION 4 -->
+<h2 id="aggregatori">4. Confronto aggregatori e API</h2>
+
+<table>
+  <tr><th>Servizio</th><th>API?</th><th>Costo</th><th>Auth</th><th>Ideale per</th></tr>
+  <tr>
+    <td><a href="https://housestockwatcher.com/api" target="_blank">House/Senate Stock Watcher</a></td>
+    <td><span class="tag tag-free">FREE JSON</span></td>
+    <td>$0</td><td>Nessuna</td><td>MVP, prototipazione rapida</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.capitoltrades.com" target="_blank">Capitol Trades</a></td>
+    <td>No API ufficiale</td>
+    <td>$0 (web)</td><td>Nessuna</td><td>Qualità dati massima (verifica umana)</td>
+  </tr>
+  <tr>
+    <td><a href="https://www.quiverquant.com/congresstrading/" target="_blank">Quiver Quantitative</a></td>
+    <td><span class="tag tag-api">REST + Python SDK</span></td>
+    <td><span class="tag tag-paid">$10/mese</span></td><td>API key</td><td>Integrazione API produzione</td>
+  </tr>
+  <tr>
+    <td><a href="https://site.financialmodelingprep.com/developer/docs/senate-trading-api" target="_blank">Financial Modeling Prep</a></td>
+    <td><span class="tag tag-api">REST + RSS</span></td>
+    <td>Free tier</td><td>API key</td><td>Alert RSS Senato</td>
+  </tr>
+  <tr>
+    <td><a href="https://unusualwhales.com/public-api" target="_blank">Unusual Whales</a></td>
+    <td><span class="tag tag-api">REST (100+ endpoint)</span></td>
+    <td><span class="tag tag-paid">$150/mese</span></td><td>Bearer token</td><td>Enterprise, dati completi</td>
+  </tr>
+</table>
+
+<h3>Dati pre-parsati gratuiti</h3>
+
+<p><strong>House Stock Watcher</strong> fornisce un JSON statico su S3: i dati di tutte le transazioni in un singolo file scaricabile. Il <a href="https://github.com/timothycarambat/senate-stock-watcher-data" target="_blank">repository GitHub</a> companion contiene file JSON giornalieri per le transazioni del Senato.</p>
+
+<p><strong>Quiver Quantitative</strong> offre la miglior esperienza sviluppatore con <a href="https://github.com/Quiver-Quantitative/python-api" target="_blank">SDK Python ufficiale</a> (<code>pip install quiverquant</code>). L'API Hobbyist a $10/mese fornisce dati in JSON con endpoint per query per ticker o nome politico. Dati storici dal 2012. Si integra anche con <a href="https://www.quantconnect.com/data/quiver-quantitative-congress-trading" target="_blank">QuantConnect</a> per backtesting algoritmico.</p>
+
+<p><strong>Capitol Trades</strong>, gestito da <a href="https://www.prnewswire.com/news-releases/2iq-launches-capitol-trades-a-platform-that-tracks-us-politicians-trades-301345996.html" target="_blank">2iQ Research</a>, offre la qualità dati più alta perché analisti umani verificano ogni transazione. Limite critico: nessuna API ufficiale. Esiste un <a href="https://github.com/TommasoAmici/capitoltrades" target="_blank">client Rust non ufficiale</a> su GitHub e scraper come quello di <a href="https://apify.com/saswave/capitol-trades-scraper/api" target="_blank">Apify</a>.</p>
+
+<div class="callout">
+<strong>Approccio raccomandato:</strong> Usa House/Senate Stock Watcher JSON gratuito per lo sviluppo MVP, poi passa all'API Quiver ($10/mese) per la produzione. Cross-referenzia con Capitol Trades per validazione qualità. Scraping diretto dei siti ufficiali solo se serve la rilevazione più veloce possibile.
+</div>
+
+<!-- SECTION 5 -->
+<h2 id="struttura">5. Struttura dati delle disclosure</h2>
+
+<p>I campi standard in un Periodic Transaction Report (PTR):</p>
+
+<table>
+  <tr><th>Gruppo</th><th>Campi</th></tr>
+  <tr><td>Politico</td><td>nome, ufficio/distretto, partito, commissioni</td></tr>
+  <tr><td>Transazione</td><td>data_transazione, data_disclosure, tipo (Purchase, Sale Full/Partial, Exchange, Exercise), owner (Self, Spouse, Joint, Dependent Child)</td></tr>
+  <tr><td>Asset</td><td>ticker, descrizione_asset, tipo_asset (Stock, Bond, Option, Crypto, ecc.)</td></tr>
+  <tr><td>Importo</td><td>Range: $1,001-$15,000 fino a $50,000,000+</td></tr>
+</table>
+
+<p>Il volume di transazioni è di circa <strong>10.000 trade/anno</strong> da ~100 membri attivi. Nel 2023, 115 membri hanno dichiarato transazioni per un valore totale superiore a <strong>$1 miliardo</strong>. Circa il <strong>48% dei membri della House</strong> e il <strong>54% dei Senatori</strong> possiedono azioni individuali.</p>
+
+<p>Risorse open-source per analisi storica dei dati: <a href="https://github.com/noodleslove/House-of-Representative-Analysis-I" target="_blank">House of Representative Analysis</a> e <a href="https://github.com/semerriam/congress-stock-trades" target="_blank">Congress Stock Trades dataset</a> su GitHub.</p>
+
+<!-- SECTION 6 -->
+<h2 id="top-trader">6. I migliori trader del Congresso</h2>
+
+<p>Performance 2025 dei top trader congressuali:</p>
+
+<table>
+  <tr><th>Membro</th><th>Return 2025</th><th>Note</th></tr>
+  <tr><td>Rep. Warren Davidson</td><td>+78.8%</td><td>Miglior performer</td></tr>
+  <tr><td>Rep. Donald Norcross</td><td>+70.8%</td><td></td></tr>
+  <tr><td>Rep. Terri Sewell</td><td>+67.9%</td><td></td></tr>
+  <tr><td>Sen. Alex Padilla</td><td>+61.7%</td><td></td></tr>
+  <tr><td>Nancy Pelosi</td><td>+20.1%</td><td>28ª nel 2025, ma portafoglio da ~$133.7M (da $700K nel 1987)</td></tr>
+</table>
+
+<p>Secondo uno <a href="https://fortune.com/2025/12/07/congress-stock-market-trades-leadership-outperformance-trading-ban-bill-discharge-petition/" target="_blank">studio NBER del 2025</a>, i leader del Congresso superano i colleghi ordinari fino al <strong>47% annuo</strong> dopo l'ascesa alla leadership. Nel 2023, <a href="https://www.moomoo.com/community/feed/here-are-the-members-of-congress-who-outperformed-s-p-111697311105029" target="_blank">i Democratici hanno ottenuto una media del 31.18%</a>, con Pelosi in testa.</p>
+
+<p>Fonti dettagliate: <a href="https://www.fool.com/research/congressional-stock-trading-who-trades-and-makes-the-most/" target="_blank">Motley Fool</a>, <a href="https://www.benzinga.com/general/politics/24/01/36459015/10-best-stock-traders-in-congress-in-2023-spoiler-nancy-pelosi-is-back-on-the-list" target="_blank">Benzinga</a>, <a href="https://www.insiderfinance.io/congress-trades" target="_blank">InsiderFinance</a>.</p>
+
+<!-- SECTION 7 -->
+<h2 id="broker">7. Broker e paper trading: Alpaca, IBKR, OANDA</h2>
+
+<h3>Alpaca Markets — Scelta raccomandata</h3>
+
+<p><a href="https://alpaca.markets" target="_blank">Alpaca</a> è il vincitore su ogni dimensione rilevante per questo progetto.</p>
+
+<p><strong>Paper trading completamente gratuito</strong> senza funding, senza KYC per account solo paper, disponibilità globale inclusa EU/Italia. Registrazione su <a href="https://app.alpaca.markets/signup" target="_blank">app.alpaca.markets</a> solo con email. URL base paper: <code>https://paper-api.alpaca.markets</code>. Fino a 3 account paper per utente.</p>
+
+<p>SDK Python ufficiale (<code>pip install alpaca-py</code>):</p>
+
+<pre><code>from alpaca.trading.client import TradingClient
+from alpaca.trading.requests import MarketOrderRequest
+from alpaca.trading.enums import OrderSide, TimeInForce
+
+client = TradingClient('key', 'secret', paper=True)
+order = client.submit_order(MarketOrderRequest(
+    symbol="NVDA", qty=1,
+    side=OrderSide.BUY,
+    time_in_force=TimeInForce.DAY
+))</code></pre>
+
+<p>Endpoint principali: <code>/v2/orders</code>, <code>/v2/positions</code>, <code>/v2/account</code>, <code>/v2/assets</code>. Rate limit: <strong>200 richieste/minuto</strong> sul tier gratuito. Asset supportati: azioni USA, ETF, opzioni (fino a Livello 3), 52+ coppie crypto. Dati di mercato free tier: solo IEX; <a href="https://docs.alpaca.markets/docs/about-market-data-api" target="_blank">dati SIP completi</a> richiedono l'upgrade <strong>Algo Trader Plus a $9/mese</strong>. Documentazione completa: <a href="https://docs.alpaca.markets/docs/trading-api" target="_blank">Trading API</a>, <a href="https://docs.alpaca.markets/docs/paper-trading" target="_blank">Paper Trading</a>.</p>
+
+<h3>Per live trading dall'Italia</h3>
+
+<p><a href="https://alpaca.markets/support/is-alpaca-available-outside-the-us" target="_blank">Alpaca supporta utenti internazionali</a> con KYC (codice fiscale, documento, prova indirizzo) e funding solo in USD via bonifico internazionale.</p>
+
+<p><a href="https://www.interactivebrokers.com/en/trading/ib-api.php" target="_blank">Interactive Brokers</a> è l'alternativa più consolidata per residenti UE — pienamente conforme MiFID II, regolamentato in UE, accesso a 170 mercati in 40+ paesi. Il wrapper Python <a href="https://www.interactivebrokers.com/campus/ibkr-quant-news/interactive-brokers-python-api-native-a-step-by-step-guide/" target="_blank">ib_insync</a> è potente ma richiede un'istanza TWS/Gateway locale sempre attiva.</p>
+
+<!-- SECTION 8 -->
+<h2 id="agente">8. Architettura dell'agente di trading (high level)</h2>
+
+<p>La pipeline segnale→esecuzione mappa direttamente sull'architettura Refract esistente:</p>
+
+<table>
+  <tr><th>Fase</th><th>Refract Macro</th><th>Congressional Tracker</th></tr>
+  <tr><td>Ingestion</td><td>15 feed RSS ogni 2 min</td><td>Aggregatori JSON ogni 30 min + scraping ufficiale</td></tr>
+  <tr><td>Enrichment</td><td>Market data (yfinance, FRED)</td><td>Ticker→company (yfinance), congressista→commissioni</td></tr>
+  <tr><td>Classificazione</td><td>Gemini: score, direction, transmission_channel</td><td>Gemini: anomaly_score, committee_relevance, cluster_signal</td></tr>
+  <tr><td>Gate</td><td>14 livelli di filtraggio</td><td>Threshold anomaly, cooldown per membro, cluster aggregation</td></tr>
+  <tr><td>Delivery</td><td>Telegram broadcast</td><td>Telegram broadcast + ordine broker</td></tr>
+  <tr><td>Verifica</td><td>Backfill prezzo 1h/4h/24h</td><td>Backfill prezzo 1d/7d/30d</td></tr>
+</table>
+
+<h3>Decisione e gestione rischio</h3>
+
+<p>Regole di partenza: tradare solo quando anomaly_score > 0.7, accuratezza storica del membro > 55%, transazione Purchase o Sale (Full) sopra $50,001. Dimensionamento: max <strong>5% del portafoglio per trade</strong>, max 15% per settore, max 3 posizioni aperte dallo stesso membro. Stop-loss trailing 8-10%, limite perdita giornaliera 2%, settimanale 5%, drawdown massimo 15% (circuit breaker).</p>
+
+<h3>Performance tracking</h3>
+
+<p>Equivalenti di Myfxbook per azioni: <a href="https://www.tradesviz.com" target="_blank">TradesViz</a> (free tier, 100+ metriche, API sync) e <a href="https://www.tradervue.com" target="_blank">Tradervue</a> (free tier, standard del settore). Metriche chiave: win rate per congressista, return per fascia anomaly_score, performance per settore, Sharpe ratio.</p>
+
+<!-- SECTION 9 -->
+<h2 id="competitori">9. Panorama competitivo</h2>
+
+<h3>Autopilot — Leader di mercato</h3>
+<p><a href="https://www.investmentnews.com/fintech/autopilot-surges-to-750m-aum-touts-ria-growth-as-users-copy-pelosi-buffett-trades/260729" target="_blank">Autopilot</a> domina il mercato consumer con <strong>3 milioni di download, 80.000 abbonati paganti e $750M AUM</strong>, di cui $400M specificamente copiando i trade di Pelosi. È l'unico player importante che <strong>esegue automaticamente i trade</strong> collegandosi ai conti Robinhood, Schwab o Fidelity degli utenti. Costo: $29/trimestre per portafoglio tracciato. Registrato come Investment Advisor.</p>
+
+<h3>ETF NANC e KRUZ</h3>
+<p>Subversive Capital, con dati <a href="https://www.prnewswire.com/news-releases/subversive-partners-with-unusual-whales-to-launch-democratic-and-republican-exchange-traded-funds-301740496.html" target="_blank">Unusual Whales</a>, offre esposizione passiva: compri l'ETF, ottieni esposizione ai trade congressuali. AUM combinato oltre <strong>$150M</strong>. NANC (trade Democratici) ha reso il <strong>73%</strong> dall'inizio (feb 2023) ad agosto 2025, battendo l'S&P 500 di 12 punti. Expense ratio: 0.75%. Fonti: <a href="https://www.morningstar.com/funds/2-etfs-that-track-congressional-stock-trades" target="_blank">Morningstar</a>, <a href="https://money.usnews.com/investing/articles/track-congressional-stock-picks-with-these-new-etfs" target="_blank">U.S. News</a>.</p>
+
+<h3>Il gap da riempire</h3>
+<div class="callout callout-green">
+<strong>Nessuno strumento gratuito combina tutto questo:</strong> scraping automatizzato → scoring anomalie con AI → alert Telegram con contesto → esecuzione paper trading → tracking performance. Autopilot addebita per portafoglio. Unusual Whales costa $48/mese minimo. Il free tier Quiver manca di alert ed esecuzione. Capitol Trades non ha API. L'approccio Refract — self-hosted su GCP, pipeline aperta, nativo Telegram, AI-powered — occupa una posizione unica: <strong>l'alternativa gratuita per power user</strong> ad Autopilot.
+</div>
+
+<!-- SECTION 10 -->
+<h2 id="legale">10. Aspetti legali e fiscali per l'Italia</h2>
+
+<h3>STOCK Act (USA)</h3>
+<p>Lo <a href="https://www.capitoltrades.com/articles/what-is-the-stock-act" target="_blank">STOCK Act del 2012</a> vieta ai membri del Congresso di usare informazioni non pubbliche per trading e impone la disclosure entro 45 giorni. Tuttavia, <a href="https://campaignlegal.org/update/congressional-stock-trading-continues-raise-conflicts-interest-concerns" target="_blank">il compliance è debole</a>: la multa per ritardo è solo $200 e viene spesso cancellata. Sono in corso iniziative per vietare completamente il trading congressuale (<a href="https://www.brennancenter.org/our-work/research-reports/congressional-stock-trading-explained" target="_blank">Brennan Center</a>).</p>
+
+<h3>Legalità del trading basato su disclosure</h3>
+<p>Tradare sulla base di disclosure congressuali pubbliche è <strong>completamente legale</strong> — sono informazioni pubbliche per definizione. Nessuna restrizione aggiuntiva per operare dall'Italia.</p>
+
+<h3>Obblighi fiscali italiani (regime dichiarativo)</h3>
+
+<table>
+  <tr><th>Obbligo</th><th>Dettaglio</th></tr>
+  <tr><td>Capital gains</td><td><strong>26% imposta sostitutiva</strong> su profitti azioni/ETF</td></tr>
+  <tr><td>Quadro RW</td><td>Dichiarazione obbligatoria per TUTTI gli asset finanziari esteri (multa €1.000-€5.000 per omissione)</td></tr>
+  <tr><td>IVAFE</td><td>0.2% annuo sul valore a fine anno degli asset esteri (minimo €34.20)</td></tr>
+  <tr><td>Ritenuta dividendi USA</td><td>15% (trattato Italia-USA), recuperabile come credito d'imposta</td></tr>
+  <tr><td>Scadenza</td><td>Modello Redditi PF entro 31 ottobre dell'anno successivo</td></tr>
+</table>
+
+<p>Fonti: <a href="https://tax-wizard.eu/en/p/italy-tax" target="_blank">Tax-Wizard Italia</a>, <a href="https://taxravens.com/en/italy/capital-income" target="_blank">TaxRaven</a>. Per crypto: <a href="https://koinly.io/guides/crypto-tax-italy/" target="_blank">Koinly Italia</a> (imposta al 26%, soglia esenzione €2.000 di plusvalenza annua dal 2026).</p>
+
+<div class="callout">
+<strong>Bot di trading personale dall'Italia:</strong> completamente legale quando si opera tramite broker regolamentato per conto proprio. Non è richiesta registrazione CONSOB. MiFID II Art. 17 (trading algoritmico) si applica alle imprese di investimento, non ai trader retail. L'autorizzazione sarebbe necessaria solo per gestire denaro altrui o fornire consulenza finanziaria a pagamento.
+</div>
+
+<!-- SECTION 11 -->
+<h2 id="claude-code">11. Implementazione con Claude Code</h2>
+
+<p>Per costruire il tracker con Claude Code partendo dal codebase Refract esistente, l'insight chiave dalla <a href="https://www.humanlayer.dev/blog/writing-a-good-claude-md" target="_blank">documentazione ufficiale</a> e dalle <a href="https://rosmur.github.io/claudecode-best-practices/" target="_blank">best practice della community</a>:</p>
+
+<h3>CLAUDE.md: sotto 60 righe</h3>
+<p>Il system prompt di Claude Code contiene già ~50 istruzioni; gli LLM possono seguire circa 150-200 istruzioni totali prima che la qualità degradi. Usa <strong>progressive disclosure</strong> con una directory <code>agent_docs/</code> con file separati per schema DB, pattern di scraping, guide API, e deployment.</p>
+
+<h3>Struttura monorepo consigliata</h3>
+<pre><code>workspace/
+├── refract-macro/          # Progetto esistente
+├── congress-tracker/       # Nuovo progetto
+├── shared/
+│   └── common/             # Modelli condivisi, DB utils, Telegram helpers
+│       ├── pyproject.toml
+│       └── src/common/
+└── CLAUDE.md               # Contesto root-level</code></pre>
+
+<p>Usa install editabili (<code>pip install -e shared/common</code>). Ogni sessione Claude Code focalizzata su una feature: "Costruisci lo scraper House seguendo il pattern in <code>refract/scrapers/base.py</code>." Suddividi il lavoro in subtask atomici da 5-10 minuti. Usa <code>/compact</code> al 50% di utilizzo contesto.</p>
+
+<p>Risorse: <a href="https://github.com/shanraisshan/claude-code-best-practice" target="_blank">Claude Code Best Practices (GitHub)</a>, <a href="https://www.siddharthbharath.com/claude-code-the-complete-guide/" target="_blank">Guida completa Claude Code</a>, <a href="https://institute.sfeir.com/en/claude-code/claude-code-resources/best-practices/" target="_blank">SFEIR Best Practices</a>.</p>
+
+<!-- SECTION 12 -->
+<h2 id="conclusioni">12. Conclusioni e raccomandazioni</h2>
+
+<div class="callout callout-green">
+<strong>Decisione strategica chiave:</strong> costruire scraper da zero o sfruttare API aggregatori gratuiti (House/Senate Stock Watcher JSON, Quiver a $10/mese). La seconda opzione risparmia 2-3 settimane di sviluppo per un controllo leggermente inferiore.
+</div>
+
+<p><strong>Stack raccomandato per MVP:</strong></p>
+<table>
+  <tr><th>Componente</th><th>Scelta</th><th>Costo</th></tr>
+  <tr><td>Dati disclosure</td><td>House/Senate Stock Watcher JSON (MVP) → Quiver API (produzione)</td><td>$0 → $10/mese</td></tr>
+  <tr><td>Dati mercato</td><td>yfinance (gratuito)</td><td>$0</td></tr>
+  <tr><td>AI classificazione</td><td>Gemini Flash (stessa chain Refract)</td><td>~$0 (free tier)</td></tr>
+  <tr><td>Paper trading</td><td>Alpaca paper (gratuito)</td><td>$0</td></tr>
+  <tr><td>Delivery</td><td>Telegram bot</td><td>$0</td></tr>
+  <tr><td>Hosting</td><td>GCP VM esistente</td><td>~$0 (crediti)</td></tr>
+</table>
+
+<p>L'alpha genuino in questo spazio non viene dalla velocità (tutti affrontano lo stesso ritardo di 25-40 giorni) ma dallo <strong>scoring contestuale delle anomalie</strong> — esattamente il tipo di pipeline di classificazione AI che hai già costruito per Refract. Correlazioni trade-commissioni, segnali cluster tra membri, e tracking di accuratezza storica sono le feature che nessuno strumento gratuito offre attualmente.</p>
+
+<p>I <strong>$750M che fluiscono attraverso Autopilot</strong> dimostrano la domanda; l'assenza di un'alternativa gratuita, self-hosted e AI-powered dimostra l'opportunità.</p>
+
+<div class="callout callout-red">
+<strong>Rischio legislativo:</strong> l'ETHICS Act in fase di avanzamento nel 2025 vieterebbe completamente il trading congressuale. Se approvato, l'intero ecosistema di tracking — ETF, app, aggregatori — diventa obsoleto. Costruisci con architettura asset-agnostic (come Refract già è).
+</div>
+
+<footer>
+  Deep Research — Marzo 2026 · Generato da Claude Opus · Tutti i link verificati al momento della pubblicazione
+</footer>
+
+</div>
+</body>
+</html>
