@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refract Macro — Audit Legale Feed RSS</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  @page { margin: 1.5cm 2cm; size: A4; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', 'Segoe UI', sans-serif;
+    background: #1b1d23;
+    color: #d6d3cc;
+    line-height: 1.6;
+    font-size: 14px;
+  }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 44px;
+  }
+
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #e8e6e1;
+    border-bottom: 3px solid #c9a84c;
+    padding-bottom: 12px;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    color: #8a8783;
+    font-size: 13px;
+    margin-bottom: 36px;
+    font-weight: 400;
+  }
+
+  h2 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #e8e6e1;
+    margin-top: 36px;
+    margin-bottom: 14px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #2e3038;
+  }
+
+  h3 {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: #c9a84c;
+    margin-top: 22px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin-bottom: 12px;
+    color: #b8b5ae;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 22px 0;
+    font-size: 13px;
+  }
+
+  th {
+    background: #252830;
+    color: #c9a84c;
+    font-weight: 600;
+    text-align: left;
+    padding: 9px 12px;
+    border: 1px solid #2e3038;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  td {
+    padding: 8px 12px;
+    border: 1px solid #2e3038;
+    vertical-align: top;
+    color: #b8b5ae;
+  }
+
+  tr:nth-child(even) td { background: #1f2128; }
+  tr:nth-child(odd) td { background: #22242c; }
+
+  .ok { color: #4a9e6e; font-weight: 600; }
+  .risk { color: #d4a843; font-weight: 600; }
+  .blocked { color: #c45454; font-weight: 600; }
+
+  .box {
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+
+  .box-gold {
+    background: #252218;
+    border-left: 4px solid #c9a84c;
+    color: #ccc5b4;
+  }
+
+  .box-red {
+    background: #2a1a1a;
+    border-left: 4px solid #c45454;
+    color: #d4a8a8;
+  }
+
+  .box-green {
+    background: #1a2a1e;
+    border-left: 4px solid #4a9e6e;
+    color: #a8d4b4;
+  }
+
+  .box strong { color: #e8e6e1; }
+  .box-gold strong { color: #e3c96e; }
+  .box-red strong { color: #e88; }
+  .box-green strong { color: #6ecf8e; }
+
+  ul { margin: 8px 0 12px 0; padding-left: 22px; color: #b8b5ae; }
+  li { margin-bottom: 5px; }
+
+  ol { margin: 8px 0 0 0; padding-left: 22px; color: #b8b5ae; }
+  ol li { margin-bottom: 4px; }
+
+  strong { color: #e8e6e1; }
+
+  .page-break { page-break-before: always; }
+
+  .footer {
+    margin-top: 48px;
+    padding-top: 14px;
+    border-top: 1px solid #2e3038;
+    font-size: 11px;
+    color: #5f5e5b;
+    text-align: center;
+  }
+
+  @media print {
+    body { background: #fff; color: #1a1a1a; }
+    .container { padding: 0; }
+    th { background: #f0ead0; color: #333; }
+    td { color: #333; border-color: #ccc; }
+    tr:nth-child(even) td { background: #f9f7f2; }
+    tr:nth-child(odd) td { background: #fff; }
+    .ok { color: #1a7a1a; }
+    .risk { color: #b8860b; }
+    .blocked { color: #c62828; }
+    .box-gold { background: #fff8e1; border-left-color: #c8a200; color: #333; }
+    .box-red { background: #fce4ec; border-left-color: #c62828; color: #333; }
+    .box-green { background: #e8f5e9; border-left-color: #2e7d32; color: #333; }
+    .box strong, .box-gold strong, .box-red strong, .box-green strong { color: #111; }
+    h1 { color: #111; }
+    h2 { color: #111; border-bottom-color: #ddd; }
+    h3 { color: #8a6d1b; }
+    p, li, ul, ol { color: #333; }
+    strong { color: #111; }
+    .footer { color: #999; }
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 20px 18px; }
+    table { font-size: 11.5px; }
+    th, td { padding: 6px 8px; }
+    h1 { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Refract Macro — Audit Legale Feed RSS</h1>
+<div class="subtitle">Roadmap per la commercializzazione &middot; Marzo 2026</div>
+
+<!-- ============================================ -->
+<h2>1. Situazione attuale</h2>
+
+<p>Refract Macro usa <strong>15 feed RSS gratuiti</strong> (Reuters, CNBC, BBC, MarketWatch, ecc.) per raccogliere notizie macro e geopolitiche in tempo reale. Le notizie vengono analizzate da un'AI che genera alert originali con score di rilevanza e probabilita' direzionali, poi inviati su Telegram.</p>
+
+<div class="box box-gold">
+  <strong>Per uso personale e beta gratuita</strong> non c'e' alcun problema pratico. I feed RSS sono pubblici e nessun publisher persegue bot personali.<br><br>
+  <strong>Per un prodotto a pagamento</strong> quasi tutti i feed hanno nei Terms of Service clausole che vietano esplicitamente l'uso commerciale e la redistribuzione.
+</div>
+
+<!-- ============================================ -->
+<h2>2. Audit — Risultati feed per feed</h2>
+
+<p>Ogni sorgente RSS e' stata verificata leggendo i Terms of Service originali del sito.</p>
+
+<table>
+  <tr>
+    <th style="width:28%">Feed</th>
+    <th style="width:16%">Verdetto</th>
+    <th>Clausola chiave</th>
+  </tr>
+  <tr>
+    <td>Federal Reserve</td>
+    <td class="ok">OK</td>
+    <td>Dominio pubblico (governo USA), libero uso</td>
+  </tr>
+  <tr>
+    <td>ZeroHedge</td>
+    <td class="risk">Rischio medio</td>
+    <td>Nessun ToS esplicito su RSS, copyright di default</td>
+  </tr>
+  <tr>
+    <td>BIS (Bank Int. Settlements)</td>
+    <td class="risk">Rischio medio</td>
+    <td>"Non-commercial purposes" esplicito nei ToS</td>
+  </tr>
+  <tr>
+    <td>Investing.com (x2 feed)</td>
+    <td class="blocked">Bloccato</td>
+    <td>"Strictly prohibited for any commercial or business purposes"</td>
+  </tr>
+  <tr>
+    <td>FXStreet (x2 feed)</td>
+    <td class="blocked">Bloccato</td>
+    <td>"Personal and private use" only, redistribuzione vietata</td>
+  </tr>
+  <tr>
+    <td>ForexLive (x2 feed)</td>
+    <td class="blocked">Bloccato</td>
+    <td>"Commercial or non-personal use" vietato; vendono RSS commerciale a parte</td>
+  </tr>
+  <tr>
+    <td>CNBC</td>
+    <td class="blocked">Bloccato</td>
+    <td>NBCUniversal vieta: uso commerciale, AI, redistribuzione, scraping, opere derivate</td>
+  </tr>
+  <tr>
+    <td>MarketWatch</td>
+    <td class="blocked">Bloccato</td>
+    <td>Dow Jones vieta text mining, analisi automatizzata, creazione database storici</td>
+  </tr>
+  <tr>
+    <td>Al Jazeera</td>
+    <td class="blocked">Bloccato</td>
+    <td>"Personal, non-commercial" + vieta bot + vieta "identifying trends/patterns"</td>
+  </tr>
+  <tr>
+    <td>BBC World</td>
+    <td class="blocked">Bloccato</td>
+    <td>"Business use requires our permission, and there may be a fee to pay"</td>
+  </tr>
+  <tr>
+    <td>Reuters (via Google News)</td>
+    <td class="blocked">Bloccato</td>
+    <td>Doppio blocco: Google News = non-commercial + Reuters IP senza licenza</td>
+  </tr>
+  <tr>
+    <td>OilPrice</td>
+    <td class="blocked">Bloccato</td>
+    <td>"Personal, non-commercial use", redistribuzione vietata</td>
+  </tr>
+</table>
+
+<div class="box box-red">
+  <strong>Risultato: 1 feed su 15 e' pulito (la Fed). 12 su 15 sono esplicitamente bloccati per uso commerciale.</strong>
+</div>
+
+<!-- ============================================ -->
+<h2>3. Il problema del database storico</h2>
+
+<p>Refract ha gia' accumulato circa 3-4 settimane di dati storici. Non tutti sono uguali dal punto di vista legale:</p>
+
+<table>
+  <tr>
+    <th>Dato nel database</th>
+    <th>Di chi e'?</th>
+    <th>Vendibile?</th>
+  </tr>
+  <tr>
+    <td>Titolo originale della news</td>
+    <td>Del publisher (Reuters, BBC, ecc.)</td>
+    <td class="blocked">No, senza licenza</td>
+  </tr>
+  <tr>
+    <td>URL della news</td>
+    <td>Nessuno (un link non e' copyrightable)</td>
+    <td class="ok">Si</td>
+  </tr>
+  <tr>
+    <td>Score di rilevanza, probabilita', categoria, direzione</td>
+    <td><strong>Nostro</strong> — output originale dell'AI</td>
+    <td class="ok">Si</td>
+  </tr>
+  <tr>
+    <td>Analisi e sommario generato dall'AI</td>
+    <td><strong>Nostro</strong> — creazione intellettuale originale</td>
+    <td class="ok">Si</td>
+  </tr>
+</table>
+
+<div class="box box-gold">
+  <strong>Punto chiave:</strong> passare a un'API a pagamento in futuro <strong>non sana retroattivamente</strong> i dati raccolti da feed non-commercial. La licenza del nuovo provider copre solo i nuovi dati. I titoli originali delle news RSS restano "tainted".<br><br>
+  <strong>Soluzione:</strong> per il dataset commerciale, si possono tenere tutti i campi derivati dall'AI (che sono proprieta' intellettuale nostra) e rimuovere o sostituire i titoli originali.
+</div>
+
+<h3>Riferimenti legali EU rilevanti</h3>
+<ul>
+  <li><strong>Infopaq v. Danske Dagblades (CJEU):</strong> anche 11 parole possono essere protette da copyright in EU</li>
+  <li><strong>Art. 15 Direttiva DSM / Art. 43-bis Legge Italiana:</strong> i publisher hanno diritti esclusivi sulle pubblicazioni online per 2 anni</li>
+  <li><strong>Thomson Reuters v. ROSS (2025):</strong> usare contenuti protetti per training/analisi AI non e' fair use se il prodotto compete con l'originale</li>
+</ul>
+
+<!-- ============================================ -->
+<h2>4. Impatto sulla monetizzazione B2C</h2>
+
+<table>
+  <tr>
+    <th>Scenario</th>
+    <th>Rischio legale</th>
+  </tr>
+  <tr>
+    <td>Bot Telegram gratuito (beta attuale)</td>
+    <td class="ok">Basso — nessun problema pratico</td>
+  </tr>
+  <tr>
+    <td>Bot Telegram a pagamento (con feed RSS gratuiti)</td>
+    <td class="blocked">Alto — 12/15 fonti vietano uso commerciale</td>
+  </tr>
+  <tr>
+    <td>Bot Telegram a pagamento (con API licenziata)</td>
+    <td class="ok">Zero — la licenza copre l'uso</td>
+  </tr>
+  <tr>
+    <td>Vendita dataset con titoli originali RSS</td>
+    <td class="blocked">Bloccata</td>
+  </tr>
+  <tr>
+    <td>Vendita dataset con solo score e analisi AI</td>
+    <td class="ok">Difendibile — dati derivati originali</td>
+  </tr>
+</table>
+
+<!-- ============================================ -->
+<h2>5. Soluzione: API news a pagamento</h2>
+
+<p>Esistono API che per <strong>$29-50/mese</strong> danno accesso a migliaia di fonti news con <strong>licenza commerciale inclusa</strong>. E' il loro business model: vendono il diritto legale di usare quei dati nel tuo prodotto.</p>
+
+<table>
+  <tr>
+    <th>API</th>
+    <th>Costo/mese</th>
+    <th>Copertura</th>
+    <th>Licenza</th>
+  </tr>
+  <tr>
+    <td><strong>MarketAux</strong></td>
+    <td>$29</td>
+    <td>Finance-nativa: oro, forex, crypto, macro, 5000+ fonti, sentiment per asset</td>
+    <td class="ok">Commerciale</td>
+  </tr>
+  <tr>
+    <td><strong>GDELT</strong></td>
+    <td>Gratis</td>
+    <td>Geopolitica globale, macro (non finance-specifico)</td>
+    <td class="ok">Libera (attribution)</td>
+  </tr>
+  <tr>
+    <td><strong>Alpha Vantage</strong></td>
+    <td>$49.99</td>
+    <td>Macro, politica monetaria/fiscale, crypto, FX, sentiment integrato</td>
+    <td class="risk">Da verificare</td>
+  </tr>
+</table>
+
+<div class="box box-green">
+  <strong>Setup raccomandato:</strong> MarketAux ($29/mese) + GDELT (gratis) = copertura completa su tutti e 3 gli asset (Gold, EUR/USD, Bitcoin) con licenza commerciale, per circa <strong>$29/mese</strong> in piu' rispetto a oggi.
+</div>
+
+<h3>Confronto costi mensili</h3>
+
+<table>
+  <tr>
+    <th>Voce</th>
+    <th>Oggi (RSS gratis)</th>
+    <th>Con API licenziata</th>
+  </tr>
+  <tr>
+    <td>Feed news</td>
+    <td>$0</td>
+    <td>~$29</td>
+  </tr>
+  <tr>
+    <td>Server GCP</td>
+    <td>~$30</td>
+    <td>~$30</td>
+  </tr>
+  <tr>
+    <td>AI (Gemini/Grok)</td>
+    <td>~$10</td>
+    <td>~$10</td>
+  </tr>
+  <tr>
+    <td><strong>Totale</strong></td>
+    <td><strong>~$40/mese</strong></td>
+    <td><strong>~$69/mese</strong></td>
+  </tr>
+  <tr>
+    <td>Rischio legale</td>
+    <td class="blocked">Alto</td>
+    <td class="ok">Zero</td>
+  </tr>
+</table>
+
+<!-- ============================================ -->
+<h2>6. Cosa fare e quando</h2>
+
+<table>
+  <tr>
+    <th style="width:28%">Quando</th>
+    <th>Azione</th>
+  </tr>
+  <tr>
+    <td><strong>Ora</strong></td>
+    <td>Nessuna urgenza operativa. Il bot funziona in beta gratuita senza rischi pratici. L'audit e' stato completato (questo documento).</td>
+  </tr>
+  <tr>
+    <td><strong>Prima di monetizzare</strong></td>
+    <td>Integrare API a pagamento (1-2 giorni di sviluppo). Pulire il DB storico: rimuovere titoli originali o ri-acquisirli via API licenziata.</td>
+  </tr>
+  <tr>
+    <td><strong>Prima della Partita IVA</strong></td>
+    <td>Consultare avvocato IP per conferma (opzionale ma raccomandato). Verificare anche i ToS di Finnhub (usato per i dati prezzo).</td>
+  </tr>
+  <tr>
+    <td><strong>Prima di vendere dataset</strong></td>
+    <td>Documentare provenienza di ogni record (quale fonte, quale licenza). Separare dati "puliti" da dati RSS-sourced.</td>
+  </tr>
+</table>
+
+<div class="box box-gold">
+  <strong>Regola d'oro:</strong> non iniziare a far pagare prima di aver risolto il licensing. L'ordine e':
+  <ol>
+    <li>Scegliere e integrare API a pagamento (~$29/mese)</li>
+    <li>Pulire/separare dati storici nel database</li>
+    <li>Verificare Finnhub (dati prezzo)</li>
+    <li>Consultare avvocato IP</li>
+    <li>Solo allora: monetizzare</li>
+  </ol>
+</div>
+
+<!-- ============================================ -->
+<h2>7. Conclusione</h2>
+
+<ul>
+  <li><strong>Il prodotto e' solido</strong> — l'analisi AI, gli score, le probabilita' e gli scenari sono contenuto originale con valore reale e proprieta' intellettuale nostra</li>
+  <li><strong>Il problema e' solo la fonte dei dati grezzi</strong> — risolvibile con ~$29/mese di API con licenza commerciale</li>
+  <li><strong>L'architettura e' gia' predisposta</strong> — il bot e' modulare, cambiare fonte dati richiede 1-2 giorni, non settimane</li>
+  <li><strong>Nessuna urgenza</strong> — finche' non si monetizza, il rischio e' solo teorico. Ma va risolto <em>prima</em> di qualsiasi pricing</li>
+</ul>
+
+<div class="footer">
+  Refract Macro &middot; Audit interno &middot; Marzo 2026
+</div>
+
+</div>
+</body>
+</html>
