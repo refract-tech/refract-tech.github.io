@@ -308,6 +308,13 @@
     </div>
   </div>
 
+  <!-- Nota campione -->
+  <div class="callout" style="margin-bottom: 56px;">
+    <h4>Una nota sui numeri di questa pagina</h4>
+    <p>312 &egrave; il numero di alert macro che il bot ha prodotto con un valore p_bullish. Ma non tutti gli alert generano un trade: servono filtri di sessione, volatilit&agrave; minima e soglia macro. I trade effettivamente simulati sono molti meno &mdash; da 6 a 49 a seconda della configurazione. Dove i numeri sono piccoli lo diciamo esplicitamente, perch&eacute; 7 trade non sono una certezza statistica. Sono un'indicazione, niente di pi&ugrave;.</p>
+    <p style="margin-top: 8px;">Inoltre, il backtest principale (0-C, 49 trade) usa <strong>entry sintetiche</strong>: abbiamo generato un'entrata ogni giorno all'apertura della sessione di New York per 60 giorni, usando il momentum H4 per decidere la direzione. Questo simula cosa farebbe il sistema, ma non &egrave; lo stesso di avere 49 segnali macro reali. I test su alert reali (7 e 14 trade) sono campioni pi&ugrave; piccoli ma pi&ugrave; rappresentativi di come funzioner&agrave; il bot in produzione.</p>
+  </div>
+
   <!-- ============================================================ -->
   <!-- SEZIONE 1: COS'È p_bullish -->
   <!-- ============================================================ -->
@@ -599,7 +606,7 @@
         </thead>
         <tbody>
           <tr class="row-winner">
-            <td><strong>p&gt;65, SL 2.0, no-trail, NY (alert reali)</strong></td>
+            <td><strong>p&gt;65, SL 2.0, no-trail, NY (alert reali)*</strong></td>
             <td class="mono">7</td>
             <td class="val-green">86%</td>
             <td class="val-green">4.01</td>
@@ -649,6 +656,8 @@
         </tbody>
       </table>
     </div>
+
+    <p style="font-size: 12px; color: var(--text-muted); margin-top: 10px;">* 7 trade sono troppo pochi per trarre conclusioni definitive. Il dato &egrave; incoraggiante ma non statisticamente significativo. Sapremo di pi&ugrave; dopo 50+ trade live.</p>
 
     <div class="callout green" style="margin-top: 16px;">
       <h4>Perch&eacute; funziona</h4>
