@@ -284,7 +284,7 @@
   <div class="header">
     <div class="brand">Refract Macro</div>
     <h1>Backtest Paper Trading: i dati dietro le decisioni</h1>
-    <p class="subtitle">Tre approcci testati, uno vincitore. Perche il segnale macro cambia tutto, e perche l'analisi tecnica da sola non basta per un bot.</p>
+    <p class="subtitle">Tre approcci testati, uno vincitore. Perch&eacute; il segnale macro cambia tutto, e perch&eacute; l'analisi tecnica da sola non basta per un bot.</p>
     <div class="date">Marzo 2026 &middot; Documento interno</div>
   </div>
 
@@ -309,32 +309,32 @@
   </div>
 
   <!-- ============================================================ -->
-  <!-- SEZIONE 1: COS'E' p_bullish -->
+  <!-- SEZIONE 1: COS'È p_bullish -->
   <!-- ============================================================ -->
   <div class="section">
     <div class="section-label">Il segnale</div>
-    <h2>Cos'e p_bullish (spiegato semplice)</h2>
-    <p class="desc">Ogni volta che il bot analizza una news macroeconomica, l'AI assegna un numero da 0 a 100 chiamato <strong>p_bullish</strong>: la probabilita che il prezzo dell'oro salga nelle prossime 4 ore a causa di quella notizia.</p>
+    <h2>Cos'&egrave; p_bullish (spiegato semplice)</h2>
+    <p class="desc">Ogni volta che il bot analizza una news macroeconomica, l'AI assegna un numero da 0 a 100 chiamato <strong>p_bullish</strong>: la probabilit&agrave; che il prezzo dell'oro salga nelle prossime 4 ore a causa di quella notizia.</p>
 
     <div class="card-grid">
       <div class="card">
         <h4 style="color: var(--green)">p_bullish = 75</h4>
-        <p>"Ho una buona fiducia che il prezzo salga." L'AI ha visto ad esempio un dato sull'inflazione USA sopra le attese, che storicamente spinge l'oro al rialzo.</p>
+        <p>&ldquo;Ho una buona fiducia che il prezzo salga.&rdquo; L'AI ha visto ad esempio un dato sull'inflazione USA sopra le attese, che storicamente spinge l'oro al rialzo.</p>
         <span class="tag">LONG (compra)</span>
       </div>
       <div class="card">
         <h4 style="color: var(--red)">p_bullish = 25</h4>
-        <p>"Ho una buona fiducia che il prezzo scenda." Ad esempio: la Fed segnala un rialzo dei tassi. Dollaro forte, oro debole.</p>
+        <p>&ldquo;Ho una buona fiducia che il prezzo scenda.&rdquo; Ad esempio: la Fed segnala un rialzo dei tassi. Dollaro forte, oro debole.</p>
         <span class="tag">SHORT (vendi)</span>
       </div>
       <div class="card">
         <h4 style="color: var(--text-muted)">p_bullish = 50</h4>
-        <p>"Non lo so, potrebbe andare in entrambe le direzioni." L'AI non ha abbastanza informazioni per sbilanciarsi. In questo caso: <strong>non si fa niente.</strong></p>
+        <p>&ldquo;Non lo so, potrebbe andare in entrambe le direzioni.&rdquo; L'AI non ha abbastanza informazioni per sbilanciarsi. In questo caso: <strong>non si fa niente.</strong></p>
         <span class="tag">NEUTRALE (fermo)</span>
       </div>
       <div class="card">
-        <h4 style="color: var(--gold)">Perche non BULLISH/BEARISH?</h4>
-        <p>Un numero e piu utile di un'etichetta. "75" dice che l'AI e abbastanza sicura. "55" dice che il segnale e debole. "95" dice che e quasi certa. L'etichetta binaria perde questa sfumatura.</p>
+        <h4 style="color: var(--gold)">Perch&eacute; non BULLISH/BEARISH?</h4>
+        <p>Un numero &egrave; pi&ugrave; utile di un'etichetta. &ldquo;75&rdquo; dice che l'AI &egrave; abbastanza sicura. &ldquo;55&rdquo; dice che il segnale &egrave; debole. &ldquo;95&rdquo; dice che &egrave; quasi certa. L'etichetta binaria perde questa sfumatura.</p>
         <span class="tag">CALIBRAZIONE</span>
       </div>
     </div>
@@ -345,12 +345,12 @@
   <!-- ============================================================ -->
   <div class="section">
     <div class="section-label">La misura</div>
-    <h2>Brier Score: quanto e affidabile l'AI?</h2>
-    <p class="desc">Dire "75% bullish" e facile. Ma quando l'AI dice 75%, il prezzo sale davvero il 75% delle volte? Il <strong>Brier Score</strong> misura esattamente questo: la calibrazione tra previsione e realta.</p>
+    <h2>Brier Score: quanto &egrave; affidabile l'AI?</h2>
+    <p class="desc">Dire &ldquo;75% bullish&rdquo; &egrave; facile. Ma quando l'AI dice 75%, il prezzo sale davvero il 75% delle volte? Il <strong>Brier Score</strong> misura esattamente questo: la calibrazione tra previsione e realt&agrave;.</p>
 
     <div class="callout">
       <h4>Come funziona (esempio pratico)</h4>
-      <p>L'AI dice p_bullish = 80 su una news (cioe "80% di probabilita che il prezzo salga"). Dopo 4 ore guardiamo: il prezzo e salito? Se si, il Brier per quella previsione e (0.80 - 1.0)&sup2; = 0.04 (quasi perfetto). Se no, e (0.80 - 0.0)&sup2; = 0.64 (molto sbagliato). La media su centinaia di previsioni da il Brier Score complessivo.</p>
+      <p>L'AI dice p_bullish = 80 su una news (cio&egrave; &ldquo;80% di probabilit&agrave; che il prezzo salga&rdquo;). Dopo 4 ore guardiamo: il prezzo &egrave; salito? Se s&igrave;, il Brier per quella previsione &egrave; (0.80 &minus; 1.0)&sup2; = 0.04 (quasi perfetto). Se no, &egrave; (0.80 &minus; 0.0)&sup2; = 0.64 (molto sbagliato). La media su centinaia di previsioni d&agrave; il Brier Score complessivo.</p>
     </div>
 
     <div class="card-grid">
@@ -375,8 +375,8 @@
     </div>
 
     <div class="callout green" style="margin-top: 20px;">
-      <h4>Perche il test set e importante</h4>
-      <p>Abbiamo diviso i dati in due: 218 alert per "allenare" il prompt dell'AI, e 94 mai toccati per il test finale. Il Brier Score sul test (0.2239) e <strong>addirittura migliore</strong> di quello sul train (0.2312). Questo significa che l'AI non sta "memorizzando" i dati di allenamento: generalizza bene su situazioni nuove.</p>
+      <h4>Perch&eacute; il test set &egrave; importante</h4>
+      <p>Abbiamo diviso i dati in due: 218 alert per &ldquo;allenare&rdquo; il prompt dell'AI, e 94 mai toccati per il test finale. Il Brier Score sul test (0.2239) &egrave; <strong>addirittura migliore</strong> di quello sul train (0.2312). Questo significa che l'AI non sta &ldquo;memorizzando&rdquo; i dati di allenamento: generalizza bene su situazioni nuove.</p>
     </div>
   </div>
 
@@ -387,28 +387,28 @@
   <!-- ============================================================ -->
   <div class="section">
     <div class="section-label">Il cuore del sistema</div>
-    <h2>Perche il segnale macro cambia tutto</h2>
-    <p class="desc">Il p_bullish non e un indicatore in piu. E il motivo per cui questo bot e fondamentalmente diverso da qualsiasi altro bot di trading sul mercato retail.</p>
+    <h2>Perch&eacute; il segnale macro cambia tutto</h2>
+    <p class="desc">Il p_bullish non &egrave; un indicatore in pi&ugrave;. &Egrave; il motivo per cui questo bot &egrave; fondamentalmente diverso da qualsiasi altro bot di trading sul mercato retail.</p>
 
     <div class="card-grid">
       <div class="card">
         <h4 style="color: var(--green)">1. Edge direzionale misurabile</h4>
-        <p>Quando l'AI dice p_bullish &gt; 65 durante la sessione di New York, il prezzo dell'oro va nella direzione prevista <strong>l'86% delle volte</strong> (6 trade su 7 nel backtest). Il Profit Factor sale a 4.01 &mdash; cioe per ogni dollaro perso, ne guadagni 4.</p>
+        <p>Quando l'AI dice p_bullish &gt; 65 durante la sessione di New York, il prezzo dell'oro va nella direzione prevista <strong>l'86% delle volte</strong> (6 trade su 7 nel backtest). Il Profit Factor sale a 4.01 &mdash; cio&egrave; per ogni dollaro perso, ne guadagni 4.</p>
         <span class="tag">p&gt;65 NY = 86% WIN RATE</span>
       </div>
       <div class="card">
         <h4 style="color: var(--blue)">2. Crash protection</h4>
-        <p>Un bot tecnico compra durante un crash perche "RSI e in ipervenduto". Il nostro no: se la Fed alza i tassi o scoppia una crisi, le news entrano nella pipeline, il p_bullish crolla, e il sistema dice <strong>"sto fermo"</strong>. Il macro protegge il capitale quando serve di piu.</p>
+        <p>Un bot tecnico compra durante un crash perch&eacute; &ldquo;RSI &egrave; in ipervenduto&rdquo;. Il nostro no: se la Fed alza i tassi o scoppia una crisi, le news entrano nella pipeline, il p_bullish crolla, e il sistema dice <strong>&ldquo;sto fermo&rdquo;</strong>. Il macro protegge il capitale quando serve di pi&ugrave;.</p>
         <span class="tag">NEUTRALE = PRESERVA CAPITALE</span>
       </div>
       <div class="card">
         <h4 style="color: var(--purple)">3. Consapevolezza di regime</h4>
-        <p>I bot tecnici non sanno perche il mercato si muove. Il nostro sa se il rialzo e dovuto a un dato sull'inflazione (sostenibile) o a un tweet (rumore). Questa consapevolezza permette di distinguere movimenti veri da fakeout.</p>
-        <span class="tag">CAPISCE IL "PERCHE"</span>
+        <p>I bot tecnici non sanno perch&eacute; il mercato si muove. Il nostro sa se il rialzo &egrave; dovuto a un dato sull'inflazione (sostenibile) o a un tweet (rumore). Questa consapevolezza permette di distinguere movimenti veri da fakeout.</p>
+        <span class="tag">CAPISCE IL &ldquo;PERCH&Eacute;&rdquo;</span>
       </div>
       <div class="card">
         <h4 style="color: var(--gold)">4. Unico nel panorama retail</h4>
-        <p>Su 150.000+ script di trading pubblicati e 12+ milioni di account automatizzati nel mondo, <strong>nessun bot retail documentato</strong> combina lettura AI delle news macro + probabilita calibrata + esecuzione tecnica. E il metodo standard degli hedge fund &mdash; ma i loro dati NLP costano $50K-500K/anno.</p>
+        <p>Su 150.000+ script di trading pubblicati e 12+ milioni di account automatizzati nel mondo, <strong>nessun bot retail documentato</strong> combina lettura AI delle news macro + probabilit&agrave; calibrata + esecuzione tecnica. &Egrave; il metodo standard degli hedge fund &mdash; ma i loro dati NLP costano $50K&ndash;500K/anno.</p>
         <span class="tag">ZERO CONCORRENTI RETAIL</span>
       </div>
     </div>
@@ -418,13 +418,13 @@
   <div class="section">
     <div class="section-label">Il contesto</div>
     <h2>Il gap tra retail e istituzionale</h2>
-    <p class="desc">Il 50% degli hedge fund sta allocando su strategie macro nel 2025 (survey SocGen su 322 fondi). Per i professionisti, il macro overlay e lo standard. Per il retail, non esiste.</p>
+    <p class="desc">Il 50% degli hedge fund sta allocando su strategie macro nel 2025 (survey SocGen su 322 fondi). Per i professionisti, il macro overlay &egrave; lo standard. Per il retail, non esiste.</p>
 
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th>Capacita</th>
+            <th>Capacit&agrave;</th>
             <th>Bot retail (3Commas, XauBot, EA...)</th>
             <th>Hedge fund (Bridgewater, Two Sigma...)</th>
             <th style="color: var(--gold)">Refract Macro</th>
@@ -433,15 +433,15 @@
         <tbody>
           <tr>
             <td>Indicatori tecnici</td>
-            <td class="val-green">Si</td>
-            <td class="val-green">Si</td>
-            <td class="val-green">Si</td>
+            <td class="val-green">S&igrave;</td>
+            <td class="val-green">S&igrave;</td>
+            <td class="val-green">S&igrave;</td>
           </tr>
           <tr>
             <td>Legge le news</td>
             <td class="val-red">No (le evita)</td>
-            <td class="val-green">Si (NLP su 10K+ fonti)</td>
-            <td class="val-green">Si (AI su 15 fonti macro)</td>
+            <td class="val-green">S&igrave; (NLP su 10K+ fonti)</td>
+            <td class="val-green">S&igrave; (AI su 15 fonti macro)</td>
           </tr>
           <tr>
             <td>Classificazione macro</td>
@@ -450,10 +450,10 @@
             <td class="val-green">3-call pipeline</td>
           </tr>
           <tr>
-            <td>Probabilita direzionale</td>
+            <td>Probabilit&agrave; direzionale</td>
             <td class="val-red">Nessuna</td>
             <td class="val-green">Modelli quant proprietari</td>
-            <td class="val-green">p_bullish 0-100</td>
+            <td class="val-green">p_bullish 0&ndash;100</td>
           </tr>
           <tr>
             <td>Calibrazione (Brier Score)</td>
@@ -464,13 +464,13 @@
           <tr>
             <td>Crash protection</td>
             <td class="val-red">No (compra i dip)</td>
-            <td class="val-green">Si</td>
-            <td class="val-green">Si (p_bullish neutrale)</td>
+            <td class="val-green">S&igrave;</td>
+            <td class="val-green">S&igrave; (p_bullish neutrale)</td>
           </tr>
           <tr>
             <td>Costo</td>
-            <td>$20-300/mese</td>
-            <td>$50K-500K/anno solo dati</td>
+            <td>$20&ndash;300/mese</td>
+            <td>$50K&ndash;500K/anno solo dati</td>
             <td style="color: var(--gold)">Consumer pricing</td>
           </tr>
         </tbody>
@@ -479,7 +479,7 @@
 
     <div class="callout blue" style="margin-top: 20px;">
       <h4>Cosa fanno i bot retail quando esce una news?</h4>
-      <p>La "feature news" numero 1 nei bot retail e un <strong>pulsante di pausa</strong>. XauBot ($499, il piu popolare per Gold) ha un "news filter" che ferma il bot durante NFP o CPI. Non legge la news, non la interpreta, non la usa come segnale. Semplicemente si spegne e aspetta che passi. E come un pilota che chiude gli occhi quando c'e turbolenza.</p>
+      <p>La &ldquo;feature news&rdquo; numero 1 nei bot retail &egrave; un <strong>pulsante di pausa</strong>. XauBot ($499, il pi&ugrave; popolare per Gold) ha un &ldquo;news filter&rdquo; che ferma il bot durante NFP o CPI. Non legge la news, non la interpreta, non la usa come segnale. Semplicemente si spegne e aspetta che passi. &Egrave; come un pilota che chiude gli occhi quando c'&egrave; turbolenza.</p>
     </div>
   </div>
 
@@ -500,7 +500,7 @@
       <span style="background: var(--blue); color: var(--bg); font-size: 12px; padding: 3px 10px; border-radius: 5px; font-family: 'JetBrains Mono', monospace;">0-B</span>
       Macro Puro (solo p_bullish + stop fisso)
     </h2>
-    <p class="desc">L'approccio piu semplice: l'AI dice "compra" o "vendi", si entra a mercato, stop loss fisso basato sulla volatilita (ATR). Nessun indicatore tecnico.</p>
+    <p class="desc">L'approccio pi&ugrave; semplice: l'AI dice &ldquo;compra&rdquo; o &ldquo;vendi&rdquo;, si entra a mercato, stop loss fisso basato sulla volatilit&agrave; (ATR). Nessun indicatore tecnico.</p>
 
     <div class="table-wrap">
       <table>
@@ -513,7 +513,7 @@
             <td class="mono">21</td>
             <td>48%</td>
             <td class="val-red">0.95</td>
-            <td class="val-red">-0.5R</td>
+            <td class="val-red">&minus;0.5R</td>
           </tr>
           <tr class="row-winner">
             <td>p&gt;65, solo NY</td>
@@ -528,7 +528,7 @@
 
     <div class="callout" style="margin-top: 16px;">
       <h4>Cosa abbiamo capito</h4>
-      <p>Il segnale macro <strong>ha un edge direzionale reale</strong>. Il problema non e la direzione &mdash; e come gestisci il trade dopo l'entrata. I winner chiudono per timeout (78-83% delle volte), non perche raggiungono un target. Serviva un sistema di uscita migliore del TP fisso.</p>
+      <p>Il segnale macro <strong>ha un edge direzionale reale</strong>. Il problema non &egrave; la direzione &mdash; &egrave; come gestisci il trade dopo l'entrata. I winner chiudono per timeout (78&ndash;83% delle volte), non perch&eacute; raggiungono un target. Serviva un sistema di uscita migliore del TP fisso.</p>
     </div>
   </div>
 
@@ -538,7 +538,7 @@
       <span style="background: var(--red); color: var(--bg); font-size: 12px; padding: 3px 10px; border-radius: 5px; font-family: 'JetBrains Mono', monospace;">0-A</span>
       Macro + Volume Profile / VWAP (approccio del trader)
     </h2>
-    <p class="desc">L'idea era promettente: usare il Volume Profile (VP) e il VWAP per trovare livelli di prezzo "importanti" e migliorare l'entrata e lo stop loss. Questo approccio viene dal workflow di un trader esperto che lo usa con successo nel suo trading manuale.</p>
+    <p class="desc">L'idea era promettente: usare il Volume Profile (VP) e il VWAP per trovare livelli di prezzo &ldquo;importanti&rdquo; e migliorare l'entrata e lo stop loss. Questo approccio viene dal workflow di un trader esperto che lo usa con successo nel suo trading manuale.</p>
 
     <div class="table-wrap">
       <table>
@@ -551,36 +551,36 @@
             <td class="mono">13</td>
             <td class="val-red">31%</td>
             <td class="val-red">0.22</td>
-            <td class="val-red">-7.5R</td>
+            <td class="val-red">&minus;7.5R</td>
           </tr>
           <tr class="row-loser">
             <td>VP 10 bucket, VA min 1.5x ATR, fix stop</td>
             <td class="mono">13</td>
             <td class="val-red">23%</td>
             <td class="val-red">0.54</td>
-            <td class="val-red">-2.3R</td>
+            <td class="val-red">&minus;2.3R</td>
           </tr>
           <tr class="row-loser">
             <td>Mean Reversion (fade dei movimenti)</td>
-            <td class="mono">-</td>
-            <td>-</td>
+            <td class="mono">&ndash;</td>
+            <td>&ndash;</td>
             <td class="val-red">0.07</td>
-            <td>-</td>
+            <td>&ndash;</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <div class="callout red" style="margin-top: 16px;">
-      <h4>Perche non funziona? (Spiegazione importante)</h4>
-      <p>Il Volume Profile e il VWAP <strong>funzionano quando un trader umano li interpreta visivamente</strong>. Un trader esperto guarda il grafico, vede la distribuzione del volume, identifica le zone di supporto/resistenza, e decide con giudizio. Questo e un processo <strong>qualitativo</strong> che richiede esperienza e contesto visivo.</p>
-      <p style="margin-top: 8px;">Un bot non puo fare questo. Ha solo numeri: 8-24 candele M15 (2-6 ore di dati), divise in bucket. La "Value Area" che ne risulta e troppo sottile statisticamente &mdash; $8-22 su un mercato che si muove di $25-30 al giorno. Anche dopo le nostre correzioni (bucket ridotti, VA minima forzata), il VP su dati cosi limitati <strong>aggiunge rumore, non informazione.</strong></p>
-      <p style="margin-top: 8px; color: var(--text)"><strong>Conclusione:</strong> il metodo del trader non "e venuto meno". La traduzione algoritmica del suo metodo non funziona su dati H1/M15 senza l'interpretazione visiva che lui fa. Per un bot automatico serve un approccio piu semplice e robusto.</p>
+      <h4>Perch&eacute; non funziona? (Spiegazione importante)</h4>
+      <p>Il Volume Profile e il VWAP <strong>funzionano quando un trader umano li interpreta visivamente</strong>. Un trader esperto guarda il grafico, vede la distribuzione del volume, identifica le zone di supporto/resistenza, e decide con giudizio. Questo &egrave; un processo <strong>qualitativo</strong> che richiede esperienza e contesto visivo.</p>
+      <p style="margin-top: 8px;">Un bot non pu&ograve; fare questo. Ha solo numeri: 8&ndash;24 candele M15 (2&ndash;6 ore di dati), divise in bucket. La &ldquo;Value Area&rdquo; che ne risulta &egrave; troppo sottile statisticamente &mdash; $8&ndash;22 su un mercato che si muove di $25&ndash;30 al giorno. Anche dopo le nostre correzioni (bucket ridotti, VA minima forzata), il VP su dati cos&igrave; limitati <strong>aggiunge rumore, non informazione.</strong></p>
+      <p style="margin-top: 8px; color: var(--text)"><strong>Conclusione:</strong> il metodo del trader non &ldquo;&egrave; venuto meno&rdquo;. La traduzione algoritmica del suo metodo non funziona su dati H1/M15 senza l'interpretazione visiva che lui fa. Per un bot automatico serve un approccio pi&ugrave; semplice e robusto.</p>
     </div>
 
     <div class="callout purple" style="margin-top: 12px;">
       <h4>E la Mean Reversion?</h4>
-      <p>Abbiamo anche testato l'approccio "fade the move" (comprare quando il prezzo scende ai minimi, vendere quando sale ai massimi). Su Gold, il mercato e <strong>news-driven</strong>: quando una notizia spinge il prezzo, questo tende a continuare nella stessa direzione, non a tornare indietro. Mean reversion PF 0.07 = per ogni euro guadagnato, ne perdi 14. Eliminata.</p>
+      <p>Abbiamo anche testato l'approccio &ldquo;fade the move&rdquo; (comprare quando il prezzo scende ai minimi, vendere quando sale ai massimi). Su Gold, il mercato &egrave; <strong>news-driven</strong>: quando una notizia spinge il prezzo, questo tende a continuare nella stessa direzione, non a tornare indietro. Mean reversion PF 0.07 = per ogni euro guadagnato, ne perdi 14. Eliminata.</p>
     </div>
   </div>
 
@@ -590,7 +590,7 @@
       <span style="background: var(--green); color: var(--bg); font-size: 12px; padding: 3px 10px; border-radius: 5px; font-family: 'JetBrains Mono', monospace;">0-C</span>
       Macro + ATR Smart (il vincitore)
     </h2>
-    <p class="desc">L'approccio finale: segnale macro per la direzione, stop largo basato sulla volatilita (2x ATR), e un timeout di 8 ore per chiudere. Niente trailing stop, niente target fisso. La formula piu semplice e la piu efficace.</p>
+    <p class="desc">L'approccio finale: segnale macro per la direzione, stop largo basato sulla volatilit&agrave; (2x ATR), e un timeout di 8 ore per chiudere. Niente trailing stop, niente target fisso. La formula pi&ugrave; semplice &egrave; la pi&ugrave; efficace.</p>
 
     <div class="table-wrap">
       <table>
@@ -651,8 +651,8 @@
     </div>
 
     <div class="callout green" style="margin-top: 16px;">
-      <h4>Perche funziona</h4>
-      <p>La formula e controintuitiva: <strong>niente trailing stop, niente take profit, niente indicatori complessi</strong>. Solo: direzione giusta (macro) + stop abbastanza largo da non farsi buttare fuori (2x ATR) + pazienza (timeout 8h). I trade vincenti crescono lentamente per ore &mdash; il trailing li taglierebbe prematuramente.</p>
+      <h4>Perch&eacute; funziona</h4>
+      <p>La formula &egrave; controintuitiva: <strong>niente trailing stop, niente take profit, niente indicatori complessi</strong>. Solo: direzione giusta (macro) + stop abbastanza largo da non farsi buttare fuori (2x ATR) + pazienza (timeout 8h). I trade vincenti crescono lentamente per ore &mdash; il trailing li taglierebbe prematuramente.</p>
     </div>
   </div>
 
@@ -660,7 +660,7 @@
   <div class="section">
     <div class="section-label">Scoperta chiave</div>
     <h2>Il trailing stop taglia i profitti</h2>
-    <p class="desc">Una delle scoperte piu controintuitive del backtest. Il trailing stop &mdash; che in teoria "protegge i profitti" &mdash; in pratica li dimezza.</p>
+    <p class="desc">Una delle scoperte pi&ugrave; controintuitive del backtest. Il trailing stop &mdash; che in teoria &ldquo;protegge i profitti&rdquo; &mdash; in pratica li dimezza.</p>
 
     <div style="margin-top: 16px;">
       <div class="compare-bar">
@@ -682,8 +682,8 @@
     </div>
 
     <div class="callout" style="margin-top: 16px;">
-      <h4>Perche?</h4>
-      <p>Il Gold dopo una news macro si muove lentamente e con ritracciamenti. Un trailing stop interpreta ogni ritracciamento come "il trend sta finendo" e chiude. In realta il prezzo sta solo "respirando" prima di continuare. Lo stop fisso + timeout lascia il trade respirare e cattura il movimento completo.</p>
+      <h4>Perch&eacute;?</h4>
+      <p>Il Gold dopo una news macro si muove lentamente e con ritracciamenti. Un trailing stop interpreta ogni ritracciamento come &ldquo;il trend sta finendo&rdquo; e chiude. In realt&agrave; il prezzo sta solo &ldquo;respirando&rdquo; prima di continuare. Lo stop fisso + timeout lascia il trade respirare e cattura il movimento completo.</p>
     </div>
   </div>
 
@@ -735,7 +735,7 @@
           <tr>
             <td>Crash protection</td>
             <td class="val-red">No</td>
-            <td class="val-green">Si (segnale neutrale)</td>
+            <td class="val-green">S&igrave; (segnale neutrale)</td>
           </tr>
         </tbody>
       </table>
@@ -743,7 +743,7 @@
 
     <div class="callout" style="margin-top: 16px;">
       <h4>Caveat importante</h4>
-      <p>49 trade su 60 giorni di Gold in forte uptrend. Il nostro Sharpe di 3.70 beneficia di questo bias. <strong>Target realistico dopo 6 mesi:</strong> WR 50-55%, PF 1.3-1.8, Sharpe 1.5-2.5. Se dopo 50 trade live il PF e sotto 1.0, ci fermiamo e rivalutiamo tutto. Nessun bias di conferma.</p>
+      <p>49 trade su 60 giorni di Gold in forte uptrend. Il nostro Sharpe di 3.70 beneficia di questo bias. <strong>Target realistico dopo 6 mesi:</strong> WR 50&ndash;55%, PF 1.3&ndash;1.8, Sharpe 1.5&ndash;2.5. Se dopo 50 trade live il PF &egrave; sotto 1.0, ci fermiamo e rivalutiamo tutto. Nessun bias di conferma.</p>
     </div>
   </div>
 
@@ -753,21 +753,21 @@
   <div class="section">
     <div class="section-label">Il vantaggio strutturale</div>
     <h2>Macro come crash protection</h2>
-    <p class="desc">Il valore piu importante del segnale macro non e nei trade che fa, ma in quelli che <strong>non</strong> fa.</p>
+    <p class="desc">Il valore pi&ugrave; importante del segnale macro non &egrave; nei trade che fa, ma in quelli che <strong>non</strong> fa.</p>
 
     <div class="card-grid">
       <div class="card card-wide">
         <h4>Scenario: la Fed alza i tassi a sorpresa</h4>
         <p style="margin-top: 8px;">
-          <strong style="color: var(--red)">Bot tecnico (EMA/RSI):</strong> il prezzo scende, RSI va in ipervenduto, il bot compra il dip. Il prezzo continua a scendere. Il bot compra ancora. Drawdown -8%, -12%, -15%...<br><br>
-          <strong style="color: var(--green)">Refract:</strong> la news "Fed raises rates" entra nella pipeline. L'AI assegna p_bullish = 22 (forte bias bearish). Il sistema o va SHORT o resta neutrale. Il trade LONG non viene mai aperto. Capitale preservato.
+          <strong style="color: var(--red)">Bot tecnico (EMA/RSI):</strong> il prezzo scende, RSI va in ipervenduto, il bot compra il dip. Il prezzo continua a scendere. Il bot compra ancora. Drawdown &minus;8%, &minus;12%, &minus;15%...<br><br>
+          <strong style="color: var(--green)">Refract:</strong> la news &ldquo;Fed raises rates&rdquo; entra nella pipeline. L'AI assegna p_bullish = 22 (forte bias bearish). Il sistema o va SHORT o resta neutrale. Il trade LONG non viene mai aperto. Capitale preservato.
         </p>
       </div>
     </div>
 
     <div class="callout green" style="margin-top: 16px;">
       <h4>Il dato che conta</h4>
-      <p>Nel backtest, il baseline LONG-only (senza macro) ha PF 1.77. Con il filtro macro (p&gt;65), il PF sale a 4.01. Il macro non solo migliora i trade che prendi &mdash; <strong>ti salva dai trade che non dovresti prendere</strong>. I bot puramente tecnici non hanno questo meccanismo: comprano i dip durante i crash perche il loro unico input e il prezzo, e il prezzo "sembra" a sconto.</p>
+      <p>Nel backtest, il baseline LONG-only (senza macro) ha PF 1.77. Con il filtro macro (p&gt;65), il PF sale a 4.01. Il macro non solo migliora i trade che prendi &mdash; <strong>ti salva dai trade che non dovresti prendere</strong>. I bot puramente tecnici non hanno questo meccanismo: comprano i dip durante i crash perch&eacute; il loro unico input &egrave; il prezzo, e il prezzo &ldquo;sembra&rdquo; a sconto.</p>
     </div>
   </div>
 
@@ -777,7 +777,7 @@
   <div class="section">
     <div class="section-label">Timing</div>
     <h2>La sessione di New York domina</h2>
-    <p class="desc">Non tutti gli orari sono uguali. Il backtest mostra chiaramente che per il Gold, la sessione di New York (15:00-21:00 CET) e dove si concentra l'edge.</p>
+    <p class="desc">Non tutti gli orari sono uguali. Il backtest mostra chiaramente che per il Gold, la sessione di New York (15:00&ndash;21:00 CET) &egrave; dove si concentra l'edge.</p>
 
     <div class="table-wrap">
       <table>
@@ -801,7 +801,7 @@
       </table>
     </div>
 
-    <p class="desc" style="margin-top: 16px;">Per EUR/USD la situazione e opposta: il Forex vive sulla sessione di Londra. Per questo le sessioni sono <strong>configurabili per asset</strong> dal file YAML &mdash; zero modifiche al codice.</p>
+    <p class="desc" style="margin-top: 16px;">Per EUR/USD la situazione &egrave; opposta: il Forex vive sulla sessione di Londra. Per questo le sessioni sono <strong>configurabili per asset</strong> dal file YAML &mdash; zero modifiche al codice.</p>
   </div>
 
   <div class="sep"></div>
@@ -816,33 +816,33 @@
     <div class="card-grid" style="grid-template-columns: 1fr;">
 
       <div class="card">
-        <h4 style="color: var(--green)">1. La semplicita vince</h4>
-        <p>Tre livelli di complessita testati. Il piu semplice (macro + stop largo + aspetta) batte il piu complesso (VP + VWAP + pattern detection + mean reversion) con un rapporto di 4:1 sul Profit Factor. Nel trading algoritmico, meno e quasi sempre meglio.</p>
+        <h4 style="color: var(--green)">1. La semplicit&agrave; vince</h4>
+        <p>Tre livelli di complessit&agrave; testati. Il pi&ugrave; semplice (macro + stop largo + aspetta) batte il pi&ugrave; complesso (VP + VWAP + pattern detection + mean reversion) con un rapporto di 4:1 sul Profit Factor. Nel trading algoritmico, meno &egrave; quasi sempre meglio.</p>
       </div>
 
       <div class="card">
         <h4 style="color: var(--green)">2. Il macro aggiunge valore reale, misurabile</h4>
-        <p>Baseline senza macro: PF 1.77. Con macro (p&gt;65): PF 4.01. Il Brier Score conferma che l'AI non sta tirando a caso (0.2239 vs 0.2500 random). L'edge e piccolo ma consistente, ed e la differenza tra un sistema profittevole e uno in pareggio.</p>
+        <p>Baseline senza macro: PF 1.77. Con macro (p&gt;65): PF 4.01. Il Brier Score conferma che l'AI non sta tirando a caso (0.2239 vs 0.2500 random). L'edge &egrave; piccolo ma consistente, ed &egrave; la differenza tra un sistema profittevole e uno in pareggio.</p>
       </div>
 
       <div class="card">
         <h4 style="color: var(--red)">3. L'analisi tecnica complessa non si traduce in algoritmo</h4>
-        <p>Il Volume Profile funziona per un trader umano che interpreta il grafico visivamente. Ma un bot non "vede" il grafico &mdash; vede numeri. Su 8-24 candele M15, la distribuzione del volume non ha abbastanza profondita statistica per produrre livelli affidabili. <strong>Non e il metodo che e sbagliato, e la traduzione algoritmica che non regge.</strong></p>
+        <p>Il Volume Profile funziona per un trader umano che interpreta il grafico visivamente. Ma un bot non &ldquo;vede&rdquo; il grafico &mdash; vede numeri. Su 8&ndash;24 candele M15, la distribuzione del volume non ha abbastanza profondit&agrave; statistica per produrre livelli affidabili. <strong>Non &egrave; il metodo che &egrave; sbagliato, &egrave; la traduzione algoritmica che non regge.</strong></p>
       </div>
 
       <div class="card">
-        <h4 style="color: var(--blue)">4. Il mercato del Gold e news-driven</h4>
-        <p>Mean reversion (comprare quando scende, vendere quando sale) ha PF 0.07 su Gold. Quando una notizia macro muove il prezzo, il movimento tende a continuare nella stessa direzione, non a tornare indietro. Per questo il segnale macro e cosi potente su questo mercato: stai dalla parte della news.</p>
+        <h4 style="color: var(--blue)">4. Il mercato del Gold &egrave; news-driven</h4>
+        <p>Mean reversion (comprare quando scende, vendere quando sale) ha PF 0.07 su Gold. Quando una notizia macro muove il prezzo, il movimento tende a continuare nella stessa direzione, non a tornare indietro. Per questo il segnale macro &egrave; cos&igrave; potente su questo mercato: stai dalla parte della news.</p>
       </div>
 
       <div class="card">
         <h4 style="color: var(--purple)">5. Nessun bot retail fa questo</h4>
-        <p>Abbiamo cercato in tutto il panorama: 150.000+ script su TradingView, 12+ milioni di account automatizzati, piattaforme come 3Commas, Cryptohopper, XauBot. <strong>Zero</strong> combinano lettura AI delle news macro + probabilita calibrata con Brier Score + esecuzione tecnica. La cosa piu vicina che esiste nel retail e un pulsante che spegne il bot durante le news. Noi le leggiamo e le usiamo come segnale.</p>
+        <p>Abbiamo cercato in tutto il panorama: 150.000+ script su TradingView, 12+ milioni di account automatizzati, piattaforme come 3Commas, Cryptohopper, XauBot. <strong>Zero</strong> combinano lettura AI delle news macro + probabilit&agrave; calibrata con Brier Score + esecuzione tecnica. La cosa pi&ugrave; vicina che esiste nel retail &egrave; un pulsante che spegne il bot durante le news. Noi le leggiamo e le usiamo come segnale.</p>
       </div>
 
       <div class="card">
         <h4 style="color: var(--orange)">6. I dati ci terranno onesti</h4>
-        <p>Dopo 50 trade live, se il PF e sotto 1.0 ci fermiamo. Dopo 100 trade, calcoliamo il Brier Score rolling per verificare che l'AI non stia degradando. Nessun bias di conferma: i numeri decidono, non le speranze. Questo e il vantaggio di avere un sistema che logga tutto: ogni trade e verificabile, ogni decisione e tracciabile.</p>
+        <p>Dopo 50 trade live, se il PF &egrave; sotto 1.0 ci fermiamo. Dopo 100 trade, calcoliamo il Brier Score rolling per verificare che l'AI non stia degradando. Nessun bias di conferma: i numeri decidono, non le speranze. Questo &egrave; il vantaggio di avere un sistema che logga tutto: ogni trade &egrave; verificabile, ogni decisione &egrave; tracciabile.</p>
       </div>
 
     </div>
@@ -869,18 +869,18 @@
       <div class="card" style="text-align: center; border-color: var(--green);">
         <h4 style="color: var(--green); font-size: 13px;">USCITA</h4>
         <p style="font-size: 18px; font-weight: 700; color: var(--text); margin: 8px 0;">Timeout</p>
-        <p>I winner crescono lenti<br>Stop = 1-2h (loser)<br>Timeout = 8h (winner)</p>
+        <p>I winner crescono lenti<br>Stop = 1&ndash;2h (loser)<br>Timeout = 8h (winner)</p>
       </div>
     </div>
   </div>
 
   <!-- Footer -->
   <div class="footer">
-    <span>Refract Macro</span> &middot; Backtest Paper Trading &middot; Dati reali dic 2025 - mar 2026 &middot; Documento interno, non pubblico
+    <span>Refract Macro</span> &middot; Backtest Paper Trading &middot; Dati reali dic 2025 &ndash; mar 2026 &middot; Documento interno, non pubblico
     <br><br>
     <span style="color: var(--text-muted); font-size: 11px;">
       Questo documento non costituisce consulenza finanziaria. I risultati passati non garantiscono risultati futuri.<br>
-      Il paper trading verra eseguito su denaro virtuale prima di qualsiasi considerazione su capitale reale.
+      Il paper trading verr&agrave; eseguito su denaro virtuale prima di qualsiasi considerazione su capitale reale.
     </span>
   </div>
 
