@@ -284,7 +284,7 @@
   <div class="header">
     <div class="brand">Refract Macro</div>
     <h1>Backtest Paper Trading: i dati dietro le decisioni</h1>
-    <p class="subtitle">Tre approcci testati, uno vincitore. Perch&eacute; il segnale macro cambia tutto, e perch&eacute; l'analisi tecnica da sola non basta per un bot.</p>
+    <p class="subtitle">Tre approcci testati, uno vincitore. Come il segnale macro si integra nel trading e cosa resta da validare.</p>
     <div class="date">Marzo 2026 &middot; Documento interno</div>
   </div>
 
@@ -307,6 +307,7 @@
       <div class="stat-label">Brier Score</div>
     </div>
   </div>
+  <p style="text-align: center; font-size: 12px; color: var(--text-muted); margin-top: -40px; margin-bottom: 40px;">49 trade sintetici, 2.5 settimane, singolo regime bullish. Walk-forward annuale in corso.</p>
 
   <!-- Nota campione -->
   <div class="callout" style="margin-bottom: 56px;">
@@ -377,13 +378,106 @@
           <span class="mono val-green">0.2239</span> &mdash; Test set (94 alert)<br>
           <span class="mono" style="color: var(--text-muted)">0.2500</span> &mdash; Baseline random<br>
         </p>
-        <span class="tag">MEGLIO DEL RANDOM &mdash; E NON PEGGIORA SU DATI NUOVI</span>
+        <span class="tag">BSS +0.10 vs random. BSS vs costante 60: +0.0005 &mdash; vedi sezione validazione per dettagli</span>
       </div>
     </div>
 
     <div class="callout green" style="margin-top: 20px;">
       <h4>Perch&eacute; il test set &egrave; importante</h4>
-      <p>Abbiamo diviso i dati in due: 218 alert per &ldquo;allenare&rdquo; il prompt dell'AI, e 94 mai toccati per il test finale. Il Brier Score sul test (0.2239) &egrave; <strong>addirittura migliore</strong> di quello sul train (0.2312). Questo significa che l'AI non sta &ldquo;memorizzando&rdquo; i dati di allenamento: generalizza bene su situazioni nuove.</p>
+      <p>Abbiamo diviso i dati in due: 218 alert come set di riferimento, e 94 mai toccati per il test finale. Il prompt non &egrave; mai stato ottimizzato sui dati. Il Brier Score sul test (0.2239) &egrave; <strong>addirittura migliore</strong> di quello sul set di riferimento (0.2312), confermando che il modello generalizza su situazioni nuove.</p>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- ============================================================ -->
+  <!-- SEZIONE 2B: VALIDAZIONE STATISTICA DEL SEGNALE -->
+  <!-- ============================================================ -->
+  <div class="section">
+    <div class="section-label">Validazione statistica</div>
+    <h2>Analisi del segnale: cosa funziona e cosa no</h2>
+    <p class="desc">Oltre al Brier Score, abbiamo analizzato in profondit&agrave; la qualit&agrave; del segnale prodotto dal sistema. I risultati mostrano un quadro sfumato: alcune componenti funzionano, altre no.</p>
+
+    <!-- Scoring vs Volatilità -->
+    <div class="callout green" style="margin-top: 20px;">
+      <h4>Lo scoring predice la volatilit&agrave; (p = 0.003)</h4>
+      <p>Lo scoring di rilevanza (0-100) assegnato dall'AI in Call 1 correla con la volatilit&agrave; di mercato nelle ore successive. Il gradiente &egrave; monotono e statisticamente significativo: le news con score pi&ugrave; alto precedono movimenti di prezzo pi&ugrave; ampi.</p>
+    </div>
+
+    <div class="table-wrap" style="margin-top: 12px;">
+      <table>
+        <thead>
+          <tr><th>Score range</th><th>n (approx)</th><th>|return 4h| medio</th><th>Ratio vs random</th><th>p-value</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>&lt; 40</td><td class="mono">~200</td><td class="mono">0.51%</td><td class="mono">1.05x</td><td class="mono" style="color: var(--text-muted)">&mdash;</td>
+          </tr>
+          <tr>
+            <td>40&ndash;54</td><td class="mono">~300</td><td class="mono">0.55%</td><td class="mono">1.12x</td><td class="mono" style="color: var(--text-muted)">&mdash;</td>
+          </tr>
+          <tr>
+            <td>55&ndash;69</td><td class="mono">~250</td><td class="mono">0.60%</td><td class="mono">1.23x</td><td class="mono" style="color: var(--text-muted)">&mdash;</td>
+          </tr>
+          <tr>
+            <td>70&ndash;84</td><td class="mono">~180</td><td class="mono">0.67%</td><td class="mono val-green">1.37x</td><td class="mono val-green">0.003</td>
+          </tr>
+          <tr class="row-winner">
+            <td>90+</td><td class="mono">~90</td><td class="mono">0.71%</td><td class="mono val-green">1.46x</td><td class="mono val-green">0.029</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">Spearman rank correlation (relevance_score, |return_4h|) = +0.051, p = 0.089. Confronto alert vs momenti random: 1.24x volatilit&agrave;, Mann-Whitney p = 0.0001 (n = 1,122 alert vs 415 random). I conteggi per score range sono approssimazioni.</p>
+
+    <!-- IC spiegazione -->
+    <div class="callout" style="margin-top: 24px;">
+      <h4>Cos'&egrave; l'Information Coefficient (IC)</h4>
+      <p>L'IC misura quanto le previsioni del modello <strong>ordinano correttamente</strong> i rendimenti futuri. Non guarda se i numeri sono giusti in assoluto (quello lo fa il Brier) &mdash; guarda se le news a cui il modello assegna un valore pi&ugrave; alto producono effettivamente rendimenti pi&ugrave; alti. Tecnicamente &egrave; la correlazione di Spearman tra previsione e rendimento effettivo.</p>
+      <p style="margin-top: 8px;">
+        <span class="mono" style="color: var(--text-muted)">IC = 0.00</span> &mdash; Nessuna capacit&agrave; discriminativa (random)<br>
+        <span class="mono" style="color: var(--orange)">IC = 0.03&ndash;0.05</span> &mdash; Debole ma potenzialmente utile su molti trade<br>
+        <span class="mono" style="color: var(--green)">IC = 0.05&ndash;0.10</span> &mdash; Buono (standard nel quant finance sistematico)<br>
+        <span class="mono" style="color: var(--green)">IC &gt; 0.10</span> &mdash; Forte<br>
+      </p>
+      <p style="margin-top: 8px; font-size: 12px; color: var(--text-muted);">Perch&eacute; serve: un Brier Score buono pu&ograve; derivare semplicemente dalla tendenza generale del mercato in quel periodo. L'IC rivela se il modello sa qualcosa IN PI&Ugrave; &mdash; se distingue le news che muoveranno il mercato al rialzo da quelle che lo muoveranno al ribasso.</p>
+    </div>
+
+    <!-- Direction IC -->
+    <div class="callout blue" style="margin-top: 24px;">
+      <h4>La direzione &egrave; nell'ordine corretto ma non significativa</h4>
+      <p>Il campo direction di Call 1 (BULLISH/NEUTRAL/BEARISH) ordina correttamente i rendimenti su tutti i timeframe. L'IC cresce con il timeframe, suggerendo un segnale che emerge nel medio termine:</p>
+    </div>
+
+    <div class="table-wrap" style="margin-top: 12px;">
+      <table>
+        <thead>
+          <tr><th>Timeframe</th><th>IC (Spearman)</th><th>p-value</th><th>n</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1h</td><td class="mono">+0.004</td><td class="mono">0.95</td><td class="mono">253</td>
+          </tr>
+          <tr>
+            <td>4h</td><td class="mono">+0.043</td><td class="mono">0.49</td><td class="mono">256</td>
+          </tr>
+          <tr>
+            <td>24h</td><td class="mono">+0.067</td><td class="mono">0.35</td><td class="mono">195</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">Rendimento medio per direction a 4h: BULLISH &minus;0.05% &gt; NEUTRAL &minus;0.03% &gt; BEARISH &minus;0.10%. L'ordine &egrave; corretto ma le differenze sono minime. Il gradiente crescente (1h &rarr; 24h) &egrave; suggestivo ma con 3 punti tutti non significativi potrebbe essere casuale.</p>
+
+    <!-- Limiti dichiarati -->
+    <div class="callout red" style="margin-top: 24px;">
+      <h4>Limiti dichiarati apertamente</h4>
+      <p><strong>IC del p_bullish numerico (0-100) = &minus;0.06 a 4h</strong> &mdash; non significativo (p = 0.33). Il valore numerico continuo non discrimina la direzione su questo campione, anche se la classificazione categoriale (BULLISH/NEUTRAL/BEARISH mostrata sopra) ordina correttamente i rendimenti.</p>
+      <p style="margin-top: 6px;"><strong>BSS vs predizione naive = +0.0005</strong> &mdash; il modello &egrave; quasi indistinguibile da una predizione costante basata sulla tendenza del periodo. La calibrazione &egrave; buona ma la discriminazione &egrave; debole.</p>
+      <p style="margin-top: 6px;"><strong>Distribuzione p_bullish concentrata:</strong> mean = 60.7, std = 5.8, range 42&ndash;69. La maggior parte delle predizioni cade in una banda ristretta, limitando la capacit&agrave; discriminativa.</p>
+      <p style="margin-top: 6px;"><strong>Campione limitato:</strong> 264 alert con p_bullish in un singolo regime bullish (~2.5 settimane). Non &egrave; possibile trarre conclusioni definitive. Il walk-forward su 13 mesi (vedi Prossimi Passi) tester&agrave; il segnale cross-regime.</p>
     </div>
   </div>
 
@@ -394,14 +488,14 @@
   <!-- ============================================================ -->
   <div class="section">
     <div class="section-label">Il cuore del sistema</div>
-    <h2>Perch&eacute; il segnale macro cambia tutto</h2>
-    <p class="desc">Il p_bullish non &egrave; un indicatore in pi&ugrave;. &Egrave; il motivo per cui questo bot &egrave; fondamentalmente diverso da qualsiasi altro bot di trading sul mercato retail.</p>
+    <h2>Il ruolo del segnale macro nel sistema</h2>
+    <p class="desc">Il p_bullish aggiunge una dimensione che i bot puramente tecnici non hanno: la consapevolezza di cosa sta succedendo nel mondo.</p>
 
     <div class="card-grid">
       <div class="card">
-        <h4 style="color: var(--green)">1. Edge direzionale misurabile</h4>
-        <p>Quando l'AI dice p_bullish &gt; 65 durante la sessione di New York, il prezzo dell'oro va nella direzione prevista <strong>l'86% delle volte</strong> (6 trade su 7 nel backtest). Il Profit Factor sale a 4.01 &mdash; cio&egrave; per ogni dollaro perso, ne guadagni 4.</p>
-        <span class="tag">p&gt;65 NY = 86% WIN RATE</span>
+        <h4 style="color: var(--green)">1. Edge direzionale</h4>
+        <p>Quando l'AI dice p_bullish &gt; 65 durante la sessione di New York, il prezzo dell'oro va nella direzione prevista in 6 casi su 7 nel backtest (86% win rate, PF 4.01) &mdash; su 7 trade, campione insufficiente per significativit&agrave; statistica. Su 49 trade sintetici con momentum H4, il PF scende a 2.23.</p>
+        <span class="tag">p&gt;65 NY = 86% WIN RATE (7 trade)</span>
       </div>
       <div class="card">
         <h4 style="color: var(--blue)">2. Crash protection</h4>
@@ -424,14 +518,14 @@
   <!-- Il gap retail vs istituzionale -->
   <div class="section">
     <div class="section-label">Il contesto</div>
-    <h2>Il gap tra retail e istituzionale</h2>
-    <p class="desc">Il 50% degli hedge fund sta allocando su strategie macro nel 2025 (survey SocGen su 322 fondi). Per i professionisti, il macro overlay &egrave; lo standard. Per il retail, non esiste.</p>
+    <h2>Posizionamento concettuale</h2>
+    <p class="desc">Il 50% degli hedge fund sta allocando su strategie macro nel 2025 (survey SocGen su 322 fondi). Questo &egrave; un confronto architetturale sulle capacit&agrave; del sistema, non sulle performance.</p>
 
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th>Capacit&agrave;</th>
+            <th>Capacit&agrave; architetturale</th>
             <th>Bot retail (3Commas, XauBot, EA...)</th>
             <th>Hedge fund (Bridgewater, Two Sigma...)</th>
             <th style="color: var(--gold)">Refract Macro</th>
@@ -465,8 +559,8 @@
           <tr>
             <td>Calibrazione (Brier Score)</td>
             <td class="val-red">Nessuna</td>
-            <td style="color: var(--text-dim)">Validazione interna</td>
-            <td class="val-green">Brier + ECE + BSS</td>
+            <td style="color: var(--text-dim)">Interna (non pubblica)</td>
+            <td style="color: var(--gold)">Pubblicata</td>
           </tr>
           <tr>
             <td>Crash protection</td>
@@ -475,18 +569,18 @@
             <td class="val-green">S&igrave; (p_bullish neutrale)</td>
           </tr>
           <tr>
-            <td>Costo</td>
+            <td>Costo infrastruttura</td>
             <td>$20&ndash;300/mese</td>
-            <td>$50K&ndash;500K/anno solo dati</td>
-            <td style="color: var(--gold)">Consumer pricing</td>
+            <td>$50K&ndash;500K/anno (dati + infra)</td>
+            <td>~$30/mese (cloud + API)</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <div class="callout blue" style="margin-top: 20px;">
-      <h4>Cosa fanno i bot retail quando esce una news?</h4>
-      <p>La &ldquo;feature news&rdquo; numero 1 nei bot retail &egrave; un <strong>pulsante di pausa</strong>. XauBot ($499, il pi&ugrave; popolare per Gold) ha un &ldquo;news filter&rdquo; che ferma il bot durante NFP o CPI. Non legge la news, non la interpreta, non la usa come segnale. Semplicemente si spegne e aspetta che passi. &Egrave; come un pilota che chiude gli occhi quando c'&egrave; turbolenza.</p>
+      <h4>Come gestiscono le news i bot retail</h4>
+      <p>La prassi standard nei bot retail &egrave; un filtro che sospende il trading durante eventi ad alto impatto (NFP, CPI, rate decisions). La news non viene letta o interpretata &mdash; viene evitata. Refract prende l'approccio opposto: le news sono l'input primario del sistema.</p>
     </div>
   </div>
 
@@ -535,7 +629,7 @@
 
     <div class="callout" style="margin-top: 16px;">
       <h4>Cosa abbiamo capito</h4>
-      <p>Il segnale macro <strong>ha un edge direzionale reale</strong>. Il problema non &egrave; la direzione &mdash; &egrave; come gestisci il trade dopo l'entrata. I winner chiudono per timeout (78&ndash;83% delle volte), non perch&eacute; raggiungono un target. Serviva un sistema di uscita migliore del TP fisso.</p>
+      <p>Il segnale macro <strong>mostra un'indicazione direzionale promettente su un campione limitato</strong>. Il problema non &egrave; la direzione &mdash; &egrave; come gestisci il trade dopo l'entrata. I winner chiudono per timeout (78&ndash;83% delle volte), non perch&eacute; raggiungono un target. Serviva un sistema di uscita migliore del TP fisso.</p>
     </div>
   </div>
 
@@ -752,7 +846,7 @@
 
     <div class="callout" style="margin-top: 16px;">
       <h4>Caveat importante</h4>
-      <p>49 trade su 60 giorni di Gold in forte uptrend. Il nostro Sharpe di 3.70 beneficia di questo bias. <strong>Target realistico dopo 6 mesi:</strong> WR 50&ndash;55%, PF 1.3&ndash;1.8, Sharpe 1.5&ndash;2.5. Se dopo 50 trade live il PF &egrave; sotto 1.0, ci fermiamo e rivalutiamo tutto. Nessun bias di conferma.</p>
+      <p>49 trade su 60 giorni in un singolo regime bullish vs 175 trade su 5 anni multi-regime. <strong>Il confronto &egrave; indicativo, non conclusivo.</strong> Il nostro Sharpe di 3.70 beneficia del bias rialzista del periodo. <strong>Target realistico dopo 6 mesi:</strong> WR 50&ndash;55%, PF 1.3&ndash;1.8, Sharpe 1.5&ndash;2.5. Se dopo 50 trade live il PF &egrave; sotto 1.0, ci fermiamo e rivalutiamo tutto. Nessun bias di conferma.</p>
     </div>
   </div>
 
@@ -776,7 +870,7 @@
 
     <div class="callout green" style="margin-top: 16px;">
       <h4>Il dato che conta</h4>
-      <p>Nel backtest, il baseline LONG-only (senza macro) ha PF 1.77. Con il filtro macro (p&gt;65), il PF sale a 4.01. Il macro non solo migliora i trade che prendi &mdash; <strong>ti salva dai trade che non dovresti prendere</strong>. I bot puramente tecnici non hanno questo meccanismo: comprano i dip durante i crash perch&eacute; il loro unico input &egrave; il prezzo, e il prezzo &ldquo;sembra&rdquo; a sconto.</p>
+      <p>Nel backtest, il baseline LONG-only (senza macro) ha PF 1.77. Con il filtro macro (p&gt;65), il PF sale a 4.01 su 7 trade. L'ipotesi &egrave; che il macro filtri i trade sfavorevoli &mdash; i bot puramente tecnici comprano i dip durante i crash perch&eacute; il loro unico input &egrave; il prezzo. Il walk-forward su 13 mesi verificher&agrave; questa ipotesi.</p>
     </div>
   </div>
 
@@ -830,8 +924,8 @@
       </div>
 
       <div class="card">
-        <h4 style="color: var(--green)">2. Il macro aggiunge valore reale, misurabile</h4>
-        <p>Baseline senza macro: PF 1.77. Con macro (p&gt;65): PF 4.01. Il Brier Score conferma che l'AI non sta tirando a caso (0.2239 vs 0.2500 random). L'edge &egrave; piccolo ma consistente, ed &egrave; la differenza tra un sistema profittevole e uno in pareggio.</p>
+        <h4 style="color: var(--green)">2. Il macro aggiunge valore</h4>
+        <p>Baseline senza macro: PF 1.77. Con macro (p&gt;65): PF 4.01 su 7 trade reali, PF 2.23 su 49 sintetici. Il Brier Score (0.2239) conferma che l'AI &egrave; calibrata meglio del random (0.2500). Il walk-forward su 13 mesi quantificher&agrave; l'edge cross-regime.</p>
       </div>
 
       <div class="card">
@@ -841,12 +935,12 @@
 
       <div class="card">
         <h4 style="color: var(--blue)">4. Il mercato del Gold &egrave; news-driven</h4>
-        <p>Mean reversion (comprare quando scende, vendere quando sale) ha PF 0.07 su Gold. Quando una notizia macro muove il prezzo, il movimento tende a continuare nella stessa direzione, non a tornare indietro. Per questo il segnale macro &egrave; cos&igrave; potente su questo mercato: stai dalla parte della news.</p>
+        <p>Mean reversion (comprare quando scende, vendere quando sale) ha PF 0.07 su Gold. Quando una notizia macro muove il prezzo, il movimento tende a continuare nella stessa direzione, non a tornare indietro. Questo suggerisce che un approccio trend-following guidato dalle news potrebbe essere pi&ugrave; adatto di mean reversion su Gold.</p>
       </div>
 
       <div class="card">
-        <h4 style="color: var(--purple)">5. Nessun bot retail fa questo</h4>
-        <p>Abbiamo cercato in tutto il panorama: 150.000+ script su TradingView, 12+ milioni di account automatizzati, piattaforme come 3Commas, Cryptohopper, XauBot. <strong>Zero</strong> combinano lettura AI delle news macro + probabilit&agrave; calibrata con Brier Score + esecuzione tecnica. La cosa pi&ugrave; vicina che esiste nel retail &egrave; un pulsante che spegne il bot durante le news. Noi le leggiamo e le usiamo come segnale.</p>
+        <h4 style="color: var(--purple)">5. Approccio non convenzionale nel retail</h4>
+        <p>Nella nostra ricerca non abbiamo trovato bot retail che combinino lettura AI delle news macro + probabilit&agrave; calibrata + esecuzione tecnica. La prassi standard nel retail &egrave; un filtro che spegne il bot durante le news ad alto impatto. Questo sistema le legge e le usa come segnale &mdash; un approccio pi&ugrave; vicino a quello istituzionale che a quello retail.</p>
       </div>
 
       <div class="card">
@@ -882,6 +976,41 @@
       </div>
     </div>
   </div>
+
+  <!-- ============================================================ -->
+  <!-- SEZIONE 10: PROSSIMI PASSI -->
+  <!-- ============================================================ -->
+  <div class="section">
+    <div class="section-label">Prossimi passi</div>
+    <h2>Walk-Forward Backtest: la validazione definitiva</h2>
+    <p class="desc">I risultati attuali sono promettenti ma su un campione limitato (2.5 settimane, un solo regime). Il prossimo step &egrave; un walk-forward backtest su 13 mesi (feb 2025 &ndash; mar 2026) con news storiche mai viste dal sistema, attraverso almeno 5 regimi di mercato diversi.</p>
+
+    <div class="card-grid" style="grid-template-columns: 1fr;">
+      <div class="card">
+        <h4 style="color: var(--gold)">Design dell'esperimento</h4>
+        <p style="margin-top: 8px;">
+          <strong>Metodo:</strong> expanding window walk-forward su 10 blocchi mensili. 4 blocchi iniziali in-sample, poi <strong>6 blocchi out-of-sample (OOS)</strong> su 6 regimi diversi (consolidamento, bearish, bull geopolitico, festivo, spike+crash, guerra). Ogni blocco OOS viene testato con un modello che non ha mai visto quei dati.
+        </p>
+        <p style="margin-top: 12px;">
+          <strong>5 tracce parallele sugli stessi dati:</strong><br>
+          &bull; <strong>Traccia 0 (Baseline):</strong> Tech-only, entry ogni giorno in sessione NY<br>
+          &bull; <strong>Traccia A:</strong> Score &ge; 80 + direzione tecnica &mdash; testa se lo scoring filtra i momenti giusti<br>
+          &bull; <strong>Traccia B:</strong> Score &ge; 80 + p_bullish + tecnico &mdash; testa se p_bullish aggiunge valore direzionale<br>
+          &bull; <strong>Traccia C:</strong> Prompt produzione su 13 mesi &mdash; distribuzione p_bullish cross-regime<br>
+          &bull; <strong>Null:</strong> Baseline naive (predizione costante) &mdash; il modello batte una stima passiva?
+        </p>
+        <p style="margin-top: 12px;">
+          <strong>Criteri di successo pre-registrati:</strong> definiti prima di vedere i dati. Il sistema passa se le metriche superano le soglie su almeno 5/6 blocchi OOS. Se nessuna traccia batte la baseline, il sistema non ha edge &mdash; e lo dichiariamo.
+        </p>
+        <p style="margin-top: 12px;">
+          <strong>Checklist metodologica:</strong> pipeline replicata, look-ahead bias eliminato, latenza prezzo simulata, outcome definition identica, campione diluito come robustness check, multiple testing correction (Bonferroni/FDR).
+        </p>
+        <span class="tag">6 BLOCCHI OOS &middot; 6 REGIMI &middot; RISULTATI ATTESI: 2&ndash;3 SETTIMANE</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="sep"></div>
 
   <!-- Footer -->
   <div class="footer">
