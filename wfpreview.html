@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refract Macro — Scoperta del Segnale & Ricerca Alpha</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface-2: #1a1a26;
+    --border: #2a2a3a;
+    --gold: #d4a843;
+    --gold-dim: #a07d2e;
+    --green: #34d399;
+    --red: #f87171;
+    --blue: #60a5fa;
+    --orange: #fb923c;
+    --purple: #a78bfa;
+    --text: #e8e8ed;
+    --text-dim: #8888a0;
+    --text-muted: #55556a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  .container {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  .header .brand {
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  .header h1 {
+    font-size: clamp(26px, 5vw, 38px);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--text) 0%, var(--text-dim) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header .subtitle {
+    font-size: 16px;
+    color: var(--text-dim);
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .header .date {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 12px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 36px;
+    margin-bottom: 56px;
+    padding: 24px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 26px;
+    font-weight: 500;
+  }
+  .stat-value.gold { color: var(--gold); }
+  .stat-value.green { color: var(--green); }
+  .stat-value.red { color: var(--red); }
+  .stat-value.blue { color: var(--blue); }
+  .stat-value.purple { color: var(--purple); }
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 56px;
+  }
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  .section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .section .desc {
+    color: var(--text-dim);
+    font-size: 15px;
+    margin-bottom: 24px;
+    max-width: 800px;
+  }
+
+  /* Cards */
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 20px;
+  }
+  @media (max-width: 640px) {
+    .card-grid { grid-template-columns: 1fr; }
+    .stats-bar { gap: 20px; }
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .card p {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .card .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    background: var(--bg);
+    padding: 2px 8px;
+    border-radius: 3px;
+    color: var(--text-dim);
+    margin-top: 8px;
+  }
+  .card-wide {
+    grid-column: 1 / -1;
+  }
+
+  /* Tables */
+  .table-wrap {
+    overflow-x: auto;
+    margin-top: 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th {
+    background: var(--surface-2);
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+  td {
+    padding: 10px 14px;
+    border-top: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tr:nth-child(even) { background: rgba(255,255,255,0.015); }
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .val-green { color: var(--green); font-weight: 600; }
+  .val-red { color: var(--red); font-weight: 600; }
+  .val-gold { color: var(--gold); font-weight: 600; }
+  .val-blue { color: var(--blue); font-weight: 600; }
+  .val-purple { color: var(--purple); font-weight: 600; }
+  .row-winner { background: rgba(52, 211, 153, 0.06) !important; }
+  .row-loser { background: rgba(248, 113, 113, 0.04) !important; }
+
+  /* Callout box */
+  .callout {
+    background: var(--surface);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .callout.green { border-left-color: var(--green); }
+  .callout.red { border-left-color: var(--red); }
+  .callout.blue { border-left-color: var(--blue); }
+  .callout.purple { border-left-color: var(--purple); }
+  .callout h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .callout p, .callout ul {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+  .callout ul { margin-top: 6px; padding-left: 18px; }
+  .callout li { margin-bottom: 4px; }
+
+  /* Compare bars */
+  .compare-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+  }
+  .compare-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    width: 180px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .compare-fill {
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 50px;
+    transition: width 0.6s ease;
+  }
+
+  /* Separator */
+  .sep {
+    height: 1px;
+    background: var(--border);
+    margin: 48px 0;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+  .footer span { color: var(--gold); }
+
+  /* Additional styles for this page */
+  .tier-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+  .tier-1 { background: rgba(52, 211, 153, 0.15); color: var(--green); }
+  .tier-2 { background: rgba(96, 165, 250, 0.15); color: var(--blue); }
+  .tier-3 { background: rgba(136, 136, 160, 0.15); color: var(--text-dim); }
+  .tier-dead { background: rgba(248, 113, 113, 0.12); color: var(--red); }
+
+  .formula-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    overflow-x: auto;
+  }
+
+  .signal-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-top: 20px;
+  }
+  @media (max-width: 780px) {
+    .signal-grid { grid-template-columns: 1fr; }
+  }
+
+  .quadrant-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin: 16px 0;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .quadrant-cell {
+    background: var(--surface);
+    padding: 20px;
+    text-align: center;
+  }
+  .quadrant-cell .q-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .quadrant-cell .q-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 700;
+  }
+  .quadrant-cell .q-detail {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 48px;
+  }
+  .toc h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .toc ol {
+    padding-left: 20px;
+    font-size: 14px;
+  }
+  .toc li {
+    margin-bottom: 6px;
+  }
+  .toc a {
+    color: var(--gold);
+    text-decoration: none;
+  }
+  .toc a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="brand">Refract Macro</div>
+    <h1>Scoperta del Segnale & Ricerca Alpha: XAU/USD</h1>
+    <p class="subtitle">Tre fonti di edge indipendenti identificate con p&lt;0.001. 555 alert, 13 mesi di dati di prezzo orari, 9 esperimenti strutturati. IC corretto per campioni sovrapposti. Cosa generalizza nel tempo e cosa no.</p>
+    <div class="date">Marzo 2026 &middot; Documento di Ricerca Interno &middot; v2.1</div>
+  </div>
+
+  <!-- Hero stats -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-value gold">555</div>
+      <div class="stat-label">Campioni alert</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value green">+0.188</div>
+      <div class="stat-label">Miglior IC (TSCV)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value blue">p&lt;0.0001</div>
+      <div class="stat-label">Sign. statistica</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value purple">33 pt</div>
+      <div class="stat-label">Spread quadranti</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" style="color: var(--orange)">7.986</div>
+      <div class="stat-label">Candele orarie</div>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <h3>Indice</h3>
+    <ol>
+      <li><a href="#caveats">Avvertenze e Limiti dei Dati</a></li>
+      <li><a href="#executive">Sintesi: Tre Fonti di Edge Indipendenti</a></li>
+      <li><a href="#discovery1">Edge 1 &mdash; Scoring News &rarr; Volatilità (Score &rarr; |Return|)</a></li>
+      <li><a href="#discovery2">Edge 2 &mdash; Segnale Direzionale (pct_bullish_24h)</a></li>
+      <li><a href="#discovery3">Edge 3 &mdash; Contesto di Mercato (Tailwind Score)</a></li>
+      <li><a href="#quadrants">Analisi a Quadranti: Direzione &times; Tailwind</a></li>
+      <li><a href="#components">Analisi Componenti: Cosa Muove i Ritorni dell'Oro</a></li>
+      <li><a href="#ml">Confronto Modelli ML & Quantificazione Overfitting</a></li>
+      <li><a href="#interactions">Termini di Interazione: Promesse vs Realtà</a></li>
+      <li><a href="#regime">Stima di Regime e Base Rate</a></li>
+      <li><a href="#non-signals">Non-Segnali: Cosa Non Funziona</a></li>
+      <li><a href="#overlap">Correzione Campioni Sovrapposti</a></li>
+      <li><a href="#brier-comparison">Brier Score: 5 Stimatori a Confronto</a></li>
+      <li><a href="#walkforward">Piano Validazione Walk-Forward</a></li>
+    </ol>
+  </div>
+
+  <!-- 1. CAVEATS -->
+  <div class="section" id="caveats">
+    <div class="section-label">Sezione 1</div>
+    <h2>Avvertenze e Limiti dei Dati</h2>
+    <p class="desc">Ogni numero in questo documento deve essere letto tenendo a mente questi vincoli. Tutte le scoperte sono preliminari finché non saranno validate su 13 mesi di dati out-of-sample.</p>
+
+    <div class="callout red">
+      <h4>Limiti Critici</h4>
+      <ul>
+        <li><strong>555 campioni alert su ~3 settimane</strong> (18 Feb &ndash; 13 Mar 2026). Singolo regime macro (trend Oro rialzista, range VIX 15-22).</li>
+        <li><strong>Nessuna diversità di regime.</strong> Non abbiamo visto un regime ribassista sull'Oro, uno spike del VIX (>30), o un crash risk-off in questo campione.</li>
+        <li><strong>Coefficienti preliminari.</strong> I pesi di Ridge/Lasso cambieranno sui dati a 13 mesi. Le direzioni sono più affidabili delle magnitudo.</li>
+        <li><strong>La cross-validation LOO gonfia i modelli ad albero di 3-5x.</strong> Tutte le metriche oneste usano TimeSeriesSplit a 5 fold (nessun leak dal futuro).</li>
+        <li><strong>Target:</strong> return_4h = (price_4h / price_at_alert &minus; 1) &times; 100. Binario: &gt;+0.05% = 1, &lt;&minus;0.05% = 0.</li>
+        <li><strong>Fonte prezzi:</strong> Candele orarie XAU/USD da Twelve Data (7.986 candele, 13 mesi). Prezzi a livello di alert da Finnhub in tempo reale.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- 2. EXECUTIVE SUMMARY -->
+  <div class="section" id="executive">
+    <div class="section-label">Sezione 2</div>
+    <h2>Sintesi: Tre Fonti di Edge Indipendenti</h2>
+    <p class="desc">Abbiamo identificato tre fonti statisticamente significative e indipendenti di informazione nella pipeline Refract. Ognuna cattura una dimensione diversa della relazione news&rarr;prezzo.</p>
+
+    <div class="signal-grid">
+      <div class="card">
+        <h4 style="color: var(--green);">Edge 1: Volatilità</h4>
+        <p>L'intensità dello scoring delle news predice la magnitudo assoluta del ritorno. Alert con score alto precedono movimenti di prezzo più ampi (in entrambe le direzioni).</p>
+        <div style="margin-top: 12px;">
+          <span class="mono val-green">1.24x</span>
+          <span style="font-size: 12px; color: var(--text-dim);"> moltip. volatilità a score 80+</span>
+        </div>
+        <div style="margin-top: 4px;">
+          <span class="mono val-green">p = 0.0001</span>
+        </div>
+        <div class="tag">TIER 1 &mdash; ROBUSTO</div>
+      </div>
+
+      <div class="card">
+        <h4 style="color: var(--blue);">Edge 2: Direzione</h4>
+        <p>La percentuale rolling a 24h degli alert classificati rialzisti predice la direzione del prossimo movimento a 4h. Il conteggio semplice batte gli indici pesati.</p>
+        <div style="margin-top: 12px;">
+          <span class="mono val-blue">r = +0.184</span>
+          <span style="font-size: 12px; color: var(--text-dim);"> correlazione Spearman</span>
+        </div>
+        <div style="margin-top: 4px;">
+          <span class="mono val-blue">p = 0.0002</span>
+        </div>
+        <div class="tag">TIER 1 &mdash; ROBUSTO</div>
+      </div>
+
+      <div class="card">
+        <h4 style="color: var(--purple);">Edge 3: Contesto di Mercato</h4>
+        <p>Il momentum del VIX, la direzione del DXY e i segnali di mean reversion (RSI, SMA20) condizionano se un segnale direzionale da news si traduce in prezzo.</p>
+        <div style="margin-top: 12px;">
+          <span class="mono val-purple">IC = +0.191</span>
+          <span style="font-size: 12px; color: var(--text-dim);"> media TSCV RF d2</span>
+        </div>
+        <div style="margin-top: 4px;">
+          <span class="mono val-purple">p &lt; 0.0001</span>
+        </div>
+        <div class="tag">TIER 2 &mdash; SERVE VALIDAZIONE 13-MESI</div>
+      </div>
+    </div>
+
+    <div class="callout green" style="margin-top: 24px;">
+      <h4>Risultato Chiave: Direzione &times; Tailwind Raddoppia il Potere Predittivo</h4>
+      <p>Solo direzione: IC = +0.093 (p = 0.028). Combinata con il contesto di mercato Tailwind: <strong>IC = +0.188 (p &lt; 0.0001)</strong>. I due segnali sono complementari &mdash; la direzione ti dice dove, il Tailwind ti dice se il mercato seguirà il movimento.</p>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- 3. EDGE 1: VOLATILITY -->
+  <div class="section" id="discovery1">
+    <div class="section-label">Sezione 3</div>
+    <h2>Edge 1: Scoring &rarr; Volatilità</h2>
+    <p class="desc">L'effective_score di Refract (post-gate, post-boost) correla con la magnitudo del successivo movimento di prezzo a 4h, indipendentemente dalla direzione. Le news con punteggio più alto precedono movimenti più ampi.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Bucket Score</th>
+            <th>n</th>
+            <th>Media |Ritorno 4h|</th>
+            <th>Moltiplicatore Vol</th>
+            <th>Significatività</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>0&ndash;50</td>
+            <td class="mono">~80</td>
+            <td class="mono">0.42%</td>
+            <td class="mono">0.78x</td>
+            <td class="mono">baseline</td>
+          </tr>
+          <tr>
+            <td>50&ndash;70</td>
+            <td class="mono">~250</td>
+            <td class="mono">0.51%</td>
+            <td class="mono">0.95x</td>
+            <td class="mono">&mdash;</td>
+          </tr>
+          <tr>
+            <td>70&ndash;80</td>
+            <td class="mono">~130</td>
+            <td class="mono">0.56%</td>
+            <td class="mono">1.04x</td>
+            <td class="mono">&mdash;</td>
+          </tr>
+          <tr class="row-winner">
+            <td>80&ndash;90</td>
+            <td class="mono">~65</td>
+            <td class="mono">0.62%</td>
+            <td class="mono val-green">1.15x</td>
+            <td class="mono">&mdash;</td>
+          </tr>
+          <tr class="row-winner">
+            <td>90+</td>
+            <td class="mono">~30</td>
+            <td class="mono">0.67%</td>
+            <td class="mono val-green">1.24x</td>
+            <td class="mono val-green">p = 0.0001</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="margin-top: 20px;">
+      <h4>Nota</h4>
+      <p>Questo è un segnale di volatilità, non un segnale direzionale. Score &rarr; |return| è significativo; score &rarr; direzione del ritorno non lo è (r = 0.003, p = 0.96). Questo significa che lo scoring identifica correttamente le news di impatto, ma la classificazione (Call 1) determina quale direzione prenderanno. I due edge sono ortogonali.</p>
+    </div>
+
+    <div class="callout blue">
+      <h4>Scoperta: Il Paradosso della Rimozione dei Gate</h4>
+      <p>Il flusso news RSS correla con la volatilità a 4h (p = 0.0001), ma il sistema di filtraggio a 14 gate <em>rimuove</em> questa varianza (fattore di compressione 0.902x). I gate ottimizzano per l'esperienza utente (riducono il rumore), non per i segnali di trading. Implicazione: una doppia pipeline (una per gli alert, una per i segnali di trading) potrebbe catturare più edge.</p>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- 4. EDGE 2: DIRECTION -->
+  <div class="section" id="discovery2">
+    <div class="section-label">Sezione 4</div>
+    <h2>Edge 2: pct_bullish_24h &mdash; Segnale Direzionale</h2>
+    <p class="desc">Il più semplice aggregato possibile &mdash; quale percentuale degli alert classificati nelle ultime 24 ore era BULLISH &mdash; è il predittore direzionale derivato dall'AI più forte che abbiamo trovato.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Metrica Direzionale</th>
+            <th>Spearman r</th>
+            <th>p-value</th>
+            <th>n</th>
+            <th>Nota</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-winner">
+            <td><strong>pct_bullish_24h</strong></td>
+            <td class="mono val-green">+0.184</td>
+            <td class="mono val-green">0.0002</td>
+            <td class="mono">416</td>
+            <td>Conteggio semplice / totale</td>
+          </tr>
+          <tr>
+            <td>bullish_score_24h</td>
+            <td class="mono">+0.105</td>
+            <td class="mono">0.033</td>
+            <td class="mono">416</td>
+            <td>Conteggio bullish pesato per score</td>
+          </tr>
+          <tr>
+            <td>direction_per_alert</td>
+            <td class="mono">+0.093</td>
+            <td class="mono">0.028</td>
+            <td class="mono">555</td>
+            <td>Direzione del singolo alert</td>
+          </tr>
+          <tr class="row-loser">
+            <td>Refract Index (RI)</td>
+            <td class="mono val-red">+0.041</td>
+            <td class="mono val-red">0.40</td>
+            <td class="mono">416</td>
+            <td>Pesato per score con ancora Bayesiana</td>
+          </tr>
+          <tr class="row-loser">
+            <td>p_bullish (produzione)</td>
+            <td class="mono val-red">&minus;0.091</td>
+            <td class="mono val-red">0.15</td>
+            <td class="mono">~260</td>
+            <td>Stima probabilità Call 3 AI</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout red" style="margin-top: 20px;">
+      <h4>Risultato Controintuitivo: L'Ancora Bayesiana Distrugge il Segnale</h4>
+      <p>Il Refract Index applica un'ancora di smoothing Bayesiano (tira verso 50) e la pesatura per score. Questo <em>comprime</em> il segnale grezzo da r = +0.184 a r = +0.041 (rumore). L'indice "sofisticato" è 4,5 volte più debole del semplice conteggio. <strong>Meno è meglio.</strong></p>
+    </div>
+
+    <div class="callout red">
+      <h4>L'IC del p_bullish in Produzione è Negativo</h4>
+      <p>La stima di probabilità AI dalla Call 3 (p_bullish) ha IC = &minus;0.091 (p = 0.15) sui dati di produzione. Non è statisticamente significativo, ma è nella direzione sbagliata. Tuttavia, p_bullish è stato addestrato per predire le chiusure giornaliere &mdash; potrebbe avere un IC diverso su un orizzonte giornaliero. Il walk-forward testerà questo aspetto correttamente con un contesto di 13 mesi.</p>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- 5. EDGE 3: TAILWIND -->
+  <div class="section" id="discovery3">
+    <div class="section-label">Sezione 5</div>
+    <h2>Edge 3: Contesto di Mercato (Tailwind Score)</h2>
+    <p class="desc">Sei variabili di contesto di mercato combinate in un punteggio composito. La versione originale equipesata era rumore (r = +0.016). Dopo la correzione dei segni e una pesatura empirica, il segnale è emerso.</p>
+
+    <h3 style="margin-bottom: 16px; font-size: 18px;">L'Evoluzione del Tailwind Score</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Versione</th>
+            <th>Descrizione</th>
+            <th>Spearman r</th>
+            <th>p-value</th>
+            <th>Stato</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-loser">
+            <td>v1 Originale</td>
+            <td>Pesi uguali, tutti positivi al momentum</td>
+            <td class="mono val-red">+0.016</td>
+            <td class="mono">0.70</td>
+            <td><span class="tier-badge tier-dead">MORTO</span></td>
+          </tr>
+          <tr>
+            <td>v2 Invertita</td>
+            <td>RSI, SMA20, momentum Oro invertiti</td>
+            <td class="mono val-green">+0.213</td>
+            <td class="mono val-green">&lt;0.0001</td>
+            <td><span class="tier-badge tier-1">FUNZIONA</span></td>
+          </tr>
+          <tr class="row-winner">
+            <td>v3 Pesata</td>
+            <td>Pesi empirici sbilanciati sul VIX</td>
+            <td class="mono val-green">+0.262</td>
+            <td class="mono val-green">&lt;0.0001</td>
+            <td><span class="tier-badge tier-1">MIGLIORE GREZZO</span></td>
+          </tr>
+          <tr>
+            <td>v5 Solo VIX</td>
+            <td>Solo momentum del VIX</td>
+            <td class="mono val-green">+0.264</td>
+            <td class="mono val-green">&lt;0.0001</td>
+            <td><span class="tier-badge tier-2">DA INVESTIGARE</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="margin-top: 20px;">
+      <h4>Intuizione Critica: L'Oro è un Asset Mean-Reverting</h4>
+      <p>La correzione v1 &rarr; v2 rivela che l'Oro non segue le assunzioni di momentum. RSI alto &rarr; il prezzo scende. Prezzo sopra SMA20 &rarr; il prezzo scende. Momentum Oro positivo &rarr; il prezzo scende. Tutte e tre le componenti di mean-reversion avevano il segno sbagliato nella v1, causando l'annullamento del segnale del VIX. Invertire solo questi tre segni ha portato r da +0.016 a +0.213.</p>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- 6. QUADRANTS -->
+  <div class="section" id="quadrants">
+    <div class="section-label">Sezione 6</div>
+    <h2>Analisi a Quadranti: Direzione &times; Tailwind</h2>
+    <p class="desc">Quando il segnale direzionale (BULLISH/BEARISH) concorda con il contesto di mercato (Tailwind alto/basso), il potere predittivo viene amplificato drammaticamente.</p>
+
+    <div class="quadrant-grid">
+      <div class="quadrant-cell">
+        <div class="q-label">Rialzista + Tailwind Alto</div>
+        <div class="q-value val-green">72.1%</div>
+        <div class="q-detail">n=55 &middot; media +0.19% &middot; Sharpe 3.82</div>
+      </div>
+      <div class="quadrant-cell">
+        <div class="q-label">Rialzista + Tailwind Basso</div>
+        <div class="q-value val-red">39.4%</div>
+        <div class="q-detail">n=59 &middot; media &minus;0.11% &middot; Sharpe &minus;3.17</div>
+      </div>
+      <div class="quadrant-cell">
+        <div class="q-label">Ribassista + Tailwind Alto</div>
+        <div class="q-value" style="color: var(--text-dim);">51.7%</div>
+        <div class="q-detail">n=30 &middot; media +0.03% &middot; Sharpe 0.96</div>
+      </div>
+      <div class="quadrant-cell">
+        <div class="q-label">Ribassista + Tailwind Basso</div>
+        <div class="q-value val-red">22.1%</div>
+        <div class="q-detail">n=34 &middot; media &minus;0.17% &middot; Sharpe &minus;6.40</div>
+      </div>
+    </div>
+
+    <div class="callout green" style="margin-top: 20px;">
+      <h4>Differenziale di Win Rate di 33 Punti</h4>
+      <p>RIALZISTA + Tailwind Alto: 72.1% WR &mdash; RIALZISTA + Tailwind Basso: 39.4% WR = <strong>32,7 punti percentuali</strong>. La stessa classificazione rialzista produce esiti radicalmente diversi a seconda del contesto di mercato. Questo non è rumore &mdash; è il Tailwind score che filtra i segnali rialzisti veri da quelli falsi.</p>
+    </div>
+
+    <div class="callout">
+      <h4>Anche i Quadranti Neutrali Mostrano un Segnale</h4>
+      <p>Anche per gli alert classificati come NEUTRALI (n=377), Tailwind Alto dà il 61.7% di WR (media +0.11%, Sharpe 3.60) vs Tailwind Basso 39.9% WR (media &minus;0.19%, Sharpe &minus;5.42). Il segnale del contesto di mercato funziona indipendentemente dalla classificazione direzionale dell'AI.</p>
+    </div>
+
+    <h3 style="margin-top: 32px; margin-bottom: 16px; font-size: 18px;">Confronto IC: Singolo vs Combinato</h3>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Segnale</th>
+            <th>IC (Spearman)</th>
+            <th>p-value</th>
+            <th>Interpretazione</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Solo direzione</td>
+            <td class="mono">+0.093</td>
+            <td class="mono">0.028</td>
+            <td>Debole da solo</td>
+          </tr>
+          <tr>
+            <td>Solo Tailwind v3 (ridge LOO)</td>
+            <td class="mono">+0.366</td>
+            <td class="mono">&lt;0.0001</td>
+            <td>Forte ma gonfiato dal LOO</td>
+          </tr>
+          <tr class="row-winner">
+            <td><strong>Direzione &times; Tailwind v3</strong></td>
+            <td class="mono val-green">+0.188</td>
+            <td class="mono val-green">&lt;0.0001</td>
+            <td>Raddoppia la forza della direzione</td>
+          </tr>
+          <tr>
+            <td>Tailwind RF d2 (TSCV onesta)</td>
+            <td class="mono val-blue">+0.191</td>
+            <td class="mono">&lt;0.0001</td>
+            <td>Miglior stima forward</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- 7. COMPONENT DEEP DIVE -->
+  <div class="section" id="components">
+    <div class="section-label">Sezione 7</div>
+    <h2>Analisi Componenti: Cosa Muove i Ritorni dell'Oro</h2>
+    <p class="desc">Sei variabili grezze di contesto di mercato testate contro i ritorni forward a 4h. Correlazioni, coefficienti standardizzati Ridge, selezione Lasso e studio di ablation.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Componente</th>
+            <th>Spearman r</th>
+            <th>p-value</th>
+            <th>Coeff. Ridge (std)</th>
+            <th>Mantenuto da Lasso?</th>
+            <th>Ablation &Delta;IC</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-winner">
+            <td><strong>Momentum VIX</strong></td>
+            <td class="mono val-green">+0.264</td>
+            <td class="mono val-green">&lt;0.0001</td>
+            <td class="mono">+0.183</td>
+            <td class="val-green">Sì</td>
+            <td class="mono">&minus;0.063</td>
+          </tr>
+          <tr class="row-winner">
+            <td><strong>Momentum DXY</strong></td>
+            <td class="mono val-red">+0.006</td>
+            <td class="mono">0.88</td>
+            <td class="mono val-gold">&minus;0.250</td>
+            <td class="val-green">Sì</td>
+            <td class="mono val-gold">&minus;0.116</td>
+          </tr>
+          <tr>
+            <td>Distanza SMA20</td>
+            <td class="mono">&minus;0.113</td>
+            <td class="mono">0.008</td>
+            <td class="mono">&minus;0.139</td>
+            <td class="val-green">Sì</td>
+            <td class="mono">&minus;0.021</td>
+          </tr>
+          <tr>
+            <td>Momentum Oro</td>
+            <td class="mono">&minus;0.133</td>
+            <td class="mono">0.002</td>
+            <td class="mono">&minus;0.060</td>
+            <td class="val-green">Sì</td>
+            <td class="mono">&minus;0.005</td>
+          </tr>
+          <tr>
+            <td>RSI</td>
+            <td class="mono">&minus;0.101</td>
+            <td class="mono">0.018</td>
+            <td class="mono">&minus;0.036</td>
+            <td class="val-green">Sì</td>
+            <td class="mono">+0.005</td>
+          </tr>
+          <tr class="row-loser">
+            <td>Momentum Petrolio</td>
+            <td class="mono">+0.197</td>
+            <td class="mono">&lt;0.001</td>
+            <td class="mono val-red">+0.018</td>
+            <td class="val-red">Scartato</td>
+            <td class="mono val-red">0.000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout purple" style="margin-top: 20px;">
+      <h4>DXY: Il Segnale Nascosto</h4>
+      <p>Il DXY ha una correlazione grezza vicina allo zero (r = +0.006, p = 0.88) perché la multicollinearità con altre feature maschera il segnale. La regressione Ridge lo rivela come il <strong>più forte predittore lineare</strong> (coefficiente standardizzato &minus;0.250). Il segno era sbagliato nella normalizzazione v1 (il DXY in rialzo era trattato come rialzista per l'Oro). L'ablation conferma: rimuovere il DXY fa crollare l'IC di 0.116 &mdash; il maggiore impatto per una singola feature.</p>
+    </div>
+
+    <div class="callout">
+      <h4>Il Petrolio è Rumore</h4>
+      <p>Nonostante una correlazione grezza significativa (r = +0.197, p &lt; 0.001), il Petrolio aggiunge zero informazioni incrementali una volta che le altre feature sono presenti. Il Lasso lo elimina del tutto. L'ablation mostra che l'IC cambia esattamente di 0.000 quando il Petrolio viene rimosso. La correlazione grezza è probabilmente guidata dall'esposizione condivisa al VIX.</p>
+    </div>
+
+    <h3 style="margin-top: 32px; margin-bottom: 16px; font-size: 18px;">Formula Ridge (Preliminare)</h3>
+
+    <div class="formula-box">
+      <span style="color: var(--gold);">tailwind</span> = &minus;0.689 &times; dxy_mom + 0.015 &times; vix_mom &minus; 0.055 &times; gold_mom<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&minus; 0.002 &times; rsi &minus; 0.212 &times; sma20 + 0.124<br>
+      <span style="color: var(--text-muted); font-size: 11px;">&alpha; = 10.0 &middot; Feature standardizzate (media=0, std=1) &middot; oil_mom escluso</span>
+    </div>
+
+    <div class="callout red" style="margin-top: 16px;">
+      <h4>Avviso di Stabilità dei Coefficienti</h4>
+      <p>Questi coefficienti sono fittati su 555 campioni in un singolo regime. I <em>segni</em> sono probabilmente stabili (mean reversion, inverso del DXY). Le <em>magnitudo</em> cambieranno significativamente sui dati a 13 mesi. Non usare questi pesi in produzione senza prima la validazione walk-forward.</p>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- 8. ML COMPARISON -->
+  <div class="section" id="ml">
+    <div class="section-label">Sezione 8</div>
+    <h2>Confronto Modelli ML & Quantificazione Overfitting</h2>
+    <p class="desc">Quattro famiglie di modelli testate: Ridge, Lasso, Random Forest, Gradient Boosting. LOO e TimeSeriesSplit a 5 fold confrontati per quantificare l'overfitting.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Modello</th>
+            <th>IC LOO</th>
+            <th>IC TSCV (media)</th>
+            <th>fold min TSCV</th>
+            <th>Rapporto Overfit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Solo VIX grezzo</td>
+            <td class="mono">+0.264</td>
+            <td class="mono">+0.103</td>
+            <td class="mono val-red">&minus;0.242</td>
+            <td class="mono">2.6x</td>
+          </tr>
+          <tr>
+            <td>Ridge &alpha;=10</td>
+            <td class="mono">+0.366</td>
+            <td class="mono">+0.109</td>
+            <td class="mono val-red">&minus;0.206</td>
+            <td class="mono">3.4x</td>
+          </tr>
+          <tr>
+            <td>Ridge &alpha;=50</td>
+            <td class="mono">+0.351</td>
+            <td class="mono">+0.160</td>
+            <td class="mono val-red">&minus;0.218</td>
+            <td class="mono">2.2x</td>
+          </tr>
+          <tr>
+            <td>Lasso &alpha;=0.1</td>
+            <td class="mono">+0.224</td>
+            <td class="mono">+0.170</td>
+            <td class="mono val-red">&minus;0.267</td>
+            <td class="mono">1.3x</td>
+          </tr>
+          <tr class="row-winner">
+            <td><strong>RF depth=2</strong></td>
+            <td class="mono">+0.597</td>
+            <td class="mono val-green">+0.191</td>
+            <td class="mono">&minus;0.080</td>
+            <td class="mono">3.1x</td>
+          </tr>
+          <tr>
+            <td>RF depth=3</td>
+            <td class="mono">+0.703</td>
+            <td class="mono">+0.150</td>
+            <td class="mono val-red">&minus;0.136</td>
+            <td class="mono">4.7x</td>
+          </tr>
+          <tr class="row-loser">
+            <td>RF depth=4</td>
+            <td class="mono val-red">+0.756</td>
+            <td class="mono">&mdash;</td>
+            <td class="mono">&mdash;</td>
+            <td class="mono val-red">&gt;5x</td>
+          </tr>
+          <tr>
+            <td>GB depth=2 n=100</td>
+            <td class="mono">+0.760</td>
+            <td class="mono">+0.135</td>
+            <td class="mono val-red">&minus;0.113</td>
+            <td class="mono">5.6x</td>
+          </tr>
+          <tr class="row-loser">
+            <td>GB depth=3 n=100</td>
+            <td class="mono val-red">+0.819</td>
+            <td class="mono">&mdash;</td>
+            <td class="mono">&mdash;</td>
+            <td class="mono val-red">&gt;6x</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout red" style="margin-top: 20px;">
+      <h4>Scoperta Metodologica: L'inflazione del LOO sui Dati Temporali</h4>
+      <p>La cross-validation Leave-One-Out gonfia sistematicamente l'IC per i modelli basati su alberi su dati temporali di 3-5 volte. Il LOO permette al modello di vedere dati sia prima che dopo il campione escluso, facendo "leak" della struttura temporale. <strong>Regola operativa: dividere l'IC LOO per 3-5 per qualsiasi stima forward realistica.</strong> La TimeSeriesSplit a 5 fold è la metrica onesta per tutti i risultati.</p>
+    </div>
+
+    <div class="callout green">
+      <h4>Miglior Modello: RF depth=2</h4>
+      <p>La Random Forest con max_depth=2 ottiene il miglior IC medio TSCV (+0.191) e il fold minimo più alto (&minus;0.080). Cattura effetti di soglia non lineari (es. "VIX sopra X E DXY sotto Y") senza memorizzare il rumore. RF depth=2 batte tutti i modelli lineari sulle metriche forward-looking.</p>
+    </div>
+
+    <h3 style="margin-top: 32px; margin-bottom: 16px; font-size: 18px;">Importanza Feature RF (depth=3)</h3>
+
+    <div style="margin-top: 12px;">
+      <div class="compare-bar">
+        <div class="compare-label">Momentum Oro</div>
+        <div class="compare-fill" style="width: 60%; background: var(--gold);">30.5%</div>
+      </div>
+      <div class="compare-bar">
+        <div class="compare-label">Momentum VIX</div>
+        <div class="compare-fill" style="width: 58%; background: var(--green);">29.2%</div>
+      </div>
+      <div class="compare-bar">
+        <div class="compare-label">Momentum DXY</div>
+        <div class="compare-fill" style="width: 33%; background: var(--blue);">16.4%</div>
+      </div>
+      <div class="compare-bar">
+        <div class="compare-label">Momentum Petrolio</div>
+        <div class="compare-fill" style="width: 20%; background: var(--text-muted);">9.6%</div>
+      </div>
+      <div class="compare-bar">
+        <div class="compare-label">SMA20</div>
+        <div class="compare-fill" style="width: 15%; background: var(--text-muted);">7.3%</div>
+      </div>
+      <div class="compare-bar">
+        <div class="compare-label">RSI</div>
+        <div class="compare-fill" style="width: 15%; background: var(--text-muted);">7.1%</div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 20px;">
+      <h4>RF vs Ridge: Classifiche Feature Differenti</h4>
+      <p>La Ridge classifica il DXY al #1 (più forte lineare), il VIX al #2. La RF classifica il momentum dell'Oro al #1, il VIX al #2. La RF cattura punti di split non lineari sul momentum dell'Oro (effetti soglia), che la Ridge non può vedere. Entrambi concordano che il VIX è critico. Il Petrolio è marginale in entrambi.</p>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- 9. INTERACTIONS -->
+  <div class="section" id="interactions">
+    <div class="section-label">Sezione 9</div>
+    <h2>Termini di Interazione: Promesse vs Realtà</h2>
+    <p class="desc">Sei termini di interazione moltiplicativa testati, che rappresentano dinamiche macro note (bene rifugio, mean reversion, risk-off). Le forti correlazioni grezze non sopravvivono alla cross-validation forward.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Interazione</th>
+            <th>Definizione</th>
+            <th>r Grezzo</th>
+            <th>p-value</th>
+            <th>TSCV &Delta;IC</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-winner">
+            <td><strong>mean_rev_pressure</strong></td>
+            <td>gold_mom &times; sma20</td>
+            <td class="mono val-green">+0.405</td>
+            <td class="mono val-green">&lt;0.0001</td>
+            <td class="mono val-red">+0.006</td>
+          </tr>
+          <tr>
+            <td>dxy_x_gold</td>
+            <td>dxy_mom &times; gold_mom</td>
+            <td class="mono">&minus;0.313</td>
+            <td class="mono">&lt;0.0001</td>
+            <td class="mono val-red">vicino a 0</td>
+          </tr>
+          <tr>
+            <td>usd_safe_haven</td>
+            <td>dxy_mom &times; vix_mom</td>
+            <td class="mono">+0.267</td>
+            <td class="mono">&lt;0.0001</td>
+            <td class="mono val-red">vicino a 0</td>
+          </tr>
+          <tr>
+            <td>risk_off</td>
+            <td>vix_mom &times; |gold_mom|</td>
+            <td class="mono">+0.259</td>
+            <td class="mono">&lt;0.0001</td>
+            <td class="mono val-red">vicino a 0</td>
+          </tr>
+          <tr>
+            <td>momentum_confirm</td>
+            <td>gold_mom &times; oil_mom</td>
+            <td class="mono">&minus;0.177</td>
+            <td class="mono">&lt;0.001</td>
+            <td class="mono val-red">vicino a 0</td>
+          </tr>
+          <tr>
+            <td>vix_x_rsi</td>
+            <td>vix_mom &times; (rsi &minus; 50)</td>
+            <td class="mono">&minus;0.109</td>
+            <td class="mono">0.011</td>
+            <td class="mono val-red">vicino a 0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="margin-top: 20px;">
+      <h4>mean_rev_pressure: La Correlazione Più Forte nell'Intero Dataset</h4>
+      <p>r = +0.405 (p &lt; 0.0001) &mdash; gold_mom &times; sma20 è la singola correlazione grezza più forte che abbiamo trovato. Eppure in TSCV, aggiungerla alla Ridge migliora l'IC medio di solo +0.006 (da +0.160 a +0.166). Il segnale è reale ma le 6 feature di base lo catturano già attraverso i loro contributi individuali.</p>
+    </div>
+
+    <div class="callout red">
+      <h4>Test Chiave: Ridge + Interazioni vs RF Base</h4>
+      <p>Ridge con tutte e 12 le feature (6 base + 6 interazioni): IC medio TSCV = +0.166. RF depth=2 con solo le 6 base: IC medio TSCV = +0.191. <strong>La RF cattura in modo naturale gli effetti soglia non lineari che le interazioni cercano di modellare, ma lo fa meglio.</strong> Conclusione: non aggiungere termini di interazione &mdash; usa la RF che modella le soglie nativamente.</p>
+    </div>
+
+    <div class="callout purple">
+      <h4>Decisione: Mantenere come Candidati Walk-Forward</h4>
+      <p>Le interazioni mostrano forti correlazioni grezze ma non riescono a migliorare la TSCV. Questo potrebbe essere (a) vero overfitting, o (b) dati insufficienti (555 campioni) per stimare 12 parametri in modo stabile. Le manteniamo come candidati pre-registrati per il test walk-forward sui 13 mesi.</p>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- 10. REGIME -->
+  <div class="section" id="regime">
+    <div class="section-label">Sezione 10</div>
+    <h2>Stima di Regime e Base Rate</h2>
+    <p class="desc">13 mesi di candele orarie dell'Oro (7.986) analizzati per misurare il vero base rate degli esiti rialzisti. L'assunzione hardcoded del 60% è sistematicamente errata.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Mese</th>
+            <th>Base Rate Reale</th>
+            <th>Candele</th>
+            <th>&Delta; dal 60%</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>2025-02</td><td class="mono">53.7%</td><td class="mono">458</td><td class="mono val-red">&minus;6.3</td></tr>
+          <tr class="row-winner"><td>2025-03</td><td class="mono val-green">60.2%</td><td class="mono">484</td><td class="mono">+0.2</td></tr>
+          <tr><td>2025-04</td><td class="mono">53.8%</td><td class="mono">473</td><td class="mono val-red">&minus;6.2</td></tr>
+          <tr><td>2025-05</td><td class="mono">53.7%</td><td class="mono">635</td><td class="mono val-red">&minus;6.3</td></tr>
+          <tr class="row-loser"><td>2025-06</td><td class="mono val-red">50.2%</td><td class="mono">581</td><td class="mono val-red">&minus;9.8</td></tr>
+          <tr class="row-loser"><td>2025-07</td><td class="mono val-red">50.6%</td><td class="mono">619</td><td class="mono val-red">&minus;9.4</td></tr>
+          <tr><td>2025-08</td><td class="mono">50.8%</td><td class="mono">596</td><td class="mono val-red">&minus;9.2</td></tr>
+          <tr><td>2025-09</td><td class="mono">59.1%</td><td class="mono">589</td><td class="mono">&minus;0.9</td></tr>
+          <tr><td>2025-10</td><td class="mono">58.7%</td><td class="mono">616</td><td class="mono">&minus;1.3</td></tr>
+          <tr><td>2025-11</td><td class="mono">54.2%</td><td class="mono">582</td><td class="mono val-red">&minus;5.8</td></tr>
+          <tr><td>2025-12</td><td class="mono">53.2%</td><td class="mono">648</td><td class="mono val-red">&minus;6.8</td></tr>
+          <tr><td>2026-01</td><td class="mono">57.3%</td><td class="mono">720</td><td class="mono">&minus;2.7</td></tr>
+          <tr><td>2026-02</td><td class="mono">55.3%</td><td class="mono">672</td><td class="mono">&minus;4.7</td></tr>
+          <tr><td>2026-03</td><td class="mono">51.0%</td><td class="mono">309</td><td class="mono val-red">&minus;9.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-grid" style="margin-top: 24px;">
+      <div class="card">
+        <h4>Base Rate Medio Reale</h4>
+        <p class="mono" style="font-size: 28px; color: var(--gold); margin: 8px 0;">54.5%</p>
+        <p>Non 60%. Solo 2 dei 14 mesi sfiorano il 60%. L'assunzione hardcoded crea un bias rialzista persistente di 5-7 punti.</p>
+        <div class="tag">STD: 3.2% &middot; RANGE: 50.2&ndash;60.2%</div>
+      </div>
+      <div class="card">
+        <h4>Miglior Stimatore di Regime</h4>
+        <p class="mono" style="font-size: 18px; color: var(--blue); margin: 8px 0;">pct_bull + bull_ratio + RSI</p>
+        <p>MAE 13.3% vs 15.9% per il 60 costante. Correlazione +0.508 con il base rate reale giornaliero. Solo su 21 giorni &mdash; i coefficienti della formula sono preliminari.</p>
+        <div class="tag">LOO SU 21 GIORNI &mdash; FRAGILE</div>
+      </div>
+    </div>
+
+    <div class="formula-box" style="margin-top: 20px;">
+      <span style="color: var(--gold);">regime_estimate</span> = 1.289 &times; pct_bull &minus; 0.324 &times; bull_ratio + 1.148 &times; RSI &minus; 7.959<br>
+      <span style="color: var(--text-muted); font-size: 11px;">LOO solo su 21 giorni &middot; I coefficienti CAMBIERANNO su dati più estesi &middot; Direzione più affidabile della magnitudo</span>
+    </div>
+
+    <div class="callout" style="margin-top: 16px;">
+      <h4>Rischio Cambio di Regime</h4>
+      <p>L'errore di predizione del BR_30d esplode durante i cambi di regime: l'errore tra Ago &rarr; Set 2025 era &minus;8.5 punti (cambio improvviso da 50.8% a 59.1%). Nessuna rolling window riesce a catturarlo. I cambi di regime richiedono catalizzatori fondamentali (decisioni sui tassi, svolte geopolitiche) che non possono essere previsti dal solo prezzo.</p>
+    </div>
+
+    <div class="callout blue">
+      <h4>Mean Reversion su Orizzonti Brevi</h4>
+      <p>BR_7d vs 5d successivi: r = &minus;0.068 (p &lt; 0.001). Serie rialziste a breve termine predicono inversioni. BR_30d vs 5d successivi: r = +0.084 (p &lt; 0.001). Trend più lunghi persistono. Questo conferma il carattere misto di momentum/inversione dell'Oro su scale temporali diverse.</p>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- 11. NON-SIGNALS -->
+  <div class="section" id="non-signals">
+    <div class="section-label">Sezione 11</div>
+    <h2>Non-Segnali: Cosa Non Funziona</h2>
+    <p class="desc">Importante quanto ciò che funziona è ciò che non funziona. Queste feature sono state testate e sono risultate prive di potere predittivo. Non tentare di utilizzarle.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>IC / r</th>
+            <th>p-value</th>
+            <th>Perché Fallisce</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-loser">
+            <td>p_bullish (produzione)</td>
+            <td class="mono val-red">&minus;0.091</td>
+            <td class="mono">0.15</td>
+            <td>L'IC ha direzione errata sull'orizzonte a 4h</td>
+          </tr>
+          <tr class="row-loser">
+            <td>Refract Index (RI)</td>
+            <td class="mono val-red">+0.041</td>
+            <td class="mono">0.40</td>
+            <td>L'ancora Bayesiana comprime il segnale in rumore</td>
+          </tr>
+          <tr class="row-loser">
+            <td>avg_score (per ora)</td>
+            <td class="mono val-red">+0.003</td>
+            <td class="mono">0.96</td>
+            <td>Lo score predice la volatilità, non la direzione</td>
+          </tr>
+          <tr class="row-loser">
+            <td>n_alerts (per ora)</td>
+            <td class="mono val-red">&minus;0.044</td>
+            <td class="mono">0.38</td>
+            <td>Il volume degli alert è rumore</td>
+          </tr>
+          <tr class="row-loser">
+            <td>pct_alta (% urgency=ALTA)</td>
+            <td class="mono val-red">&minus;0.074</td>
+            <td class="mono">0.13</td>
+            <td>La classificazione dell'urgenza non predice i ritorni</td>
+          </tr>
+          <tr class="row-loser">
+            <td>Momentum Petrolio (in Tailwind)</td>
+            <td class="mono val-red">coeff +0.018</td>
+            <td class="mono">&mdash;</td>
+            <td>Lasso lo rimuove; variazione IC ablation = 0.000</td>
+          </tr>
+          <tr class="row-loser">
+            <td>ML solo su feature di prezzo</td>
+            <td class="mono val-red">R&sup2; &lt; 0</td>
+            <td class="mono">&mdash;</td>
+            <td>Nessun modello batte il passthrough del BR_30d</td>
+          </tr>
+          <tr class="row-loser">
+            <td>Tailwind v1 (equipesato)</td>
+            <td class="mono val-red">+0.016</td>
+            <td class="mono">0.70</td>
+            <td>Segni errati su 3 componenti (RSI, SMA20, mom Oro)</td>
+          </tr>
+          <tr class="row-loser">
+            <td>Termini di interazione (TSCV)</td>
+            <td class="mono val-red">&Delta; +0.006</td>
+            <td class="mono">&mdash;</td>
+            <td>Overfit su LOO; RF modella meglio le soglie</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout red" style="margin-top: 20px;">
+      <h4>Lezione: Meno è Meglio</h4>
+      <p>Le feature più semplici sovraperformano costantemente quelle complesse. pct_bullish (semplice conteggio) batte il RI (pesatura Bayesiana). Il VIX grezzo (+0.264) sfiora le performance dell'intero Tailwind a 6 componenti (+0.262). RF depth=2 batte depth=4. Aggiungere il momentum del Petrolio cambia l'IC di esattamente zero. La complessità va meritata attraverso i dati, non data per scontata a livello teorico.</p>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- 12. OVERLAPPING SAMPLES -->
+  <div class="section" id="overlap">
+    <div class="section-label">Sezione 12</div>
+    <h2>Correzione Campioni Sovrapposti</h2>
+    <p class="desc">I valori di IC sui timeframe più lunghi sono gonfiati dalle finestre di rendimento sovrapposte. Un alert alle 10:00 e uno alle 11:00 condividono 3 delle 4 ore della loro finestra di test a 4h. A 7 giorni, due alert consecutivi condividono 167 su 168 ore. Il numero effettivo di osservazioni indipendenti è di gran lunga inferiore al conteggio grezzo dei campioni.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Timeframe</th>
+            <th>IC (pct_bullish_24h)</th>
+            <th>n grezzo</th>
+            <th>n indipendenti</th>
+            <th>p (grezzo)</th>
+            <th>p (corretto)</th>
+            <th>Verdetto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-winner">
+            <td>1h</td>
+            <td class="mono val-green">+0.337</td>
+            <td class="mono">785</td>
+            <td class="mono val-green">419</td>
+            <td class="mono">&lt;0.0001</td>
+            <td class="mono val-green">&lt;0.0001</td>
+            <td><span class="tier-badge tier-1">ROBUSTO</span></td>
+          </tr>
+          <tr class="row-winner">
+            <td>4h</td>
+            <td class="mono val-green">+0.298</td>
+            <td class="mono">837</td>
+            <td class="mono val-green">131</td>
+            <td class="mono">&lt;0.0001</td>
+            <td class="mono val-green">0.0004</td>
+            <td><span class="tier-badge tier-1">ROBUSTO</span></td>
+          </tr>
+          <tr>
+            <td>24h</td>
+            <td class="mono val-blue">+0.484</td>
+            <td class="mono">786</td>
+            <td class="mono">23</td>
+            <td class="mono">&lt;0.0001</td>
+            <td class="mono">0.011</td>
+            <td><span class="tier-badge tier-2">MARGINALE</span></td>
+          </tr>
+          <tr class="row-loser">
+            <td>7g</td>
+            <td class="mono val-red">+0.561</td>
+            <td class="mono">491</td>
+            <td class="mono val-red">4</td>
+            <td class="mono">&lt;0.0001</td>
+            <td class="mono val-red">0.338</td>
+            <td><span class="tier-badge tier-dead">RUMORE</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout red" style="margin-top: 20px;">
+      <h4>Il Pattern "L'IC Cresce col Timeframe" è un Artefatto</h4>
+      <p>L'apparente aumento da +0.34 (1h) a +0.56 (7g) è trainato unicamente dall'autocorrelazione di finestre sovrapposte. A 7 giorni, abbiamo solo <strong>4 osservazioni indipendenti</strong> in 3 settimane di dati. Il p-value corretto è 0.34 &mdash; puro rumore. I valori affidabili per l'operatività sono <strong>l'IC di +0.30 a 1h/4h</strong>, che sopravvive alla correzione con p &lt; 0.001.</p>
+    </div>
+
+    <div class="callout green">
+      <h4>Cosa Sopravvive alla Correzione</h4>
+      <p>L'IC di pct_bullish_24h a 4h è +0.298 su 131 campioni indipendenti (p = 0.0004). Nella finanza quantitativa, un IC di 0.10 è considerato buono. Un IC di 0.30 su campioni indipendenti con p &lt; 0.001 è eccezionale &mdash; <strong>se sopravviverà al test out-of-sample sui 13 mesi</strong>.</p>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- 13. BRIER COMPARISON -->
+  <div class="section" id="brier-comparison">
+    <div class="section-label">Sezione 13</div>
+    <h2>Brier Score: 5 Stimatori a Confronto</h2>
+    <p class="desc">Abbiamo testato cinque stimatori di probabilità come potenziali sostituti del p_bullish su quattro timeframe. I risultati rivelano un paradosso: lo stimatore con il miglior IC ha il Brier score peggiore sugli orizzonti a breve termine.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Stimatore</th>
+            <th>Brier 1h</th>
+            <th>Brier 4h</th>
+            <th>Brier 24h</th>
+            <th>IC 4h</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-winner">
+            <td>p_bullish (produzione)</td>
+            <td class="mono val-green">0.229</td>
+            <td class="mono">0.264</td>
+            <td class="mono val-red">0.305</td>
+            <td class="mono val-red">&minus;0.066</td>
+          </tr>
+          <tr>
+            <td>pct_bullish_24h</td>
+            <td class="mono val-red">0.316</td>
+            <td class="mono val-red">0.322</td>
+            <td class="mono val-green">0.242</td>
+            <td class="mono val-green">+0.298</td>
+          </tr>
+          <tr>
+            <td>regime_dynamic</td>
+            <td class="mono">0.243</td>
+            <td class="mono">0.270</td>
+            <td class="mono">0.264</td>
+            <td class="mono">&minus;0.012</td>
+          </tr>
+          <tr>
+            <td>costante 54.5%</td>
+            <td class="mono">0.256</td>
+            <td class="mono val-green">0.255</td>
+            <td class="mono">0.266</td>
+            <td class="mono">0.000</td>
+          </tr>
+          <tr>
+            <td>costante 60%</td>
+            <td class="mono">0.268</td>
+            <td class="mono">0.267</td>
+            <td class="mono">0.291</td>
+            <td class="mono">0.000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout purple" style="margin-top: 20px;">
+      <h4>Il Paradosso della Calibrazione</h4>
+      <p>Il pct_bullish_24h ha il miglior IC in assoluto (+0.298 a 4h, p &lt; 0.001) ma il peggior Brier a 1h/4h (0.316/0.322). Perché? <strong>Discriminazione senza calibrazione</strong> (ECE = 29%). Conosce la direzione ma la scala probabilistica è sballata. Quando dice "75% rialzista", il tasso reale di successo è ~58%. Il Platt Scaling (ricalibrazione logistica) risolverebbe il problema &mdash; ma deve essere fatto in walk-forward, non su questi dati.</p>
+    </div>
+
+    <div class="callout">
+      <h4>p_bullish in Produzione: Un Buon "Non-Schierato"</h4>
+      <p>Il p_bullish vince sul Brier a 1h (0.229) nonostante abbia un IC negativo (&minus;0.066). Resta sempre vicino al 50%, e dato che il base rate del mercato è anch'esso vicino al 50%, l'errore quadratico è basso. È ben calibrato ma senza direzionalità. Addirittura la costante del 54.5% lo batte a 4h (0.255 vs 0.264).</p>
+    </div>
+
+    <div class="callout green">
+      <h4>Implicazioni per il Walk-Forward</h4>
+      <p>La strada da percorrere è chiara: pct_bullish_24h come segnale direzionale (IC +0.30), ricalibrato via Platt Scaling sui dati out-of-sample. Questo dovrebbe combinare l'accuratezza direzionale del pct_bullish con la giusta calibrazione probabilistica. Il walk-forward metterà alla prova questa ipotesi.</p>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- 14. WALK-FORWARD -->
+  <div class="section" id="walkforward">
+    <div class="section-label">Sezione 14</div>
+    <h2>Validazione Walk-Forward &mdash; In Corso</h2>
+    <p class="desc">Tutte le scoperte sopra descritte sono preliminari (555 campioni, singolo regime). Il walk-forward su 13 mesi di dati storici &egrave; <strong>in corso</strong>: 23.275 news scaricate e classificazione AI attiva. Primi risultati attesi entro ~1 settimana.</p>
+
+    <div class="card-grid">
+      <div class="card card-wide">
+        <h4>Architettura: Dual-Phase + Rolling OOS</h4>
+        <p><strong>Fase 1 &mdash; Tecnico Puro:</strong> 22 varianti di strategia (entry, stop, exit, filtri) testate senza alcun input AI. Include VAR-22 (zero-LLM baseline) come benchmark: se batte le varianti con AI, l'AI non aggiunge valore.<br>
+        <strong>Fase 2 &mdash; Tecnico + Macro:</strong> La variante tecnica vincente + 6 combinazioni macro (filtro p_bullish, pct_bullish, direzione&times;Tailwind). 3 delle 6 combinazioni sono a costo zero (usano solo dati Strato 1).<br>
+        <strong>Il dato killer:</strong> Delta PF = PF(Fase 2) &minus; PF(Fase 1) per ogni blocco OOS = valore del macro isolato per regime.</p>
+      </div>
+
+      <div class="card card-wide">
+        <h4>Rolling Out-of-Sample: 6 Blocchi su 6 Regimi</h4>
+        <p>Finestra espandente con 6 verdetti OOS indipendenti &mdash; non un singolo test, ma evidenza statistica replicata su regimi diversi:</p>
+        <div class="formula-box" style="margin-top: 12px; font-size: 12px; line-height: 2;">
+          <span style="color: var(--text-dim);">Step 1:</span> Train [1-4] &rarr; <span style="color: var(--blue);">OOS [5]</span> &nbsp;Lug-Ago &middot; consolidamento<br>
+          <span style="color: var(--text-dim);">Step 2:</span> Train [1-5] &rarr; <span style="color: var(--red);">OOS [6]</span> &nbsp;Set &middot; bearish/correzione<br>
+          <span style="color: var(--text-dim);">Step 3:</span> Train [1-6] &rarr; <span style="color: var(--green);">OOS [7]</span> &nbsp;Ott-Nov &middot; bull geopolitico<br>
+          <span style="color: var(--text-dim);">Step 4:</span> Train [1-7] &rarr; <span style="color: var(--purple);">OOS [8]</span> &nbsp;Dic &middot; festivo<br>
+          <span style="color: var(--text-dim);">Step 5:</span> Train [1-8] &rarr; <span style="color: var(--orange);">OOS [9]</span> &nbsp;Gen &middot; spike+crash ($5.595 &rarr; $4.401)<br>
+          <span style="color: var(--text-dim);">Step 6:</span> Train [1-9] &rarr; <span style="color: var(--gold);">OOS [10]</span> Gen-Feb &middot; guerra Iran
+        </div>
+        <p style="margin-top: 12px; font-size: 13px; color: var(--text-dim);">Il sistema passa se PF &gt; soglia su almeno 5/6 blocchi OOS. Fallimento su 1 blocco = debolezza regime-specifica (documentare). Fallimento su 2+ = sistema insufficiente.</p>
+      </div>
+
+      <div class="card">
+        <h4>Dataset: 23.275 News Classificate</h4>
+        <p>NewsAPI.ai &mdash; 6 gruppi keyword &times; 58 settimane (feb 2025 &ndash; mar 2026). Dedup a 3 livelli (URL + ID + fuzzy titolo 85%). Fonti RSS di produzione nel dataset: solo 1,8% &mdash; <strong>prova di source-independence</strong>. Classificazione con Gemini 3 Flash Preview identico alla produzione (prompt, temp, parser).</p>
+        <div class="tag">Costo effettivo: $90 NewsAPI.ai + ~$12 Gemini = ~$102</div>
+      </div>
+
+      <div class="card">
+        <h4>Criteri a 3 Livelli (Pre-Registrati)</h4>
+        <p><strong>Esistenza:</strong> IC &gt; 0, p &lt; 0.10 (FDR-corretto su 7 segnali TIER 1, Newey-West per autocorrelazione).<br>
+        <strong>Conferma:</strong> IC &gt; +0.04, p &lt; 0.05. PF macro &gt; tech su 5+/6 OOS.<br>
+        <strong>Fail:</strong> Nessun segnale TIER 1 ha IC &gt; 0. PF macro &lt; tech su 4+ OOS.</p>
+        <div class="tag">7 SEGNALI TIER 1 + 15 TIER 2 ESPLORATIVI</div>
+      </div>
+
+      <div class="card">
+        <h4>8 Tracce P_bullish + 22 Varianti Trading</h4>
+        <p><strong>Tracce calibrazione:</strong> C (prompt produzione), C+DYN (regime dinamico), C+Score, C+Sent (sentiment NewsAPI), C+Digest (closed-loop), Null-C, Null-DYN, Platt Scaling.<br>
+        <strong>Trading:</strong> 22 varianti tecniche (VAR-01&ndash;22) + 6 combinazioni macro (MACRO A&ndash;F). VAR-22 = zero-LLM baseline.</p>
+        <div class="tag">MACRO-D/E/F SONO A COSTO ZERO (SOLO STRATO 1)</div>
+      </div>
+
+      <div class="card">
+        <h4>Domande Chiave</h4>
+        <p>&bull; L'AI sa leggere le news? (IC positivo su un anno)<br>&bull; Il macro migliora il trading? (PF macro+tech &gt; tech-only su 6 OOS)<br>&bull; Il regime dinamico da variabili interne migliora la calibrazione?<br>&bull; Lo spread WR a quadranti (33pt) persiste su 6 regimi?<br>&bull; La variante zero-LLM (VAR-22) batte le varianti con AI?<br>&bull; Il digest rolling (closed-loop) migliora IC o Brier?</p>
+      </div>
+
+      <div class="card">
+        <h4>Stato &amp; Timeline</h4>
+        <p><strong style="color: var(--green);">Fase 0 (prerequisiti):</strong> 12/12 checkpoint PASS<br>
+        <strong style="color: var(--green);">Fase 1A (download):</strong> 23.275 news, 3 backup<br>
+        <strong style="color: var(--orange);">Fase 1B (classify):</strong> In corso &mdash; 10 thread, ~110 RPM<br>
+        <strong style="color: var(--text-dim);">Fase 1C (prezzi):</strong> Candele M15 da Twelve Data<br>
+        <strong style="color: var(--text-dim);">Fasi 2&ndash;7:</strong> Validazione, regime, tracce, trading, report</p>
+        <div class="tag">PRIMI RISULTATI ENTRO ~1 SETTIMANA</div>
+      </div>
+    </div>
+
+    <div class="callout blue" style="margin-top: 24px;">
+      <h4>Principio Architetturale: Closed-Loop Integration</h4>
+      <p>Insight fondamentale emerso dalla ricerca esplorativa: i miglioramenti pi&ugrave; efficaci vengono dall'integrare prodotti derivati che il sistema gi&agrave; produce (classificazioni, digest, regime labels), non dall'aggiungere fonti esterne. Loop chiuso: ogni output diventa potenziale input. Esempio: il digest giornaliero &mdash; oggi usato solo per Telegram &mdash; verr&agrave; testato come contesto narrativo nella Call 3 (Traccia C+Digest).</p>
+    </div>
+
+    <div class="callout green" style="margin-top: 16px;">
+      <h4>Cosa Cambierebbe Con i Risultati Walk-Forward</h4>
+      <ul>
+        <li><strong>Se passa la direzione:</strong> Sostituiamo il base rate fisso al 60% con la stima rolling. Usiamo il pct_bullish_24h in produzione come segnale direzionale primario.</li>
+        <li><strong>Se passa il Tailwind:</strong> Utilizziamo il Tailwind come filtro di trade (sistema a quadranti). Position sizing pesato in base al Tailwind.</li>
+        <li><strong>Se passa il closed-loop:</strong> Il digest rolling viene integrato come contesto nella Call 3. Primo esempio concreto del principio: riciclare output interni come input per livelli successivi.</li>
+        <li><strong>Se il macro batte il tecnico puro su 5+/6 OOS:</strong> Evidenza statistica robusta che il segnale AI ha valore incrementale reale &mdash; su 6 regimi diversi, non su un singolo campione.</li>
+        <li><strong>Se tutto fallisce:</strong> Il campione di 3 settimane era limitato a quel regime specifico. Manteniamo il sistema invariato. Un risultato negativo chiaro ha pi&ugrave; valore di un risultato positivo dubbio.</li>
+      </ul>
+    </div>
+
+    <div class="callout" style="margin-top: 16px;">
+      <h4>Robustezza Metodologica</h4>
+      <ul>
+        <li><strong>Source-independence:</strong> Il 98,2% delle news proviene da fonti non usate in produzione. Se il segnale esiste, non dipende dalla fonte RSS specifica.</li>
+        <li><strong>Newey-West obbligatorio:</strong> I segnali rolling (pct_bullish_24h) sono massicciamente autocorrelati. I p-value standard (scipy) sono artificialmente bassi. Solo Newey-West o Block Bootstrap danno p-value affidabili.</li>
+        <li><strong>12/14 gate replicati:</strong> Solo AI dedup e COMM-FAILED non simulabili (richiederebbero Call 2 e Telegram). Documentato come caveat.</li>
+        <li><strong>Criteri a 3 livelli:</strong> L'obiettivo &egrave; TROVARE l'edge (soglia bassa), non confermarlo con soglie troppo strette. Il segnale vincitore potrebbe non essere quello atteso.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- SUMMARY TABLE -->
+  <div class="section">
+    <div class="section-label">Reference</div>
+    <h2>Catalogo Segnali: Gerarchia Completa</h2>
+
+    <div class="table-wrap" style="margin-top: 20px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>Segnale</th>
+            <th>Metrica</th>
+            <th>Valore</th>
+            <th>p-value</th>
+            <th>Stato</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-winner">
+            <td><span class="tier-badge tier-1">T1</span></td>
+            <td>Score &rarr; |Return|</td>
+            <td>Moltip. vol (90+)</td>
+            <td class="mono val-green">1.24x</td>
+            <td class="mono val-green">0.0001</td>
+            <td>Robusto</td>
+          </tr>
+          <tr class="row-winner">
+            <td><span class="tier-badge tier-1">T1</span></td>
+            <td>pct_bullish_24h &rarr; direzione</td>
+            <td>Spearman r</td>
+            <td class="mono val-green">+0.184</td>
+            <td class="mono val-green">0.0002</td>
+            <td>Robusto</td>
+          </tr>
+          <tr class="row-winner">
+            <td><span class="tier-badge tier-1">T1</span></td>
+            <td>Momentum VIX &rarr; return_4h</td>
+            <td>Spearman r</td>
+            <td class="mono val-green">+0.264</td>
+            <td class="mono val-green">&lt;0.0001</td>
+            <td>Robusto</td>
+          </tr>
+          <tr class="row-winner">
+            <td><span class="tier-badge tier-1">T1</span></td>
+            <td>Direzione &times; Tailwind v3</td>
+            <td>IC</td>
+            <td class="mono val-green">+0.188</td>
+            <td class="mono val-green">&lt;0.0001</td>
+            <td>Robusto</td>
+          </tr>
+          <tr class="row-winner">
+            <td><span class="tier-badge tier-1">T1</span></td>
+            <td>Spread WR a quadranti</td>
+            <td>&Delta; WR (Bull alto&ndash;basso)</td>
+            <td class="mono val-green">33 pt</td>
+            <td class="mono">&mdash;</td>
+            <td>Robusto</td>
+          </tr>
+          <tr>
+            <td><span class="tier-badge tier-2">T2</span></td>
+            <td>Tailwind RF d2 (6 feature)</td>
+            <td>Media IC in TSCV</td>
+            <td class="mono val-blue">+0.191</td>
+            <td class="mono val-blue">&lt;0.0001</td>
+            <td>Serve validazione a 13 mesi</td>
+          </tr>
+          <tr>
+            <td><span class="tier-badge tier-2">T2</span></td>
+            <td>DXY (Segnale nascosto Ridge)</td>
+            <td>Coeff. standardizzato</td>
+            <td class="mono val-blue">&minus;0.250</td>
+            <td class="mono">&mdash;</td>
+            <td>Serve validazione a 13 mesi</td>
+          </tr>
+          <tr>
+            <td><span class="tier-badge tier-2">T2</span></td>
+            <td>Combo di regime (3 feature)</td>
+            <td>Correl. con BR giornaliero</td>
+            <td class="mono val-blue">+0.508</td>
+            <td class="mono">&mdash;</td>
+            <td>Solo 21 giorni</td>
+          </tr>
+          <tr>
+            <td><span class="tier-badge tier-2">T2</span></td>
+            <td>Oro mean reversion (RSI, SMA20)</td>
+            <td>Segni confermati</td>
+            <td class="mono val-blue">negativi</td>
+            <td class="mono">&lt;0.02</td>
+            <td>Serve diversità di regime</td>
+          </tr>
+          <tr>
+            <td><span class="tier-badge tier-3">T3</span></td>
+            <td>mean_rev_pressure (interazione)</td>
+            <td>Spearman r</td>
+            <td class="mono">+0.405</td>
+            <td class="mono">&lt;0.0001</td>
+            <td>Forte grezzo, fallisce in TSCV</td>
+          </tr>
+          <tr>
+            <td><span class="tier-badge tier-3">T3</span></td>
+            <td>bullish_score_24h</td>
+            <td>Spearman r</td>
+            <td class="mono">+0.105</td>
+            <td class="mono">0.033</td>
+            <td>Marginale</td>
+          </tr>
+          <tr class="row-loser">
+            <td><span class="tier-badge tier-dead">MORTO</span></td>
+            <td>p_bullish (produzione)</td>
+            <td>IC</td>
+            <td class="mono val-red">&minus;0.091</td>
+            <td class="mono">0.15</td>
+            <td>Direzione errata</td>
+          </tr>
+          <tr class="row-loser">
+            <td><span class="tier-badge tier-dead">MORTO</span></td>
+            <td>Refract Index (RI)</td>
+            <td>Spearman r</td>
+            <td class="mono val-red">+0.041</td>
+            <td class="mono">0.40</td>
+            <td>L'ancora Bayesiana uccide il segnale</td>
+          </tr>
+          <tr class="row-loser">
+            <td><span class="tier-badge tier-dead">MORTO</span></td>
+            <td>Tailwind v1 (equipesato)</td>
+            <td>Spearman r</td>
+            <td class="mono val-red">+0.016</td>
+            <td class="mono">0.70</td>
+            <td>Segni errati su 3 componenti</td>
+          </tr>
+          <tr class="row-loser">
+            <td><span class="tier-badge tier-dead">MORTO</span></td>
+            <td>ML solo su feature di prezzo</td>
+            <td>R&sup2;</td>
+            <td class="mono val-red">&lt; 0</td>
+            <td class="mono">&mdash;</td>
+            <td>Tutti i modelli peggiori del passthrough</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span>Refract Macro</span> &middot; Ricerca Scoperta del Segnale &middot; Marzo 2026<br>
+    9 esperimenti strutturati &middot; 555 alert &middot; 7.986 candele orarie &middot; base rate a 13 mesi<br>
+    IC corretto per i campioni sovrapposti &middot; Tutti i risultati riproducibili via JSON<br>
+    Sorgenti: <code>tools/backtest_results/*.json</code> (9 file)
+  </div>
+
+</div>
+
+</body>
+</html>
