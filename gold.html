@@ -139,6 +139,41 @@
   <p style="font-size:13px;color:var(--text-muted)">Return % sul prezzo dell'oro. Togliendo i 2 mesi migliori e i 2 peggiori: <strong>PF core 3.25, return +4.0%/mese</strong>. I mesi forti non gonfiano il totale.</p>
 </section>
 
+<!-- TRADE RESULTS -->
+<section>
+  <h2>Risultati di trading (post-audit)</h2>
+  <p>L'audit ha trovato e corretto un bias nelle medie mobili che gonfiava i risultati del 20%. I numeri sotto sono <strong>post-correzione</strong> &mdash; i numeri reali.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="text-align:left">Metrica</th><th>Valore</th></tr></thead>
+      <tbody>
+        <tr><td>Trade totali</td><td style="color:var(--blue)">210</td></tr>
+        <tr><td>LONG / SHORT</td><td>~110 / ~100</td></tr>
+        <tr><td>Win Rate</td><td style="color:var(--green);font-weight:600">64.8%</td></tr>
+        <tr><td>Profit Factor</td><td style="color:var(--gold);font-weight:600">3.83</td></tr>
+        <tr><td>Sharpe (calendario, 252 days)</td><td style="color:var(--gold);font-weight:600">3.4</td></tr>
+        <tr><td>Return aritmetico (13 mesi)</td><td style="color:var(--green)">69.0%</td></tr>
+        <tr><td>Max Drawdown</td><td style="color:var(--orange)">3.1%</td></tr>
+        <tr><td>Tempo a mercato</td><td>~16%</td></tr>
+        <tr><td>Costi inclusi</td><td>0.02% per trade</td></tr>
+        <tr><td>Breakeven cost</td><td>0.36% (margine 18x)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Config scelta per il live</h2>
+  <p>Tra le 480 configurazioni testate, la config selezionata per il deploy bilancia PF, numero di trade, e stabilit&agrave;:</p>
+  <div class="highlight">
+    <p><strong>pb6 &gt; 0.50 / &lt; 0.20 &middot; EMA 9/21 closed-candle &middot; belief flip 0.42/0.28 &middot; ATR 2.5x stop &middot; timeout 8h &middot; cooldown 4h &middot; P4 confidence filter</strong></p>
+  </div>
+  <p>210 trade in 13 mesi = ~0.5 trade/giorno. L/S quasi bilanciato. Il sistema non forza trade &mdash; aspetta le condizioni giuste. Tre fix critici applicati prima del deploy:</p>
+  <ul>
+    <li><strong>EMA su candele chiuse</strong> &mdash; elimina il 16.6% di look-ahead intra-hour</li>
+    <li><strong>Stop loss su LOW</strong> della candela (non CLOSE) &mdash; stop intrabar realistico</li>
+    <li><strong>Entry window guard</strong> &mdash; previene entry su gap dati (weekend, festivit&agrave;)</li>
+  </ul>
+</section>
+
 <!-- SEGNALI -->
 <section>
   <h2>I segnali</h2>
