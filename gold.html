@@ -164,13 +164,13 @@
   <h2>Config scelta per il live</h2>
   <p>Tra le 480 configurazioni testate, la config selezionata per il deploy bilancia PF, numero di trade, e stabilit&agrave;:</p>
   <div class="highlight">
-    <p><strong>pb6 &gt; 0.50 / &lt; 0.20 &middot; EMA 9/21 closed-candle &middot; belief flip 0.42/0.28 &middot; ATR 2.5x stop &middot; timeout 8h &middot; cooldown 4h &middot; P4 confidence filter</strong></p>
+    <p><strong>Regime filter proprietario &middot; Conferma tecnica su candele chiuse &middot; Exit multi-condizione &middot; Risk management dinamico</strong></p>
   </div>
-  <p>210 trade in 13 mesi = ~0.5 trade/giorno. L/S quasi bilanciato. Il sistema non forza trade &mdash; aspetta le condizioni giuste. Tre fix critici applicati prima del deploy:</p>
+  <p>210 trade in 13 mesi = ~0.5 trade/giorno. L/S quasi bilanciato. Il sistema non forza trade &mdash; aspetta le condizioni giuste. Tre fix critici trovati dall'audit e applicati prima del deploy:</p>
   <ul>
-    <li><strong>EMA su candele chiuse</strong> &mdash; elimina il 16.6% di look-ahead intra-hour</li>
-    <li><strong>Stop loss su LOW</strong> della candela (non CLOSE) &mdash; stop intrabar realistico</li>
-    <li><strong>Entry window guard</strong> &mdash; previene entry su gap dati (weekend, festivit&agrave;)</li>
+    <li><strong>Entry su candele chiuse</strong> &mdash; elimina bias da dati non ancora disponibili in live</li>
+    <li><strong>Stop loss intrabar</strong> &mdash; uscita realistica su movimento avverso</li>
+    <li><strong>Guard su gap dati</strong> &mdash; previene entry spurie durante chiusure di mercato</li>
   </ul>
 </section>
 
