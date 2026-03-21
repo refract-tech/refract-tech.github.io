@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Refract &mdash; Walk-Forward Overview</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --surface: #12121a; --surface-2: #1a1a26; --border: #2a2a3a;
+    --gold: #d4a843; --gold-dim: #a07d2e; --green: #34d399; --red: #f87171;
+    --blue: #60a5fa; --orange: #fb923c; --purple: #a78bfa;
+    --text: #e8e8ed; --text-dim: #8888a0; --text-muted: #55556a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+  .header { text-align: center; margin-bottom: 48px; }
+  .header .brand { font-size: 13px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 500; }
+  .header h1 { font-size: clamp(24px, 4vw, 36px); font-weight: 700; line-height: 1.2; margin-bottom: 12px; background: linear-gradient(135deg, var(--text) 0%, var(--text-dim) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .header .subtitle { font-size: 15px; color: var(--text-dim); }
+  .header .date { font-size: 11px; color: var(--text-muted); margin-top: 8px; font-family: 'JetBrains Mono', monospace; }
+  .stats-bar { display: flex; justify-content: center; gap: 32px; margin-bottom: 40px; padding: 20px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .stat { text-align: center; min-width: 90px; }
+  .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 500; }
+  .stat-value.gold { color: var(--gold); }
+  .stat-value.green { color: var(--green); }
+  .stat-value.blue { color: var(--blue); }
+  .stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+  section { margin-bottom: 52px; }
+  h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: var(--gold); }
+  h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: var(--text); margin-top: 20px; }
+  p { color: var(--text-dim); margin-bottom: 14px; font-size: 14px; }
+  p strong { color: var(--text); }
+  ul { color: var(--text-dim); font-size: 14px; margin-bottom: 14px; padding-left: 20px; }
+  li { margin-bottom: 6px; }
+  li strong { color: var(--text); }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+  .card-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+  .card p { margin-bottom: 8px; }
+  .highlight { background: rgba(212, 168, 67, 0.08); border-left: 3px solid var(--gold); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 16px; }
+  .highlight p { color: var(--text); margin-bottom: 0; }
+  .info { background: rgba(96, 165, 250, 0.06); border-left: 3px solid var(--blue); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 16px; }
+  .info p { color: var(--text-dim); margin-bottom: 4px; font-size: 13px; }
+  .info strong { color: var(--blue); }
+  .caveat { background: rgba(248, 113, 113, 0.06); border-left: 3px solid var(--red); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 16px; }
+  .caveat p { color: var(--text-dim); margin-bottom: 4px; font-size: 13px; }
+  .caveat strong { color: var(--red); }
+  .check { background: rgba(52, 211, 153, 0.06); border-left: 3px solid var(--green); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 12px; }
+  .check p { color: var(--text-dim); margin-bottom: 0; font-size: 13px; }
+  .check strong { color: var(--green); }
+  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { background: var(--surface-2); padding: 10px 12px; text-align: right; font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); white-space: nowrap; }
+  th:first-child { text-align: left; }
+  td { padding: 8px 12px; border-top: 1px solid var(--border); white-space: nowrap; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  td:first-child { text-align: left; font-family: 'DM Sans', sans-serif; font-size: 12px; }
+  tr:nth-child(even) { background: rgba(255,255,255,0.015); }
+  tr:hover { background: rgba(212, 168, 67, 0.05); }
+  tr.winner { background: rgba(52, 211, 153, 0.06) !important; }
+  .val-green { color: var(--green); font-weight: 600; }
+  .val-red { color: var(--red); }
+  .val-gold { color: var(--gold); font-weight: 600; }
+  .val-dim { color: var(--text-muted); }
+  .monthly-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; margin-bottom: 16px; }
+  .month-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px; text-align: center; }
+  .month-card .month { font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+  .month-card .ic { font-size: 18px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+  .audit-badge { display: inline-block; background: rgba(52, 211, 153, 0.15); border: 1px solid var(--green); border-radius: 6px; padding: 4px 12px; font-size: 11px; font-weight: 600; color: var(--green); font-family: 'JetBrains Mono', monospace; margin-bottom: 16px; }
+  footer { text-align: center; padding-top: 32px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 11px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <div class="brand">Refract</div>
+  <h1>AI-Driven Gold Trading System</h1>
+  <div class="subtitle">Walk-forward validation &mdash; 13 mesi, 50.888 news, 6 regimi di mercato</div>
+  <div class="date">XAU/USD &middot; Feb 2025 &ndash; Mar 2026 &middot; Numeri post-audit 21 Mar 2026</div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-value gold">3.83</div><div class="stat-label">Profit Factor</div></div>
+  <div class="stat"><div class="stat-value green">64.8%</div><div class="stat-label">Win Rate</div></div>
+  <div class="stat"><div class="stat-value blue">210</div><div class="stat-label">Trades</div></div>
+  <div class="stat"><div class="stat-value green">69.0%</div><div class="stat-label">Return (13m)</div></div>
+  <div class="stat"><div class="stat-value" style="color:var(--orange)">3.1%</div><div class="stat-label">Max Drawdown</div></div>
+  <div class="stat"><div class="stat-value gold">3.4</div><div class="stat-label">Sharpe Ratio</div></div>
+  <div class="stat"><div class="stat-value gold">13<span style="font-size:16px;color:var(--text-dim)">/14</span></div><div class="stat-label">Mesi positivi</div></div>
+</div>
+<p style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:-30px;margin-bottom:32px;font-family:'JetBrains Mono',monospace;">Stima decay in live: PF ~3.0 &middot; WR ~60% &middot; Return ~55% &middot; MaxDD ~4% &middot; Sharpe ~2.7 &middot; (slippage, latenza, spread: -15/20%)</p>
+
+<!-- DISCLAIMER -->
+<div class="caveat">
+  <p><strong>Disclaimer</strong></p>
+  <p>Tutti i numeri in questa pagina sono da backtest walk-forward (out-of-sample) su 13 mesi, <strong>corretti dopo un audit indipendente</strong> che ha verificato ogni singolo trade, IC e Brier score. Il periodo copre un bull market storico su Gold (+79%, da ~$2.800 a ~$5.000). Non sono garanzia di performance futura. Il sistema &egrave; in paper trading &mdash; nessun capitale reale &egrave; stato rischiato.</p>
+  <p>Detto questo: il sistema ha prodotto <strong>trade SHORT profittevoli durante il bull run</strong>, dimostrando capacit&agrave; bidirezionale. E sa quando <strong>non tradare</strong> &mdash; nei periodi a bassa volatilit&agrave;, il filtro di regime tiene il sistema fermo automaticamente.</p>
+</div>
+
+<!-- COS'E' -->
+<section>
+  <h2>Cos'&egrave; Refract</h2>
+  <p>Refract &egrave; un sistema di trading automatico per l'oro (XAU/USD) che usa l'intelligenza artificiale per leggere le news finanziarie e decidere quando comprare, vendere, o stare fermo.</p>
+  <p>L'idea &egrave; semplice: <strong>le news muovono i mercati</strong>. Se un'AI riesce a capire il significato di una notizia pi&ugrave; velocemente del mercato, pu&ograve; posizionarsi prima che il prezzo si muova. Il sistema non predice il futuro &mdash; legge il presente meglio della media.</p>
+  <p>Ogni news viene classificata da un <strong>modello di intelligenza artificiale</strong> (un large language model) che assegna un punteggio di rilevanza, una direzione (rialzista/ribassista/neutrale), e una categoria. Le classificazioni individuali vengono poi aggregate in un <strong>indicatore di regime</strong> che cattura il &ldquo;sentimento&rdquo; del flusso di notizie delle ultime ore.</p>
+
+  <div class="info">
+    <p><strong>In parole semplici</strong></p>
+    <p>Immagina di avere un analista che legge 150 news al giorno, assegna un giudizio a ciascuna, e poi ti dice: &ldquo;nelle ultime ore il flusso di news importanti &egrave; fortemente rialzista, il mercato &egrave; attento, &egrave; il momento di comprare.&rdquo; Refract fa esattamente questo, 24 ore su 24, senza stancarsi e senza bias emotivi.</p>
+  </div>
+</section>
+
+<!-- COME FUNZIONA -->
+<section>
+  <h2>Come funziona il trading</h2>
+  <p>Il sistema &egrave; a <strong>due livelli</strong>: il macro comanda (decide SE tradare e in che direzione), il tecnico esegue (decide QUANDO entrare e uscire).</p>
+
+  <div class="card">
+    <div class="card-title">Livello 1 &mdash; Il macro decide la direzione</div>
+    <p>Un indicatore di regime proprietario aggrega le classificazioni AI delle ultime ore e determina il permesso di tradare. Le soglie sono asimmetriche &mdash; sfruttano il fatto che circa il 63% delle news &egrave; neutrale, creando un filtro di regime naturale che si adatta da solo alla composizione del flusso informativo.</p>
+    <ul>
+      <li>Flusso fortemente rialzista + news rialzista &rarr; permesso di comprare (LONG)</li>
+      <li>Flusso fortemente ribassista + news ribassista &rarr; permesso di vendere allo scoperto (SHORT)</li>
+      <li>Altrimenti: <strong>fermo</strong>. Il sistema non forza mai un trade.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">Livello 2 &mdash; Il tecnico conferma l'entry</div>
+    <p>Anche quando il macro d&agrave; il via, il sistema <strong>non entra subito</strong>. Aspetta una conferma tecnica basata su medie mobili. Se la conferma non arriva entro un tempo limite, il trade viene saltato.</p>
+    <p>Questo filtro tecnico elimina il <strong>22% dei segnali</strong> &mdash; quasi tutti perdenti.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">Uscita dal trade</div>
+    <p>Il sistema esce quando si verifica una di queste condizioni (la prima che scatta):</p>
+    <ul>
+      <li><strong>Cambio di regime</strong> (40% dei trade): il sentimento delle news cambia direzione. Funziona come uno stop intelligente &mdash; la maggior parte delle uscite anticipate sono su trade perdenti.</li>
+      <li><strong>Timeout</strong> (54%): dopo un periodo prefissato il trade viene chiuso. L'orizzonte &egrave; validato dal backtest.</li>
+      <li><strong>Hard stop</strong> (6%): in caso di movimento avverso improvviso, uno stop loss automatico protegge il capitale.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">Gestione del rischio</div>
+    <ul>
+      <li><strong>Cooldown</strong> tra un trade e l'altro &mdash; niente overtrading.</li>
+      <li><strong>Max 2 posizioni</strong> contemporanee.</li>
+      <li><strong>Sizing variabile</strong>: proporzionale alla forza del segnale e all'allineamento del regime.</li>
+      <li><strong>DD scaling</strong>: durante un drawdown, il sizing si riduce automaticamente.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SCOPERTA NEUTRAL -->
+<section>
+  <h2>La scoperta chiave: perch&eacute; funzionano gli SHORT in un bull market</h2>
+  <div class="highlight">
+    <p>L'oro &egrave; salito del 79% nei 13 mesi testati. Eppure il sistema ha generato trade SHORT (vendita allo scoperto) profittevoli. Come &egrave; possibile?</p>
+  </div>
+  <p>L'indicatore di regime include le news <strong>neutrali</strong> nel suo calcolo. Quando il mercato consolida o ritraccia, il flusso di news diventa pi&ugrave; incerto &mdash; la percentuale di news neutrali sale. Questo fa scendere l'indicatore sotto la soglia SHORT, e il sistema vende allo scoperto.</p>
+  <p>Quando il mercato riprende a salire, le news tornano direzionali, i neutrali calano, l'indicatore risale, e il sistema torna in LONG. <strong>Nessuno ha progettato questo meccanismo</strong> &mdash; &egrave; emerso naturalmente dalla struttura dei dati.</p>
+</section>
+
+<!-- IL SEGNALE -->
+<section>
+  <h2>Il segnale: cosa calcola il sistema</h2>
+  <p>Dietro il filtro di regime c'&egrave; un'architettura di segnali che insieme determinano direzione, timing e dimensione di ogni trade. Sono stati testati <strong>38 segnali candidati</strong> su 4 orizzonti temporali (1h, 4h, 8h, 24h). La qualit&agrave; di ogni segnale &egrave; misurata con l'<strong>IC</strong>.</p>
+
+  <div class="info">
+    <p><strong>Cosa significa IC in pratica</strong></p>
+    <p>L'IC (Information Coefficient) &egrave; la <strong>correlazione di Spearman</strong> tra il segnale e il rendimento effettivo &mdash; misura quanto bene un segnale <strong>ordina i trade dal migliore al peggiore</strong>. Se il segnale dice &ldquo;questo trade &egrave; forte&rdquo; e quello forte guadagna pi&ugrave; di quello debole, l'IC &egrave; positivo. IC = 0 &egrave; inutile (come tirare una moneta). IC = +0.10 &egrave; gi&agrave; buono. IC = +0.20 &egrave; eccellente. IC = +0.30 &egrave; da hedge fund quantitativo di primo livello. Il nostro segnale principale ha IC +0.275 a 4h.</p>
+  </div>
+
+  <h3>Tre famiglie di segnali</h3>
+  <div class="card">
+    <div class="card-title">Segnali AI (dal flusso di news)</div>
+    <p>Indicatori che misurano il sentimento aggregato delle news, pesato per importanza, freschezza e direzione. Catturano il &ldquo;polso&rdquo; del mercato informativo in tempo reale.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">Segnali tecnici (dal prezzo)</div>
+    <p>Indicatori classici di mean reversion (il prezzo tende a tornare verso la media) e trend (quanto il prezzo &egrave; lontano dal suo equilibrio). Catturano la posizione tecnica del mercato.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">Segnali combinati (proprietari)</div>
+    <p>Formule proprietarie che fondono segnali AI e tecnici in un unico numero. Combinano il &ldquo;cosa dicono le news&rdquo; con il &ldquo;dove si trova il prezzo&rdquo;. Sono i segnali pi&ugrave; forti del progetto.</p>
+  </div>
+
+  <h3>Top 10 segnali validati (out-of-sample, confermati dall'audit)</h3>
+  <div class="audit-badge">AUDIT: 20/20 IC ricalcolati da zero &mdash; diff 0.0000 su tutti</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align:left">Segnale</th>
+          <th>IC @4h</th>
+          <th>IC @8h</th>
+          <th>Tipo</th>
+          <th>Cosa misura</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Regime + RSI estremo</td>
+          <td class="val-gold">+0.599</td>
+          <td class="val-gold">+0.490</td>
+          <td>Condizionale</td>
+          <td style="font-family:'DM Sans';font-size:11px;text-align:left">News rialziste + prezzo oversold = combo esplosiva</td>
+        </tr>
+        <tr>
+          <td>Accelerazione sentiment</td>
+          <td>+0.294</td>
+          <td>+0.283</td>
+          <td>Proprietario</td>
+          <td style="font-family:'DM Sans';font-size:11px;text-align:left">Il sentiment sta migliorando o peggiorando?</td>
+        </tr>
+        <tr>
+          <td>Refract Index</td>
+          <td>+0.285</td>
+          <td class="val-green">+0.328</td>
+          <td>Proprietario</td>
+          <td style="font-family:'DM Sans';font-size:11px;text-align:left">5 componenti: il segnale pi&ugrave; completo</td>
+        </tr>
+        <tr>
+          <td>Belief State (P4)</td>
+          <td>+0.275</td>
+          <td class="val-green">+0.322</td>
+          <td>Proprietario</td>
+          <td style="font-family:'DM Sans';font-size:11px;text-align:left">Sentiment + tecnico + trend in un numero</td>
+        </tr>
+        <tr>
+          <td>Sentiment aggregato 6h</td>
+          <td>+0.260</td>
+          <td>+0.271</td>
+          <td>AI rolling</td>
+          <td style="font-family:'DM Sans';font-size:11px;text-align:left">Il gate del sistema: flusso bullish vs bearish</td>
+        </tr>
+        <tr>
+          <td>Score asymmetry</td>
+          <td>+0.235</td>
+          <td>+0.273</td>
+          <td>Proprietario</td>
+          <td style="font-family:'DM Sans';font-size:11px;text-align:left">Quanto sono &ldquo;convinte&rdquo; le news in una direzione</td>
+        </tr>
+        <tr>
+          <td>Sentiment pesato per freschezza</td>
+          <td>+0.233</td>
+          <td>+0.262</td>
+          <td>Proprietario</td>
+          <td style="font-family:'DM Sans';font-size:11px;text-align:left">News fresche e importanti pesano di pi&ugrave;</td>
+        </tr>
+        <tr>
+          <td>Freshness-weighted belief</td>
+          <td>+0.206</td>
+          <td>+0.244</td>
+          <td>Proprietario</td>
+          <td style="font-family:'DM Sans';font-size:11px;text-align:left">Combinazione freschezza + regime</td>
+        </tr>
+        <tr>
+          <td>Accelerazione breve</td>
+          <td>+0.269</td>
+          <td>+0.273</td>
+          <td>Proprietario</td>
+          <td style="font-family:'DM Sans';font-size:11px;text-align:left">Cambio di sentiment su finestra corta</td>
+        </tr>
+        <tr>
+          <td>Ensemble P4 + AI per-news</td>
+          <td>+0.132</td>
+          <td class="val-green">+0.253</td>
+          <td>Combinato</td>
+          <td style="font-family:'DM Sans';font-size:11px;text-align:left">Zero mesi negativi su 14. Il pi&ugrave; robusto.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:12px;color:var(--text-muted)">Tutti i valori sono <strong>out-of-sample</strong> (calcolati su dati mai visti dal sistema) e <strong>confermati dall'audit indipendente</strong> con diff 0.0000. IC calcolato come Spearman rank correlation con p-value corretti tramite Newey-West HAC standard errors. I segnali &ldquo;condizionali&rdquo; funzionano solo in specifiche condizioni di mercato ma con IC altissimi. I segnali &ldquo;proprietari&rdquo; funzionano sempre. 6/6 fold positivi su tutti.</p>
+</section>
+
+<!-- TRADE CORRETTI -->
+<section>
+  <h2>Risultati di trading (post-audit, numeri corretti)</h2>
+  <div class="audit-badge">AUDIT: 10/10 check PASS &mdash; trade ricalcolati da zero</div>
+
+  <p>L'audit finale ha identificato e corretto un bias nel calcolo delle medie mobili che gonfiava i risultati del ~20%. I numeri sotto sono <strong>post-correzione</strong> &mdash; i numeri reali del walkforward, non quelli gonfiati. La stima di ulteriore decay in live &egrave; trattata pi&ugrave; avanti.</p>
+
+  <h3>Performance del sistema</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="text-align:left">Metrica</th><th>Valore</th></tr></thead>
+      <tbody>
+        <tr><td>Trade totali</td><td class="val-blue" style="color:var(--blue)">210</td></tr>
+        <tr><td>LONG / SHORT</td><td>~110 / ~100 (quasi bilanciato)</td></tr>
+        <tr><td>Win Rate</td><td class="val-green">64.8%</td></tr>
+        <tr><td>Profit Factor</td><td class="val-gold">3.83</td></tr>
+        <tr><td>Sharpe Ratio (su calendario)</td><td class="val-gold">3.4</td></tr>
+        <tr><td>Return aritmetico (13 mesi)</td><td class="val-green">69.0%</td></tr>
+        <tr><td>Return geometrico (compounding)</td><td class="val-green">~96%</td></tr>
+        <tr><td>Max Drawdown</td><td style="color:var(--orange)">3.1%</td></tr>
+        <tr><td>Durata media trade</td><td>~6h</td></tr>
+        <tr><td>Tempo a mercato</td><td>~16% (il sistema &egrave; fermo l'84% del tempo)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>480 configurazioni testate</h3>
+  <p>Non abbiamo scelto &ldquo;la configurazione che funziona meglio&rdquo;. Abbiamo testato <strong>480 combinazioni</strong> di parametri con tutti i fix applicati. Il numero totale di trade generati dalle configurazioni pi&ugrave; permissive arriva a <strong>362 in 13 mesi</strong> &mdash; tutti profittevoli. Ma i 210 della configurazione scelta rappresentano i trade con il miglior rapporto qualit&agrave;/quantit&agrave;: PF 3.83 contro PF 2.15 della configurazione con 362 trade. Abbiamo preferito fare meno trade migliori.</p>
+  <div class="two-col">
+    <div class="check"><p><strong>480/480</strong> configurazioni hanno PF &gt; 2.0. Il worst case &egrave; PF 2.15.</p></div>
+    <div class="check"><p><strong>324/480</strong> (68%) hanno PF &gt; 1.0 su tutti e 6 i blocchi temporali di test.</p></div>
+    <div class="check"><p><strong>PF mediano</strong>: 3.03. Non c'&egrave; un angolo dello spazio parametri dove il sistema crolla.</p></div>
+    <div class="check"><p><strong>PF migliore</strong>: 4.16 su 191 trade, quasi perfettamente bilanciato LONG/SHORT.</p></div>
+  </div>
+
+  <h3>Stabilit&agrave; per mese</h3>
+  <p>Su 14 mesi, <strong>12-13 sono positivi</strong> su tutte le configurazioni. L'unico mese strutturalmente debole &egrave; settembre 2025 (mercato laterale, bassa volatilit&agrave;). Il sistema non perde catastroficamente &mdash; il mese peggiore &egrave; -1.0%.</p>
+  <div class="monthly-grid">
+    <div class="month-card"><div class="month">Feb 25</div><div class="ic val-green">+6.6%</div></div>
+    <div class="month-card"><div class="month">Mar 25</div><div class="ic val-green">+5.1%</div></div>
+    <div class="month-card"><div class="month">Apr 25</div><div class="ic val-green">+6.5%</div></div>
+    <div class="month-card"><div class="month">May 25</div><div class="ic val-green">+12.8%</div></div>
+    <div class="month-card"><div class="month">Jun 25</div><div class="ic val-green">+4.1%</div></div>
+    <div class="month-card"><div class="month">Jul 25</div><div class="ic" style="color:var(--orange)">+0.6%</div></div>
+    <div class="month-card"><div class="month">Aug 25</div><div class="ic val-green">+2.5%</div></div>
+    <div class="month-card"><div class="month">Sep 25</div><div class="ic val-red">-0.6%</div></div>
+    <div class="month-card"><div class="month">Oct 25</div><div class="ic val-green">+4.1%</div></div>
+    <div class="month-card"><div class="month">Nov 25</div><div class="ic val-green">+5.3%</div></div>
+    <div class="month-card"><div class="month">Dec 25</div><div class="ic val-green">+2.4%</div></div>
+    <div class="month-card"><div class="month">Jan 26</div><div class="ic val-green">+16.7%</div></div>
+    <div class="month-card"><div class="month">Feb 26</div><div class="ic val-green">+2.1%</div></div>
+    <div class="month-card"><div class="month">Mar 26</div><div class="ic val-green">+1.3%</div></div>
+  </div>
+  <p style="font-size:12px;color:var(--text-muted)">Return % sul prezzo dell'oro (non sul capitale). Con leva e sizing, i return sul capitale sono proporzionalmente pi&ugrave; alti. Gennaio 2026 &egrave; un outlier (+16.7%) dovuto a una forte correzione dell'oro catturata quasi interamente in SHORT.</p>
+
+  <h3>Core performance (senza outlier)</h3>
+  <p>Togliendo i 2 mesi migliori e i 2 peggiori (trimmed mean sui 10 mesi centrali):</p>
+  <div class="highlight">
+    <p><strong>PF core: 3.25 &middot; WR core: 65.6% &middot; Return core: +4.0%/mese &middot; Stima annua: ~48%</strong></p>
+  </div>
+  <p>I mesi forti non stanno gonfiando il totale. Il core &egrave; solido.</p>
+
+  <h3>Sensibilit&agrave; ai costi</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="text-align:left">Costo per trade</th><th>PF</th><th>Return</th></tr></thead>
+      <tbody>
+        <tr><td>0.02% (modello base)</td><td class="val-gold">3.83</td><td>69.0%</td></tr>
+        <tr><td>0.05% (spread normale)</td><td>3.48</td><td>64%</td></tr>
+        <tr><td>0.10% (spread alto + slippage)</td><td>2.79</td><td>53%</td></tr>
+        <tr><td>0.15% (worst case realistico)</td><td>2.26</td><td>42%</td></tr>
+        <tr><td>0.36% (breakeven)</td><td>1.00</td><td>0%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:12px;color:var(--text-muted)">Anche con costi 7 volte superiori al modello base, il sistema resta profittevole (PF 2.26). Il breakeven &egrave; a 0.36% per trade &mdash; un margine di sicurezza molto ampio.</p>
+</section>
+
+<!-- FOLD STABILITY -->
+<section>
+  <h2>Stabilit&agrave; temporale: 6 blocchi out-of-sample</h2>
+  <p>Il dataset &egrave; diviso in 6 blocchi temporali. Per ogni blocco il sistema usa solo i dati precedenti. Tutti i blocchi sono profittevoli:</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Fold</th><th>Trade</th><th>PF</th><th>Return</th><th>Periodo</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>52</td><td class="val-gold">5.04</td><td>24.5%</td><td>Feb-Apr 2025</td></tr>
+        <tr><td>2</td><td>32</td><td class="val-green">3.12</td><td>7.5%</td><td>Apr-Jun 2025</td></tr>
+        <tr><td>3</td><td>38</td><td>2.47</td><td>5.8%</td><td>Jun-Aug 2025</td></tr>
+        <tr><td>4</td><td>29</td><td class="val-green">2.91</td><td>10.6%</td><td>Aug-Oct 2025</td></tr>
+        <tr><td>5</td><td>37</td><td>1.85</td><td>4.0%</td><td>Oct-Dec 2025</td></tr>
+        <tr><td>6</td><td>11</td><td class="val-gold">33.15</td><td>19.7%</td><td>Jan-Mar 2026</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:12px;color:var(--text-muted)">Fold 6 ha PF 33.15 su soli 11 trade &mdash; statisticamente non significativo ma profittevole. Fold 5 (PF 1.85) &egrave; il caso &ldquo;mese debole&rdquo;: il sistema rallenta ma non perde. Il test di trend conferma che non c'&egrave; decadimento del segnale nel tempo (r=-0.09, p=0.87).</p>
+</section>
+
+<!-- ENSEMBLE -->
+<section>
+  <h2>Ensemble: il segnale pi&ugrave; robusto</h2>
+  <p>Combinando il segnale statistico proprietario con il giudizio AI per singola news, otteniamo un segnale che funziona <strong>in tutti i 14 mesi testati</strong>:</p>
+
+  <div class="highlight">
+    <p><strong>IC +0.248 a 8h, zero mesi negativi su 14.</strong> Intervallo di confidenza al 95%: [+0.200, +0.292]. Nessun parametro ottimizzato &mdash; media aritmetica 50/50 dei due segnali.</p>
+  </div>
+
+  <h3>IC dell'ensemble per mese a 8h</h3>
+  <div class="monthly-grid">
+    <div class="month-card"><div class="month">Feb 25</div><div class="ic val-green">+0.50</div></div>
+    <div class="month-card"><div class="month">Mar 25</div><div class="ic val-green">+0.19</div></div>
+    <div class="month-card"><div class="month">Apr 25</div><div class="ic val-green">+0.19</div></div>
+    <div class="month-card"><div class="month">May 25</div><div class="ic val-green">+0.22</div></div>
+    <div class="month-card"><div class="month">Jun 25</div><div class="ic val-green">+0.26</div></div>
+    <div class="month-card"><div class="month">Jul 25</div><div class="ic val-green">+0.25</div></div>
+    <div class="month-card"><div class="month">Aug 25</div><div class="ic val-green">+0.44</div></div>
+    <div class="month-card"><div class="month">Sep 25</div><div class="ic" style="color:var(--orange)">+0.05</div></div>
+    <div class="month-card"><div class="month">Oct 25</div><div class="ic val-green">+0.32</div></div>
+    <div class="month-card"><div class="month">Nov 25</div><div class="ic val-green">+0.26</div></div>
+    <div class="month-card"><div class="month">Dec 25</div><div class="ic val-green">+0.29</div></div>
+    <div class="month-card"><div class="month">Jan 26</div><div class="ic val-green">+0.20</div></div>
+    <div class="month-card"><div class="month">Feb 26</div><div class="ic val-green">+0.13</div></div>
+    <div class="month-card"><div class="month">Mar 26</div><div class="ic val-green">+0.37</div></div>
+  </div>
+  <p style="font-size:12px;color:var(--text-muted)"><strong>IC</strong> (Information Coefficient) = Spearman rank correlation tra segnale e rendimento effettivo, con p-value corretti tramite Newey-West. IC +0.20 &egrave; considerato eccellente nel quant finance. Tutti i 14 mesi sono positivi &mdash; il segnale funziona in bull, bear, consolidamento e crisi.</p>
+</section>
+
+<!-- AUDIT -->
+<section>
+  <h2>Audit finale: verifica indipendente</h2>
+  <p>Prima di deployare il sistema, abbiamo eseguito un <strong>audit completo e indipendente</strong> &mdash; uno script nuovo, scritto da zero, che ricalcola ogni numero senza riusare il codice originale. 10 check, tutti PASS.</p>
+  <div class="audit-badge">10/10 PASS &middot; 20/20 IC match &middot; 247 trade verificati</div>
+
+  <div class="two-col">
+    <div class="check"><p><strong>Trade reconstruction</strong>: 247 trade ricalcolati da zero con script indipendente (nessun codice condiviso con l'originale). PF 3.82 / 3.97 &mdash; match esatto con entrambe le configurazioni. Entry price, exit price e PnL verificati candela per candela.</p></div>
+    <div class="check"><p><strong>Trade verification</strong>: 0 errori su 247 trade. Ogni stop loss verificato su LOW della candela (non CLOSE). 6 warning per gap dati (Pasqua, zero candele 16 aprile) &mdash; gestiti con entry guard.</p></div>
+    <div class="check"><p><strong>Look-ahead check</strong>: 0 violazioni. Per ogni trade: il rolling sentiment usa solo news con timestamp &lt; signal_time, l'EMA usa solo candele chiuse, il belief flip usa solo dati precedenti. Identificato e corretto un bias EMA intra-hour (decay 20%, gi&agrave; applicato ai numeri sopra).</p></div>
+    <div class="check"><p><strong>IC indipendente (Spearman + Newey-West)</strong>: 20 segnali su 20 ricalcolati da zero &mdash; 10 segnali &times; 2 timeframe. Differenza: 0.0000 su tutti e 20. Le formule sono state riscritte da zero e producono risultati identici al quarto decimale.</p></div>
+    <div class="check"><p><strong>Brier score (Platt Scaling)</strong>: 0.2139 (ref 0.2129), diff 0.001. Ricalcolato con LogisticRegression expanding-window su 43.362 previsioni out-of-sample. Outcome a 3 stati con dead zone 0.0005.</p></div>
+    <div class="check"><p><strong>Fold stability (Spearman trend test)</strong>: tutti e 6 i fold PF &gt; 1.0. Nessun decadimento temporale (correlazione di Spearman sul trend dei PF: r=-0.09, p=0.87). Nessun fold contribuisce &gt; 50% del return totale.</p></div>
+    <div class="check"><p><strong>Cost sensitivity</strong>: PF ricalcolato a 0.02%, 0.05%, 0.10%, 0.15%, 0.20%. PF &gt; 2.0 anche con costi 5x il modello base. Breakeven a 0.36% per trade.</p></div>
+    <div class="check"><p><strong>Baselines (permutation test)</strong>: batte segnali con direzione shuffled (PF ~1.0), buy-and-hold Gold (+79%), e direction-only senza filtro di regime (PF 1.80). Il permutation test usa l'intero engine di trading, non solo il segno del PnL.</p></div>
+    <div class="check"><p><strong>Data quality</strong>: &lt;0.5% valori NULL su tutti i campi critici. 0 violazioni di monotonicit&agrave; temporale. 100% copertura candele per entry e exit. Prezzi verificati contro fonti esterne.</p></div>
+    <div class="check"><p><strong>Overlap analysis (sweep-line O(n log n))</strong>: documentati i trade concorrenti. Max 6 durante gap Pasqua (corretto con entry guard). Return geometrico compounding: ~96%. Tempo a mercato: 15.6%. 35-37% dei giorni di trading hanno almeno un trade attivo.</p></div>
+  </div>
+</section>
+
+<!-- COSA ABBIAMO DIMOSTRATO -->
+<section>
+  <h2>Cosa abbiamo dimostrato (e cosa no)</h2>
+  <p>Questo progetto &egrave; nato da una domanda: <strong>&ldquo;Le news macro muovono davvero il prezzo dell'oro, o &egrave; solo rumore?&rdquo;</strong> Dopo 6 settimane di ricerca, 50.888 news analizzate e 480 combinazioni testate, le risposte sono chiare.</p>
+
+  <div class="check">
+    <p><strong>Le news macro predicono il prezzo dell'oro.</strong> Non perfettamente, non sempre, ma con una correlazione statisticamente significativa (Spearman IC con Newey-West correction, p &lt; 1e-10) che persiste su 13 mesi e 6 regimi di mercato diversi. Non &egrave; un'illusione statistica &mdash; l'audit lo conferma.</p>
+  </div>
+
+  <div class="check">
+    <p><strong>Non &egrave; una self-fulfilling prophecy.</strong> L'obiezione pi&ugrave; comune: &ldquo;il mercato reagisce alle news perch&eacute; i trader ci credono.&rdquo; Se fosse cos&igrave;, il segnale funzionerebbe solo sulle news ad alto profilo. Invece funziona anche su news a basso score da fonti secondarie, e funziona a 8 ore di distanza &mdash; ben oltre la finestra di reazione emotiva. Il mercato non &ldquo;reagisce&rdquo; alle news: le <strong>digerisce</strong> lentamente, e il sistema cattura quella digestione.</p>
+  </div>
+
+  <div class="check">
+    <p><strong>L'AI aggiunge valore reale.</strong> Senza AI (solo indicatori tecnici), il Profit Factor scende a 0.96 &mdash; praticamente random. L'AI legge il contenuto testuale e ne estrae informazione che i numeri da soli non catturano.</p>
+  </div>
+
+  <div class="check">
+    <p><strong>Il regime conta pi&ugrave; della singola news.</strong> Una singola news rialzista non basta per comprare. Serve che il flusso delle ultime ore sia coerentemente rialzista &mdash; pi&ugrave; news importanti nella stessa direzione.</p>
+  </div>
+
+  <div class="check">
+    <p><strong>Funziona in entrambe le direzioni.</strong> LONG e SHORT profittevoli, quasi bilanciati, durante un bull market del 79%. Non &egrave; un buy-and-hold mascherato.</p>
+  </div>
+
+  <div class="caveat">
+    <p><strong>Cosa NON abbiamo dimostrato</strong></p>
+    <p>Che funzioni in live con soldi reali. Che funzioni in un bear market prolungato (6+ mesi di calo). Che i numeri del backtest si traducano 1:1 in performance reale. Queste sono le domande a cui i prossimi mesi di paper trading dovranno rispondere.</p>
+  </div>
+</section>
+
+<!-- COME ABBIAMO VERIFICATO -->
+<section>
+  <h2>Come abbiamo verificato i numeri</h2>
+  <p>Numeri come PF 3.83 e return 69% sembrano troppo belli per essere veri, e la prima persona a dubitarne sono io. Ecco i controlli che abbiamo fatto.</p>
+
+  <h3>Walk-forward out-of-sample con TimeSeriesSplit</h3>
+  <p>A differenza di un backtest classico dove si ottimizza e testa sugli stessi dati, il walk-forward <strong>simula il futuro</strong>. Il dataset viene diviso in 6 blocchi temporali con <strong>expanding-window TimeSeriesSplit</strong> (scikit-learn). Per ogni blocco, il sistema usa SOLO i dati dei blocchi precedenti per il training, e poi viene testato sul blocco successivo che non ha mai visto. Nessun dato futuro entra mai nel training set &mdash; &egrave; lo standard industriale per la validazione di serie temporali finanziarie.</p>
+  <div class="check">
+    <p><strong>Risultato</strong>: PF &gt; 1.0 su tutti e 6 i blocchi. Nessun blocco in perdita.</p>
+  </div>
+
+  <h3>14 verifiche di integrit&agrave; + audit finale</h3>
+  <div class="two-col">
+    <div class="check"><p><strong>Look-ahead bias</strong>: verificato che nessun dato futuro contamini il segnale. Tutti gli indicatori (rolling sentiment, EMA, ATR, RSI) ricalcolati con dati strettamente precedenti al timestamp di ogni trade. Zero violazioni nell'audit su 247 trade.</p></div>
+    <div class="check"><p><strong>Timestamp alignment</strong>: 104 URL matchati tra il feed live (RSS) e il dataset storico (NewsAPI). Mediana -3.6 minuti. Distribuzione verificata con test di Kolmogorov-Smirnov.</p></div>
+    <div class="check"><p><strong>Knowledge contamination</strong>: testato se l'AI &ldquo;sa gi&agrave;&rdquo; i risultati perch&eacute; addestrata su dati successivi. IC stabile su tutti i sotto-periodi di 4 mesi (range 0.23-0.25). Nessun decadimento temporale &mdash; test di Spearman sul trend: r=-0.09, p=0.87.</p></div>
+    <div class="check"><p><strong>Verifica prezzi</strong>: campioni incrociati con TradingView e yfinance. Zero discrepanze &gt; 0.01%. Continuit&agrave; candele verificata (0 gap &gt; 1% tra candele M15 consecutive).</p></div>
+    <div class="check"><p><strong>Temporal decay</strong>: IC stabile tra 0.23 e 0.25 su tutti i sotto-periodi. Il segnale non decade col passare dei mesi &mdash; l'alpha &egrave; persistente, non un artefatto di un singolo periodo.</p></div>
+    <div class="check"><p><strong>Diluted sample test</strong>: testato su campione diluito (1 news ogni 6 ore) per eliminare autocorrelazione seriale tra news vicine nel tempo. Il segnale regge con p &lt; 1e-5 anche dopo la diluizione.</p></div>
+  </div>
+
+  <h3>Correzioni statistiche rigorose</h3>
+  <ul>
+    <li><strong>Newey-West HAC standard errors</strong>: le news vicine nel tempo hanno risultati correlati (autocorrelazione seriale). I p-value standard sarebbero troppo ottimistici. La correzione Newey-West (Heteroskedasticity and Autocorrelation Consistent) ricalcola gli standard error tenendo conto di questa struttura di dipendenza. Risultato: p &lt; 1e-10 &mdash; la probabilit&agrave; che il segnale sia rumore &egrave; inferiore a 1 su 10 miliardi.</li>
+    <li><strong>FDR Benjamini-Hochberg</strong>: con 38 segnali testati su 4 timeframe (152 test totali), il rischio di trovare un falso positivo per caso &egrave; alto (multiple comparisons problem). La procedura Benjamini-Hochberg controlla il False Discovery Rate &mdash; la proporzione attesa di falsi positivi tra quelli dichiarati significativi. Risultato: 4 dei 5 segnali TIER 1 passano la correzione FDR al livello 0.05.</li>
+    <li><strong>Bootstrap confidence intervals</strong>: 10.000 ricampionamenti con sostituzione per stimare l'incertezza dell'IC. L'IC dell'ensemble a 8h ha intervallo di confidenza al 95% di [+0.200, +0.292]. Anche nel caso peggiore (limite inferiore del 5&deg; percentile), il segnale resta forte. P(IC &le; 0) = 0.000000 su 10.000 campioni.</li>
+    <li><strong>Platt Scaling con leave-one-month-out</strong>: calibrazione delle probabilit&agrave; tramite regressione logistica (LogisticRegression, scikit-learn) con cross-validation temporale. Brier Score risultante: 0.2139 (ref 0.2129, diff 0.001). Confermato nell'audit su 43.362 previsioni out-of-sample.</li>
+  </ul>
+
+  <h3>Sanity check e permutation test</h3>
+  <div class="two-col">
+    <div class="check"><p><strong>Direction bias</strong>: sia LONG che SHORT profittevoli. Il sistema non vince solo perch&eacute; compra in un bull market. PF calcolato separatamente per LONG e SHORT &mdash; entrambi &gt; 1.0 su tutti i fold.</p></div>
+    <div class="check"><p><strong>Permutation test</strong>: direzioni dei trade randomizzate (shuffled) e rieseguiti attraverso l'intero engine di trading. Segnali casuali producono PF ~1.0. Il sistema reale ha Z-score 4.10 rispetto alla distribuzione random &mdash; probabilit&agrave; che sia fortuna: &lt; 0.005%.</p></div>
+    <div class="check"><p><strong>Zero-LLM test</strong>: rimosso il modello AI e tradato con soli indicatori tecnici. PF scende a 0.96 &mdash; praticamente random. L'AI estrae informazione dal testo che i numeri da soli non catturano.</p></div>
+    <div class="check"><p><strong>Robustezza parametrica</strong>: 480 combinazioni di parametri testate. Tutte PF &gt; 2.0. Il worst case &egrave; 2.15, la mediana 3.03. Non &egrave; cherry-picking &mdash; il sistema &egrave; robusto su tutto lo spazio parametrico.</p></div>
+  </div>
+</section>
+
+<!-- LIVE -->
+<section>
+  <h2>Validazione live</h2>
+  <div class="card">
+    <div class="card-title">18 Febbraio &ndash; 18 Marzo 2026 (regime ribassista)</div>
+    <p><strong>18 trade</strong> (tutti SHORT) &middot; Profit Factor <strong>2.18</strong> &middot; Return mensile <strong>+13.1%</strong></p>
+    <p>Convergenza con il walkforward: +13.3% stimato vs +13.1% live. Delta 0.2%.</p>
+    <p>Il fatto che siano tutti SHORT &egrave; il comportamento corretto: in un regime ribassista, il filtro di regime non d&agrave; mai permesso LONG.</p>
+  </div>
+  <div class="caveat">
+    <p><strong>Limitazione</strong>: 1 mese in un solo regime &egrave; insufficiente. Servono almeno 3 mesi su 2+ regimi per una validazione affidabile.</p>
+  </div>
+</section>
+
+<!-- STIMA LIVE -->
+<section>
+  <h2>Stima realistica per il live</h2>
+  <p>Fattori di degradazione attesi tra walkforward e live: slippage (~5-10%), latenza (~3-5%), adattamento feed (~0-5%). Il decay del 20% per le medie mobili &egrave; gi&agrave; incluso nei numeri sopra.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="text-align:left">Scenario</th><th>Decay</th><th>PF atteso</th><th>Sharpe</th><th>Return/mese</th></tr></thead>
+      <tbody>
+        <tr><td>Ottimistico</td><td>-10%</td><td class="val-green">3.45</td><td>3.1</td><td>+3.6%</td></tr>
+        <tr><td>Realistico</td><td>-20%</td><td class="val-green">3.06</td><td>2.7</td><td>+3.2%</td></tr>
+        <tr><td>Conservativo</td><td>-30%</td><td>2.68</td><td>2.4</td><td>+2.8%</td></tr>
+        <tr><td>Worst case</td><td>-40%</td><td>2.30</td><td>2.0</td><td>+2.4%</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:12px;color:var(--text-muted)">Anche nel worst case (escluso regime change), PF resta &gt; 2.0. Il breakeven &egrave; a 0.36% per trade &mdash; serve un decay del 90% per diventare unprofitable.</p>
+</section>
+
+<!-- RISCHI -->
+<section>
+  <h2>Cosa potrebbe andare storto</h2>
+  <div class="caveat">
+    <p><strong>Backtest vs realt&agrave;</strong></p>
+    <p>Anche il walk-forward pi&ugrave; rigoroso resta una simulazione. In live ci sono: slippage, requote, disconnessioni, spread variabili, e psicologia umana. I numeri reali saranno inferiori. L'audit ha corretto il bias pi&ugrave; grande (medie mobili, -20%), ma altri fattori sono imprevedibili.</p>
+  </div>
+  <div class="caveat">
+    <p><strong>Il bull market ha aiutato</strong></p>
+    <p>Gold +79% in 13 mesi. Il sistema funziona anche in SHORT e sa stare fermo, ma non &egrave; stato testato su un bear market prolungato o su un mercato laterale per mesi.</p>
+  </div>
+  <div class="caveat">
+    <p><strong>Dipendenza da AI di terze parti</strong></p>
+    <p>Il sistema dipende da un modello AI di terze parti. Se viene aggiornato, le classificazioni potrebbero cambiare. &Egrave; previsto un monitoraggio settimanale e, nel medio termine, l'addestramento di un <strong>modello proprietario</strong> (fine-tuning su 50.000+ news con esiti di mercato) per eliminare questa dipendenza.</p>
+  </div>
+  <div class="caveat">
+    <p><strong>Nessun capitale reale</strong></p>
+    <p>Ad oggi il sistema &egrave; in paper trading. Zero soldi veri.</p>
+  </div>
+</section>
+
+<!-- PROSSIMI PASSI -->
+<section>
+  <h2>Prossimi passi</h2>
+  <p>Sono il primo a diffidare dei miei stessi numeri. Per questo il percorso &egrave; graduale e ogni fase deve confermare la precedente.</p>
+  <div class="card">
+    <div class="card-title">Fase 1 &mdash; Paper trading con dati reali (ora &rarr; 2-3 mesi)</div>
+    <p>Il sistema gira su dati di mercato reali ma senza soldi veri. L'obiettivo &egrave; raccogliere <strong>50+ trade su almeno 2 regimi</strong> e confrontare i numeri con il walkforward. Se non reggono, il sistema non va avanti.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">Fase 2 &mdash; Conto demo broker (mese 3-4)</div>
+    <p>Stesse condizioni del reale (spread, slippage, latenza) ma senza rischio. Verifica che l'esecuzione funzioni end-to-end.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">Fase 3 &mdash; Capitale reale minimo (mese 4-6)</div>
+    <p>Sizing minimo su un conto reale. Solo dopo 30+ trade profittevoli su conto reale si considera lo scaling.</p>
+  </div>
+  <div class="info">
+    <p><strong>Nota personale</strong></p>
+    <p>Non cerco investitori e non offro servizi di trading. Questo &egrave; un progetto di ricerca personale. Se i numeri reggono in live, valuter&ograve; le opzioni. Se non reggono, avr&ograve; imparato un sacco di cose su AI, mercati e statistica. In entrambi i casi, i numeri decideranno &mdash; non le opinioni.</p>
+  </div>
+  <div class="info">
+    <p><strong>Strategie multiple in sviluppo</strong></p>
+    <p>I risultati presentati qui sono relativi alla prima strategia. Ma il walkforward ha prodotto <strong>10 segnali validati</strong> con IC significativo, molti dei quali catturano aspetti diversi del mercato. L'architettura &egrave; modulare: aggiungere un nuovo bot di trading richiede 5 minuti. L'obiettivo &egrave; pi&ugrave; strategie in parallelo per aumentare il numero di trade senza degradare la qualit&agrave;.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <h2>FAQ</h2>
+  <div class="card">
+    <div class="card-title">Ma non &egrave; come tutti quelli che &ldquo;fanno soldi col trading&rdquo;?</div>
+    <p>La differenza &egrave; la metodologia. Il 99% dei &ldquo;trader profittevoli&rdquo; su Internet mostra backtest ottimizzati sugli stessi dati usati per costruire il sistema. Qui ogni mese &egrave; testato su dati mai visti. C'&egrave; un audit indipendente che verifica ogni numero. E il sistema &egrave; progettato per trovare i propri errori, non per nasconderli.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">Se funziona davvero, perch&eacute; non ci metti i soldi subito?</div>
+    <p>Perch&eacute; 13 mesi di backtest non sono 13 mesi di live. Il backtest non include slippage reale, disconnessioni, momenti di panico. Voglio 50+ trade reali prima di rischiare soldi veri. La prudenza non &egrave; insicurezza &mdash; &egrave; rispetto per il rischio.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">Quanto pu&ograve; perdere?</div>
+    <p>Il massimo drawdown nel walkforward &egrave; stato del 3.1% del capitale. Con sizing conservativo e stop loss automatici, una singola perdita massima &egrave; limitata. Il sistema &egrave; progettato per sopravvivere ai mesi brutti, non solo per brillare in quelli buoni. Su 14 mesi, solo 1 ha return leggermente negativo (-0.6%).</p>
+  </div>
+  <div class="card">
+    <div class="card-title">E se l'oro smette di salire?</div>
+    <p>Il sistema non &egrave; un buy-and-hold sull'oro. Fa sia LONG che SHORT, quasi in ugual misura (110 LONG vs 100 SHORT nei 13 mesi testati). In un mercato ribassista il sistema trada SHORT &mdash; come dimostrato dal mese di live (18 trade, tutti SHORT, PF 2.18). In un mercato piatto il sistema sta fermo: il filtro di regime non d&agrave; permesso e non si aprono trade. Il mese peggiore nel walkforward &egrave; -0.6%, non -10%.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">Quanto tempo ci &egrave; voluto per costruirlo?</div>
+    <p>6 settimane di lavoro intensivo. Il progetto ha coinvolto: raccolta e classificazione di 50.888 news, costruzione di 38 segnali candidati, 480 combinazioni di trading testate, 14 verifiche di integrit&agrave;, un audit indipendente con 10 check, e la progettazione dell'infrastruttura di produzione. Non &egrave; stato un weekend project &mdash; &egrave; stato un lavoro di ricerca quantitativa a tempo pieno.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">Solo 210 trade in 13 mesi? Non sono pochi?</div>
+    <p>Sono pochi <em>di proposito</em>. Il sistema analizza 50.888 news in 13 mesi (~130 al giorno). La maggior parte sono irrilevanti o neutre e non generano nessun segnale. Di quelle rilevanti, solo ~315 arrivano in un momento in cui il regime di mercato permette di tradare. Di queste, ~247 ricevono conferma tecnica dal prezzo (le altre vengono scartate perch&eacute; il prezzo non si muove nella direzione attesa). Infine, ~210 superano anche un filtro di qualit&agrave; aggiuntivo. Il risultato: su 50.888 news, solo 210 diventano trade &mdash; lo 0.4%. Abbiamo testato soglie pi&ugrave; permissive fino a 362 trade &mdash; profittevoli (PF 2.15) ma con segnali pi&ugrave; deboli. Il principio &egrave;: meglio 210 trade con PF 3.83 che 360 con PF 2.15. E con le strategie aggiuntive in sviluppo, il numero salir&agrave; senza degradare la qualit&agrave;.</p>
+  </div>
+</section>
+
+<!-- NUMERI RAPIDI -->
+<section>
+  <h2>Numeri in sintesi</h2>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Dataset</div>
+      <p>50.888 news classificate<br>31.750 candele M15<br>13 mesi, 6 regimi di mercato<br>38 segnali candidati testati<br>480 combinazioni entry/exit<br>10 segnali validati OOS</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Risultati (post-audit)</div>
+      <p>IC segnale primario: +0.275 a 4h OOS<br>Profit Factor: 3.83 (corretto)<br>Win Rate: 64.8% su 210 trade<br>Max Drawdown: 3.1%<br>Sharpe calendario: 3.4<br>13/14 mesi positivi<br>480/480 config PF &gt; 2.0</p>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Validazione live</div>
+      <p>18 trade in 30 giorni<br>PF 2.18, tutti SHORT<br>Convergenza WF/Live: 0.2% delta<br>Return mensile: +13.1%</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Audit finale</div>
+      <p>10/10 check PASS<br>20/20 IC ricalcolati: diff 0.0000<br>Newey-West p &lt; 1e-10<br>FDR Benjamini-Hochberg: 4/5 TIER 1 pass<br>Bootstrap 95% CI: [+0.200, +0.292]<br>480/480 config PF &gt; 2.0<br>Breakeven a 0.36% per trade</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Refract &middot; Walk-Forward Overview &middot; Post-Audit 21 Marzo 2026</p>
+  <p style="margin-top:4px">Questo documento &egrave; per uso informativo tra amici e conoscenti. Non costituisce consulenza finanziaria n&eacute; sollecitazione all'investimento.</p>
+</footer>
+
+</div>
+</body>
+</html>
