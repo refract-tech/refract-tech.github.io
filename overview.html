@@ -28,27 +28,27 @@
   .stat-value.green { color: var(--green); }
   .stat-value.blue { color: var(--blue); }
   .stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
-  section { margin-bottom: 52px; scroll-margin-top: 60px; }
-  h2 { font-size: 22px; font-weight: 700; margin-bottom: 16px; color: var(--gold); }
-  h3 { font-size: 17px; font-weight: 600; margin-bottom: 12px; color: var(--text); margin-top: 20px; }
-  p { color: var(--text-dim); margin-bottom: 14px; font-size: 16px; }
+  section { margin-bottom: 52px; }
+  h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: var(--gold); }
+  h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: var(--text); margin-top: 20px; }
+  p { color: var(--text-dim); margin-bottom: 14px; font-size: 14px; }
   p strong { color: var(--text); }
-  ul { color: var(--text-dim); font-size: 16px; margin-bottom: 14px; padding-left: 20px; }
+  ul { color: var(--text-dim); font-size: 14px; margin-bottom: 14px; padding-left: 20px; }
   li { margin-bottom: 6px; }
   li strong { color: var(--text); }
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
-  .card-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+  .card-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
   .card p { margin-bottom: 8px; }
   .highlight { background: rgba(212, 168, 67, 0.08); border-left: 3px solid var(--gold); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 16px; }
   .highlight p { color: var(--text); margin-bottom: 0; }
   .info { background: rgba(96, 165, 250, 0.06); border-left: 3px solid var(--blue); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 16px; }
-  .info p { color: var(--text-dim); margin-bottom: 4px; font-size: 15px; }
+  .info p { color: var(--text-dim); margin-bottom: 4px; font-size: 13px; }
   .info strong { color: var(--blue); }
   .caveat { background: rgba(248, 113, 113, 0.06); border-left: 3px solid var(--red); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 16px; }
-  .caveat p { color: var(--text-dim); margin-bottom: 4px; font-size: 15px; }
+  .caveat p { color: var(--text-dim); margin-bottom: 4px; font-size: 13px; }
   .caveat strong { color: var(--red); }
   .check { background: rgba(52, 211, 153, 0.06); border-left: 3px solid var(--green); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 12px; }
-  .check p { color: var(--text-dim); margin-bottom: 0; font-size: 15px; }
+  .check p { color: var(--text-dim); margin-bottom: 0; font-size: 13px; }
   .check strong { color: var(--green); }
   .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 16px; }
   table { width: 100%; border-collapse: collapse; font-size: 12px; }
@@ -70,34 +70,10 @@
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
   .audit-badge { display: inline-block; background: rgba(52, 211, 153, 0.15); border: 1px solid var(--green); border-radius: 6px; padding: 4px 12px; font-size: 11px; font-weight: 600; color: var(--green); font-family: 'JetBrains Mono', monospace; margin-bottom: 16px; }
-  footer { text-align: center; padding-top: 32px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 12px; }
-  .nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 6px 0; }
-  .nav-inner { max-width: 960px; margin: 0 auto; padding: 0 12px; display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; }
-  .nav a { color: var(--text-muted); text-decoration: none; font-size: 11px; font-weight: 500; white-space: nowrap; padding: 4px 7px; border-radius: 5px; transition: all 0.15s; }
-  .nav a:hover { color: var(--gold); background: rgba(212,168,67,0.1); }
-  .nav a.active { color: var(--gold); background: rgba(212,168,67,0.15); }
-  @media (max-width: 640px) { .nav a { font-size: 10px; padding: 3px 5px; } }
+  footer { text-align: center; padding-top: 32px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 11px; }
 </style>
 </head>
 <body>
-
-<div class="nav"><div class="nav-inner">
-  <a href="#cosae">Sistema</a>
-  <a href="#trading">Trading</a>
-  <a href="#neutral">SHORT</a>
-  <a href="#segnale">Segnali</a>
-  <a href="#risultati">Risultati</a>
-  <a href="#fold">Fold</a>
-  <a href="#ensemble">Ensemble</a>
-  <a href="#audit">Audit</a>
-  <a href="#dimostrato">Tesi</a>
-  <a href="#verifiche">Verifiche</a>
-  <a href="#live">Live</a>
-  <a href="#stima">Stima</a>
-  <a href="#rischi">Rischi</a>
-  <a href="#faq">FAQ</a>
-</div></div>
-
 <div class="container">
 
 <div class="header">
@@ -126,7 +102,7 @@
 </div>
 
 <!-- COS'E' -->
-<section id="cosae">
+<section>
   <h2>Cos'&egrave; Refract</h2>
   <p>Refract &egrave; un sistema di trading automatico per l'oro (XAU/USD) che usa l'intelligenza artificiale per leggere le news finanziarie e decidere quando comprare, vendere, o stare fermo.</p>
   <p>L'idea &egrave; semplice: <strong>le news muovono i mercati</strong>. Se un'AI riesce a capire il significato di una notizia pi&ugrave; velocemente del mercato, pu&ograve; posizionarsi prima che il prezzo si muova. Il sistema non predice il futuro &mdash; legge il presente meglio della media.</p>
@@ -139,13 +115,13 @@
 </section>
 
 <!-- COME FUNZIONA -->
-<section id="trading">
+<section>
   <h2>Come funziona il trading</h2>
   <p>Il sistema &egrave; a <strong>due livelli</strong>: il macro comanda (decide SE tradare e in che direzione), il tecnico esegue (decide QUANDO entrare e uscire).</p>
 
   <div class="card">
     <div class="card-title">Livello 1 &mdash; Il macro decide la direzione</div>
-    <p>Un indicatore di regime proprietario aggrega le classificazioni AI delle ultime ore e determina il permesso di tradare. Le soglie sono asimmetriche e sfruttano la struttura naturale del flusso informativo, creando un filtro di regime che si adatta da solo alle condizioni di mercato.</p>
+    <p>Un indicatore di regime proprietario aggrega le classificazioni AI delle ultime ore e determina il permesso di tradare. Le soglie sono asimmetriche &mdash; sfruttano il fatto che circa il 63% delle news &egrave; neutrale, creando un filtro di regime naturale che si adatta da solo alla composizione del flusso informativo.</p>
     <ul>
       <li>Flusso fortemente rialzista + news rialzista &rarr; permesso di comprare (LONG)</li>
       <li>Flusso fortemente ribassista + news ribassista &rarr; permesso di vendere allo scoperto (SHORT)</li>
@@ -178,7 +154,7 @@
 </section>
 
 <!-- SCOPERTA NEUTRAL -->
-<section id="neutral">
+<section>
   <h2>La scoperta chiave: perch&eacute; funzionano gli SHORT in un bull market</h2>
   <div class="highlight">
     <p>L'oro &egrave; salito del 79% nei 13 mesi testati. Eppure il sistema ha generato trade SHORT (vendita allo scoperto) profittevoli. Come &egrave; possibile?</p>
@@ -188,7 +164,7 @@
 </section>
 
 <!-- IL SEGNALE -->
-<section id="segnale">
+<section>
   <h2>Il segnale: cosa calcola il sistema</h2>
   <p>Dietro il filtro di regime c'&egrave; un'architettura di segnali che insieme determinano direzione, timing e dimensione di ogni trade. Sono stati testati <strong>38 segnali candidati</strong> su 4 orizzonti temporali (1h, 4h, 8h, 24h). La qualit&agrave; di ogni segnale &egrave; misurata con l'<strong>IC</strong>.</p>
 
@@ -302,7 +278,7 @@
 </section>
 
 <!-- TRADE CORRETTI -->
-<section id="risultati">
+<section>
   <h2>Risultati di trading (post-audit, numeri corretti)</h2>
   <div class="audit-badge">AUDIT: 10/10 check PASS &mdash; trade ricalcolati da zero</div>
 
@@ -380,7 +356,7 @@
 </section>
 
 <!-- FOLD STABILITY -->
-<section id="fold">
+<section>
   <h2>Stabilit&agrave; temporale: 6 blocchi out-of-sample</h2>
   <p>Il dataset &egrave; diviso in 6 blocchi temporali. Per ogni blocco il sistema usa solo i dati precedenti. Tutti i blocchi sono profittevoli:</p>
   <div class="table-wrap">
@@ -400,7 +376,7 @@
 </section>
 
 <!-- ENSEMBLE -->
-<section id="ensemble">
+<section>
   <h2>Ensemble: il segnale pi&ugrave; robusto</h2>
   <p>Combinando il segnale statistico proprietario con il giudizio AI per singola news, otteniamo un segnale che funziona <strong>in tutti i 14 mesi testati</strong>:</p>
 
@@ -429,7 +405,7 @@
 </section>
 
 <!-- AUDIT -->
-<section id="audit">
+<section>
   <h2>Audit finale: verifica indipendente</h2>
   <p>Prima di deployare il sistema, abbiamo eseguito un <strong>audit completo e indipendente</strong> &mdash; uno script nuovo, scritto da zero, che ricalcola ogni numero senza riusare il codice originale. 10 check, tutti PASS.</p>
   <div class="audit-badge">10/10 PASS &middot; 20/20 IC match &middot; 247 trade verificati</div>
@@ -449,7 +425,7 @@
 </section>
 
 <!-- COSA ABBIAMO DIMOSTRATO -->
-<section id="dimostrato">
+<section>
   <h2>Cosa abbiamo dimostrato (e cosa no)</h2>
   <p>Questo progetto &egrave; nato da una domanda: <strong>&ldquo;Le news macro muovono davvero il prezzo dell'oro, o &egrave; solo rumore?&rdquo;</strong> Dopo 6 settimane di ricerca, 50.888 news analizzate e 480 combinazioni testate, le risposte sono chiare.</p>
 
@@ -480,7 +456,7 @@
 </section>
 
 <!-- COME ABBIAMO VERIFICATO -->
-<section id="verifiche">
+<section>
   <h2>Come abbiamo verificato i numeri</h2>
   <p>Numeri come PF 3.83 e return 69% sembrano troppo belli per essere veri, e la prima persona a dubitarne sono io. Ecco i controlli che abbiamo fatto.</p>
 
@@ -518,7 +494,7 @@
 </section>
 
 <!-- LIVE -->
-<section id="live">
+<section>
   <h2>Validazione live</h2>
   <div class="card">
     <div class="card-title">18 Febbraio &ndash; 18 Marzo 2026 (regime ribassista)</div>
@@ -532,7 +508,7 @@
 </section>
 
 <!-- STIMA LIVE -->
-<section id="stima">
+<section>
   <h2>Stima realistica per il live</h2>
   <p>Fattori di degradazione attesi tra walkforward e live: slippage (~5-10%), latenza (~3-5%), adattamento feed (~0-5%). Il decay del 20% per le medie mobili &egrave; gi&agrave; incluso nei numeri sopra.</p>
   <div class="table-wrap">
@@ -550,7 +526,7 @@
 </section>
 
 <!-- RISCHI -->
-<section id="rischi">
+<section>
   <h2>Cosa potrebbe andare storto</h2>
   <div class="caveat">
     <p><strong>Backtest vs realt&agrave;</strong></p>
@@ -571,7 +547,7 @@
 </section>
 
 <!-- PROSSIMI PASSI -->
-<section id="next">
+<section>
   <h2>Prossimi passi</h2>
   <p>Sono il primo a diffidare dei miei stessi numeri. Per questo il percorso &egrave; graduale e ogni fase deve confermare la precedente.</p>
   <div class="card">
@@ -597,7 +573,7 @@
 </section>
 
 <!-- FAQ -->
-<section id="faq">
+<section>
   <h2>FAQ</h2>
   <div class="card">
     <div class="card-title">Ma non &egrave; come tutti quelli che &ldquo;fanno soldi col trading&rdquo;?</div>
@@ -626,7 +602,7 @@
 </section>
 
 <!-- NUMERI RAPIDI -->
-<section id="sintesi">
+<section>
   <h2>Numeri in sintesi</h2>
   <div class="two-col">
     <div class="card">
@@ -656,19 +632,5 @@
 </footer>
 
 </div>
-<script>
-const navLinks = document.querySelectorAll('.nav a');
-const sections = document.querySelectorAll('section[id]');
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      navLinks.forEach(a => a.classList.remove('active'));
-      const active = document.querySelector('.nav a[href="#' + entry.target.id + '"]');
-      if (active) active.classList.add('active');
-    }
-  });
-}, { rootMargin: '-60px 0px -70% 0px', threshold: 0 });
-sections.forEach(s => observer.observe(s));
-</script>
 </body>
 </html>
