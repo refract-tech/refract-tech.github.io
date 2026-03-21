@@ -77,15 +77,43 @@
 </div>
 <div class="decay-note">Stima live: PF ~3.0 &middot; Sharpe ~2.7 &middot; Return ~55% &middot; (decay -15/20%)</div>
 
+<!-- DISCLAIMER -->
+<div class="caveat">
+  <p><strong>Disclaimer</strong></p>
+  <p>Numeri da backtest walk-forward (out-of-sample) su 13 mesi, corretti dopo audit indipendente. Il periodo copre un bull market storico su Gold (+79%). Non sono garanzia di performance futura. Il sistema &egrave; in paper trading &mdash; zero capitale reale rischiato.</p>
+</div>
+
 <!-- COSA FA -->
 <section>
-  <h2>Il sistema in breve</h2>
-  <p>Refract legge le news finanziarie con un'AI, misura il sentimento aggregato delle ultime ore, e trada oro solo quando il flusso informativo &egrave; fortemente direzionale. Due livelli: il <strong>macro</strong> decide se e in che direzione tradare, il <strong>tecnico</strong> conferma l'entry con medie mobili e gestisce l'uscita.</p>
-  <p>Su 50.888 news in 13 mesi, solo <strong>210 diventano trade</strong> (lo 0.4%). Il sistema sa quando stare fermo &mdash; &egrave; inattivo l'84% del tempo.</p>
+  <h2>Cos'&egrave; Refract</h2>
+  <p>Refract &egrave; un sistema di trading automatico per l'oro (XAU/USD) che usa l'intelligenza artificiale per leggere le news finanziarie e decidere quando comprare, vendere, o stare fermo.</p>
+  <p>L'idea: <strong>le news muovono i mercati</strong>. Un'AI classifica ogni notizia (direzione, rilevanza, categoria) e le classificazioni vengono aggregate in un indicatore di regime che cattura il sentimento delle ultime ore. Il sistema non predice il futuro &mdash; legge il presente meglio della media.</p>
+</section>
+
+<!-- COME FUNZIONA -->
+<section>
+  <h2>Come funziona il trading</h2>
+  <p>Due livelli: il <strong>macro comanda</strong> (decide SE tradare e in che direzione), il <strong>tecnico esegue</strong> (decide QUANDO entrare e uscire).</p>
+  <p><strong>Entry:</strong> un indicatore di regime proprietario aggrega le classificazioni AI delle ultime 6 ore. Quando il flusso &egrave; fortemente rialzista e arriva una news rialzista, il sistema cerca conferma tecnica con un <strong>crossover EMA 9/21</strong> su candele H1 chiuse. Se la conferma non arriva entro 4 ore, il trade viene saltato. Questo filtro elimina il 22% dei segnali &mdash; quasi tutti perdenti.</p>
+  <p><strong>Exit</strong> (la prima che scatta):</p>
+  <ul>
+    <li><strong>Cambio di regime</strong> (40% dei trade): il sentimento delle news cambia direzione. Funziona come stop intelligente &mdash; taglia i trade perdenti prima.</li>
+    <li><strong>Timeout 8h</strong> (54%): chiusura automatica dopo l'orizzonte validato dal backtest.</li>
+    <li><strong>Hard stop ATR 2.5x</strong> (6%): protezione contro movimenti avversi improvvisi.</li>
+  </ul>
+  <p>Su 50.888 news in 13 mesi, solo <strong>210 diventano trade</strong> (lo 0.4%). Il sistema &egrave; inattivo l'84% del tempo.</p>
 
   <div class="highlight">
     <p>L'oro &egrave; salito del 79% nel periodo testato. Eppure il sistema ha generato <strong>trade SHORT profittevoli</strong>. Quando il mercato consolida, le news diventano neutre, l'indicatore scende, e il sistema vende allo scoperto. Nessuno ha progettato questo meccanismo &mdash; &egrave; emerso dai dati.</p>
   </div>
+</section>
+
+<!-- WALKFORWARD -->
+<section>
+  <h2>Il walk-forward</h2>
+  <p>A differenza di un backtest classico, il walk-forward <strong>simula il futuro</strong>. Il dataset (50.888 news, 31.750 candele M15, 13 mesi) &egrave; diviso in 6 blocchi temporali con <strong>expanding-window TimeSeriesSplit</strong>. Per ogni blocco, il sistema usa SOLO i dati precedenti per il training e viene testato sul blocco successivo che non ha mai visto.</p>
+  <p>Risultato: <strong>PF &gt; 1.0 su tutti e 6 i blocchi</strong>. Il fold pi&ugrave; debole (PF 1.85, ott-dic 2025) corrisponde a un periodo di bassa volatilit&agrave; &mdash; il sistema rallenta ma non perde.</p>
+  <p>480 combinazioni di parametri testate: <strong>tutte PF &gt; 2.0</strong>. Non c'&egrave; un angolo dello spazio parametri dove il sistema crolla. La mediana &egrave; PF 3.03.</p>
 </section>
 
 <!-- MESI -->
