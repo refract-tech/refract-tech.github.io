@@ -70,10 +70,35 @@
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
   .audit-badge { display: inline-block; background: rgba(52, 211, 153, 0.15); border: 1px solid var(--green); border-radius: 6px; padding: 4px 12px; font-size: 11px; font-weight: 600; color: var(--green); font-family: 'JetBrains Mono', monospace; margin-bottom: 16px; }
-  footer { text-align: center; padding-top: 32px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 11px; }
+  footer { text-align: center; padding-top: 32px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 12px; }
+  section { scroll-margin-top: 60px; }
+  .nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 6px 0; }
+  .nav-inner { max-width: 960px; margin: 0 auto; padding: 0 12px; display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; }
+  .nav a { color: var(--text-muted); text-decoration: none; font-size: 11px; font-weight: 500; white-space: nowrap; padding: 4px 7px; border-radius: 5px; transition: all 0.15s; }
+  .nav a:hover { color: var(--gold); background: rgba(212,168,67,0.1); }
+  .nav a.active { color: var(--gold); background: rgba(212,168,67,0.15); }
+  @media (max-width: 640px) { .nav a { font-size: 10px; padding: 3px 5px; } }
 </style>
 </head>
 <body>
+
+<div class="nav"><div class="nav-inner">
+  <a href="#cosae">Sistema</a>
+  <a href="#trading">Trading</a>
+  <a href="#neutral">SHORT</a>
+  <a href="#segnale">Segnali</a>
+  <a href="#risultati">Risultati</a>
+  <a href="#fold">Fold</a>
+  <a href="#ensemble">Ensemble</a>
+  <a href="#audit">Audit</a>
+  <a href="#dimostrato">Tesi</a>
+  <a href="#verifiche">Verifiche</a>
+  <a href="#live">Live</a>
+  <a href="#stima">Stima</a>
+  <a href="#rischi">Rischi</a>
+  <a href="#faq">FAQ</a>
+</div></div>
+
 <div class="container">
 
 <div class="header">
@@ -102,7 +127,7 @@
 </div>
 
 <!-- COS'E' -->
-<section>
+<section id="cosae">
   <h2>Cos'&egrave; Refract</h2>
   <p>Refract &egrave; un sistema di trading automatico per l'oro (XAU/USD) che usa l'intelligenza artificiale per leggere le news finanziarie e decidere quando comprare, vendere, o stare fermo.</p>
   <p>L'idea &egrave; semplice: <strong>le news muovono i mercati</strong>. Se un'AI riesce a capire il significato di una notizia pi&ugrave; velocemente del mercato, pu&ograve; posizionarsi prima che il prezzo si muova. Il sistema non predice il futuro &mdash; legge il presente meglio della media.</p>
@@ -115,7 +140,7 @@
 </section>
 
 <!-- COME FUNZIONA -->
-<section>
+<section id="trading">
   <h2>Come funziona il trading</h2>
   <p>Il sistema &egrave; a <strong>due livelli</strong>: il macro comanda (decide SE tradare e in che direzione), il tecnico esegue (decide QUANDO entrare e uscire).</p>
 
@@ -154,7 +179,7 @@
 </section>
 
 <!-- SCOPERTA NEUTRAL -->
-<section>
+<section id="neutral">
   <h2>La scoperta chiave: perch&eacute; funzionano gli SHORT in un bull market</h2>
   <div class="highlight">
     <p>L'oro &egrave; salito del 79% nei 13 mesi testati. Eppure il sistema ha generato trade SHORT (vendita allo scoperto) profittevoli. Come &egrave; possibile?</p>
@@ -164,7 +189,7 @@
 </section>
 
 <!-- IL SEGNALE -->
-<section>
+<section id="segnale">
   <h2>Il segnale: cosa calcola il sistema</h2>
   <p>Dietro il filtro di regime c'&egrave; un'architettura di segnali che insieme determinano direzione, timing e dimensione di ogni trade. Sono stati testati <strong>38 segnali candidati</strong> su 4 orizzonti temporali (1h, 4h, 8h, 24h). La qualit&agrave; di ogni segnale &egrave; misurata con l'<strong>IC</strong>.</p>
 
@@ -278,7 +303,7 @@
 </section>
 
 <!-- TRADE CORRETTI -->
-<section>
+<section id="risultati">
   <h2>Risultati di trading (post-audit, numeri corretti)</h2>
   <div class="audit-badge">AUDIT: 10/10 check PASS &mdash; trade ricalcolati da zero</div>
 
@@ -388,7 +413,7 @@
 </section>
 
 <!-- FOLD STABILITY -->
-<section>
+<section id="fold">
   <h2>Stabilit&agrave; temporale: 6 blocchi out-of-sample</h2>
   <p>Il dataset &egrave; diviso in 6 blocchi temporali. Per ogni blocco il sistema usa solo i dati precedenti. Tutti i blocchi sono profittevoli:</p>
   <div class="table-wrap">
@@ -408,7 +433,7 @@
 </section>
 
 <!-- ENSEMBLE -->
-<section>
+<section id="ensemble">
   <h2>Ensemble: il segnale pi&ugrave; robusto</h2>
   <p>Combinando il segnale statistico proprietario con il giudizio AI per singola news, otteniamo un segnale che funziona <strong>in tutti i 14 mesi testati</strong>:</p>
 
@@ -437,7 +462,7 @@
 </section>
 
 <!-- AUDIT -->
-<section>
+<section id="audit">
   <h2>Audit finale: verifica indipendente</h2>
   <p>Prima di deployare il sistema, abbiamo eseguito un <strong>audit completo e indipendente</strong> &mdash; uno script nuovo, scritto da zero, che ricalcola ogni numero senza riusare il codice originale. L'intero audit &egrave; stato poi <strong>ripetuto da un'AI diversa</strong> (modello, codebase e ambiente separati) che ha confermato tutti i numeri. Tre codebase indipendenti, tre AI, stesso risultato.</p>
   <div class="audit-badge">10/10 PASS &middot; 20/20 IC match &middot; Confermato da 3 AI indipendenti</div>
@@ -459,7 +484,7 @@
 </section>
 
 <!-- COSA ABBIAMO DIMOSTRATO -->
-<section>
+<section id="dimostrato">
   <h2>Cosa abbiamo dimostrato (e cosa no)</h2>
   <p>Questo progetto &egrave; nato da una domanda: <strong>&ldquo;Le news macro muovono davvero il prezzo dell'oro, o &egrave; solo rumore?&rdquo;</strong> Dopo 6 settimane di ricerca, 50.888 news analizzate e 480 combinazioni testate, le risposte sono chiare.</p>
 
@@ -490,7 +515,7 @@
 </section>
 
 <!-- COME ABBIAMO VERIFICATO -->
-<section>
+<section id="verifiche">
   <h2>Come abbiamo verificato i numeri</h2>
   <p>Numeri come PF 3.71 e return 69% sembrano troppo belli per essere veri, e la prima persona a dubitarne sono io. Ecco i controlli che abbiamo fatto.</p>
 
@@ -528,7 +553,7 @@
 </section>
 
 <!-- LIVE -->
-<section>
+<section id="live">
   <h2>Forward test su dati live</h2>
   <div class="card">
     <div class="card-title">18 Febbraio &ndash; 18 Marzo 2026 (regime ribassista)</div>
@@ -546,7 +571,7 @@
 </section>
 
 <!-- STIMA LIVE -->
-<section>
+<section id="stima">
   <h2>Stima realistica per il live</h2>
   <p>Fattori di degradazione attesi tra walkforward e live: slippage (~5-10%), latenza (~3-5%), adattamento feed (~0-5%). Il decay del 20% per le medie mobili &egrave; gi&agrave; incluso nei numeri sopra.</p>
   <div class="table-wrap">
@@ -564,7 +589,7 @@
 </section>
 
 <!-- RISCHI -->
-<section>
+<section id="rischi">
   <h2>Cosa potrebbe andare storto</h2>
   <div class="caveat">
     <p><strong>Backtest vs realt&agrave;</strong></p>
@@ -585,7 +610,7 @@
 </section>
 
 <!-- PROSSIMI PASSI -->
-<section>
+<section id="next">
   <h2>Prossimi passi</h2>
   <p>Sono il primo a diffidare dei miei stessi numeri. Per questo il percorso &egrave; graduale e ogni fase deve confermare la precedente.</p>
   <div class="card">
@@ -611,7 +636,7 @@
 </section>
 
 <!-- FAQ -->
-<section>
+<section id="faq">
   <h2>FAQ</h2>
   <div class="card">
     <div class="card-title">Ma non &egrave; come tutti quelli che &ldquo;fanno soldi col trading&rdquo;?</div>
@@ -640,7 +665,7 @@
 </section>
 
 <!-- NUMERI RAPIDI -->
-<section>
+<section id="sintesi">
   <h2>Numeri in sintesi</h2>
   <div class="two-col">
     <div class="card">
@@ -670,5 +695,19 @@
 </footer>
 
 </div>
+<script>
+const navLinks = document.querySelectorAll('.nav a');
+const sections = document.querySelectorAll('section[id]');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      const active = document.querySelector('.nav a[href="#' + entry.target.id + '"]');
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-60px 0px -70% 0px', threshold: 0 });
+sections.forEach(s => observer.observe(s));
+</script>
 </body>
 </html>
