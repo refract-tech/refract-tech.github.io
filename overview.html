@@ -71,7 +71,7 @@
   @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
   .audit-badge { display: inline-block; background: rgba(52, 211, 153, 0.15); border: 1px solid var(--green); border-radius: 6px; padding: 4px 12px; font-size: 11px; font-weight: 600; color: var(--green); font-family: 'JetBrains Mono', monospace; margin-bottom: 16px; }
   footer { text-align: center; padding-top: 32px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 12px; }
-  .nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 10px 0; margin: 0 -24px 32px; }
+  .nav { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 10px 0; }
   .nav-inner { max-width: 960px; margin: 0 auto; padding: 0 24px; display: flex; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
   .nav-inner::-webkit-scrollbar { display: none; }
   .nav a { color: var(--text-muted); text-decoration: none; font-size: 12px; font-weight: 500; white-space: nowrap; padding: 5px 10px; border-radius: 6px; transition: all 0.15s; flex-shrink: 0; }
@@ -80,6 +80,24 @@
 </style>
 </head>
 <body>
+
+<div class="nav"><div class="nav-inner">
+  <a href="#cosae">Sistema</a>
+  <a href="#trading">Trading</a>
+  <a href="#neutral">SHORT</a>
+  <a href="#segnale">Segnali</a>
+  <a href="#risultati">Risultati</a>
+  <a href="#fold">Fold</a>
+  <a href="#ensemble">Ensemble</a>
+  <a href="#audit">Audit</a>
+  <a href="#dimostrato">Tesi</a>
+  <a href="#verifiche">Verifiche</a>
+  <a href="#live">Live</a>
+  <a href="#stima">Stima</a>
+  <a href="#rischi">Rischi</a>
+  <a href="#faq">FAQ</a>
+</div></div>
+
 <div class="container">
 
 <div class="header">
@@ -99,23 +117,6 @@
   <div class="stat"><div class="stat-value gold">13<span style="font-size:16px;color:var(--text-dim)">/14</span></div><div class="stat-label">Mesi positivi</div></div>
 </div>
 <p style="text-align:center;font-size:11px;color:var(--text-muted);margin-top:-30px;margin-bottom:32px;font-family:'JetBrains Mono',monospace;">Stima decay in live: PF ~3.0 &middot; WR ~60% &middot; Return ~55% &middot; MaxDD ~4% &middot; Sharpe ~2.7 &middot; (slippage, latenza, spread: -15/20%)</p>
-
-<div class="nav"><div class="nav-inner">
-  <a href="#cosae">Sistema</a>
-  <a href="#trading">Trading</a>
-  <a href="#neutral">SHORT</a>
-  <a href="#segnale">Segnali</a>
-  <a href="#risultati">Risultati</a>
-  <a href="#fold">Fold</a>
-  <a href="#ensemble">Ensemble</a>
-  <a href="#audit">Audit</a>
-  <a href="#dimostrato">Tesi</a>
-  <a href="#verifiche">Verifiche</a>
-  <a href="#live">Live</a>
-  <a href="#stima">Stima</a>
-  <a href="#rischi">Rischi</a>
-  <a href="#faq">FAQ</a>
-</div></div>
 
 <!-- DISCLAIMER -->
 <div class="caveat">
