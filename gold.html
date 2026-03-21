@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Refract Gold &mdash; Overview</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --surface: #12121a; --border: #2a2a3a;
+    --gold: #d4a843; --green: #34d399; --red: #f87171;
+    --blue: #60a5fa; --orange: #fb923c;
+    --text: #e8e8ed; --text-dim: #8888a0; --text-muted: #55556a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.75; }
+  .container { max-width: 720px; margin: 0 auto; padding: 40px 24px 80px; }
+  .header { text-align: center; margin-bottom: 40px; }
+  .brand { font-size: 12px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; font-weight: 500; }
+  h1 { font-size: clamp(22px, 4vw, 32px); font-weight: 700; line-height: 1.25; margin-bottom: 10px; color: var(--text); }
+  .subtitle { font-size: 14px; color: var(--text-dim); margin-bottom: 6px; }
+  .date { font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+  .stats-bar { display: flex; justify-content: center; gap: 24px; padding: 18px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); flex-wrap: wrap; margin-bottom: 12px; }
+  .stat { text-align: center; min-width: 70px; }
+  .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 500; }
+  .stat-label { font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+  .decay-note { text-align: center; font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; margin-bottom: 36px; }
+  section { margin-bottom: 44px; }
+  h2 { font-size: 20px; font-weight: 700; margin-bottom: 14px; color: var(--gold); }
+  p { color: var(--text-dim); margin-bottom: 14px; font-size: 16px; }
+  p strong { color: var(--text); }
+  ul { color: var(--text-dim); font-size: 15px; margin-bottom: 14px; padding-left: 20px; }
+  li { margin-bottom: 5px; }
+  li strong { color: var(--text); }
+  .highlight { background: rgba(212,168,67,0.08); border-left: 3px solid var(--gold); padding: 14px 18px; border-radius: 0 8px 8px 0; margin-bottom: 16px; }
+  .highlight p { color: var(--text); margin-bottom: 0; font-size: 15px; }
+  .caveat { background: rgba(248,113,113,0.06); border-left: 3px solid var(--red); padding: 14px 18px; border-radius: 0 8px 8px 0; margin-bottom: 16px; }
+  .caveat p { color: var(--text-dim); margin-bottom: 4px; font-size: 14px; }
+  .caveat strong { color: var(--red); }
+  .check { background: rgba(52,211,153,0.06); border-left: 3px solid var(--green); padding: 12px 18px; border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .check p { color: var(--text-dim); margin-bottom: 0; font-size: 14px; }
+  .check strong { color: var(--green); }
+  .monthly-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 6px; margin-bottom: 14px; }
+  .month-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px; text-align: center; }
+  .month-card .month { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+  .month-card .val { font-size: 16px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--surface); padding: 8px 10px; text-align: right; font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); }
+  th:first-child { text-align: left; }
+  td { padding: 7px 10px; border-top: 1px solid var(--border); text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+  td:first-child { text-align: left; font-family: 'DM Sans', sans-serif; }
+  .audit-badge { display: inline-block; background: rgba(52,211,153,0.15); border: 1px solid var(--green); border-radius: 6px; padding: 4px 12px; font-size: 11px; font-weight: 600; color: var(--green); font-family: 'JetBrains Mono', monospace; margin-bottom: 14px; }
+  .full-link { text-align: center; margin-top: 32px; }
+  .full-link a { color: var(--gold); text-decoration: none; font-size: 14px; border-bottom: 1px solid var(--gold-dim, #a07d2e); padding-bottom: 2px; }
+  footer { text-align: center; padding-top: 28px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 11px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <div class="brand">Refract</div>
+  <h1>AI-Driven Gold Trading</h1>
+  <div class="subtitle">Walk-forward validation &mdash; 50.888 news, 13 mesi, 6 regimi</div>
+  <div class="date">XAU/USD &middot; Feb 2025 &ndash; Mar 2026 &middot; Post-audit 21 Mar 2026</div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-value" style="color:var(--gold)">3.83</div><div class="stat-label">Profit Factor</div></div>
+  <div class="stat"><div class="stat-value" style="color:var(--green)">64.8%</div><div class="stat-label">Win Rate</div></div>
+  <div class="stat"><div class="stat-value" style="color:var(--blue)">210</div><div class="stat-label">Trades</div></div>
+  <div class="stat"><div class="stat-value" style="color:var(--green)">69%</div><div class="stat-label">Return</div></div>
+  <div class="stat"><div class="stat-value" style="color:var(--orange)">3.1%</div><div class="stat-label">Max DD</div></div>
+  <div class="stat"><div class="stat-value" style="color:var(--gold)">3.4</div><div class="stat-label">Sharpe</div></div>
+</div>
+<div class="decay-note">Stima live: PF ~3.0 &middot; Sharpe ~2.7 &middot; Return ~55% &middot; (decay -15/20%)</div>
+
+<!-- COSA FA -->
+<section>
+  <h2>Il sistema in breve</h2>
+  <p>Refract legge le news finanziarie con un'AI, misura il sentimento aggregato delle ultime ore, e trada oro solo quando il flusso informativo &egrave; fortemente direzionale. Due livelli: il <strong>macro</strong> decide se e in che direzione tradare, il <strong>tecnico</strong> conferma l'entry con medie mobili e gestisce l'uscita.</p>
+  <p>Su 50.888 news in 13 mesi, solo <strong>210 diventano trade</strong> (lo 0.4%). Il sistema sa quando stare fermo &mdash; &egrave; inattivo l'84% del tempo.</p>
+
+  <div class="highlight">
+    <p>L'oro &egrave; salito del 79% nel periodo testato. Eppure il sistema ha generato <strong>trade SHORT profittevoli</strong>. Quando il mercato consolida, le news diventano neutre, l'indicatore scende, e il sistema vende allo scoperto. Nessuno ha progettato questo meccanismo &mdash; &egrave; emerso dai dati.</p>
+  </div>
+</section>
+
+<!-- MESI -->
+<section>
+  <h2>Return per mese</h2>
+  <p>13 mesi positivi su 14. Un solo mese strutturalmente negativo (settembre, mercato laterale).</p>
+  <div class="monthly-grid">
+    <div class="month-card"><div class="month">Feb 25</div><div class="val" style="color:var(--green)">+6.6%</div></div>
+    <div class="month-card"><div class="month">Mar 25</div><div class="val" style="color:var(--green)">+5.1%</div></div>
+    <div class="month-card"><div class="month">Apr 25</div><div class="val" style="color:var(--green)">+6.5%</div></div>
+    <div class="month-card"><div class="month">May 25</div><div class="val" style="color:var(--green)">+12.8%</div></div>
+    <div class="month-card"><div class="month">Jun 25</div><div class="val" style="color:var(--green)">+4.1%</div></div>
+    <div class="month-card"><div class="month">Jul 25</div><div class="val" style="color:var(--orange)">+0.6%</div></div>
+    <div class="month-card"><div class="month">Aug 25</div><div class="val" style="color:var(--green)">+2.5%</div></div>
+    <div class="month-card"><div class="month">Sep 25</div><div class="val" style="color:var(--red)">-0.6%</div></div>
+    <div class="month-card"><div class="month">Oct 25</div><div class="val" style="color:var(--green)">+4.1%</div></div>
+    <div class="month-card"><div class="month">Nov 25</div><div class="val" style="color:var(--green)">+5.3%</div></div>
+    <div class="month-card"><div class="month">Dec 25</div><div class="val" style="color:var(--green)">+2.4%</div></div>
+    <div class="month-card"><div class="month">Jan 26</div><div class="val" style="color:var(--green)">+16.7%</div></div>
+    <div class="month-card"><div class="month">Feb 26</div><div class="val" style="color:var(--green)">+2.1%</div></div>
+    <div class="month-card"><div class="month">Mar 26</div><div class="val" style="color:var(--green)">+1.3%</div></div>
+  </div>
+  <p style="font-size:13px;color:var(--text-muted)">Return % sul prezzo dell'oro. Togliendo i 2 mesi migliori e i 2 peggiori: <strong>PF core 3.25, return +4.0%/mese</strong>. I mesi forti non gonfiano il totale.</p>
+</section>
+
+<!-- SEGNALI -->
+<section>
+  <h2>I segnali</h2>
+  <p>38 segnali candidati testati su 4 orizzonti temporali. I 5 migliori, tutti out-of-sample e <strong>confermati dall'audit a diff 0.0000</strong>:</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="text-align:left">Segnale</th><th>IC @4h</th><th>IC @8h</th><th style="text-align:left;padding-left:12px">Tipo</th></tr></thead>
+      <tbody>
+        <tr><td>Regime + RSI estremo</td><td style="color:var(--gold);font-weight:600">+0.599</td><td style="color:var(--gold);font-weight:600">+0.490</td><td style="text-align:left;padding-left:12px">Condizionale</td></tr>
+        <tr><td>Accelerazione sentiment</td><td>+0.294</td><td>+0.283</td><td style="text-align:left;padding-left:12px">Proprietario</td></tr>
+        <tr><td>Refract Index</td><td>+0.285</td><td style="color:var(--green);font-weight:600">+0.328</td><td style="text-align:left;padding-left:12px">Proprietario</td></tr>
+        <tr><td>Belief State (P4)</td><td>+0.275</td><td style="color:var(--green);font-weight:600">+0.322</td><td style="text-align:left;padding-left:12px">Proprietario</td></tr>
+        <tr><td>Sentiment 6h (gate)</td><td>+0.260</td><td>+0.271</td><td style="text-align:left;padding-left:12px">AI rolling</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:13px;color:var(--text-muted)">IC = correlazione tra segnale e rendimento effettivo. IC +0.10 &egrave; buono, +0.20 eccellente, +0.30 da hedge fund. Il nostro segnale principale &egrave; a +0.275. Tutti con p &lt; 1e-10 (Newey-West).</p>
+</section>
+
+<!-- AUDIT -->
+<section>
+  <h2>Audit indipendente</h2>
+  <div class="audit-badge">10/10 PASS &middot; 20/20 IC match &middot; 247 trade verificati</div>
+  <p>Script indipendente, scritto da zero senza riusare codice. Ha trovato e corretto 3 bug (EMA look-ahead -20% PF, stop su LOW, entry guard). I numeri in questa pagina sono <strong>post-correzione</strong>.</p>
+  <div class="check"><p><strong>Trade</strong>: 247 ricalcolati da zero. PF match esatto su entrambe le config.</p></div>
+  <div class="check"><p><strong>IC</strong>: 20/20 segnali ricalcolati. Differenza: 0.0000 su tutti.</p></div>
+  <div class="check"><p><strong>Brier</strong>: 0.2139 vs ref 0.2129. N=43.362 OOS.</p></div>
+  <div class="check"><p><strong>Fold</strong>: tutti 6 PF &gt; 1.0. No decay temporale (r=-0.09, p=0.87).</p></div>
+  <div class="check"><p><strong>480/480</strong> configurazioni testate hanno PF &gt; 2.0. Non &egrave; cherry-picking.</p></div>
+</section>
+
+<!-- STIMA LIVE -->
+<section>
+  <h2>Stima live e rischi</h2>
+  <p>Fattori di decay attesi: slippage reale, latenza del feed, spread variabili. Il bias EMA (-20%) &egrave; gi&agrave; corretto nei numeri sopra.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="text-align:left">Scenario</th><th>Decay</th><th>PF</th><th>Sharpe</th><th>Ret/mese</th></tr></thead>
+      <tbody>
+        <tr><td>Ottimistico</td><td>-10%</td><td style="color:var(--green)">3.45</td><td>3.1</td><td>+3.6%</td></tr>
+        <tr><td>Realistico</td><td>-20%</td><td style="color:var(--green)">3.06</td><td>2.7</td><td>+3.2%</td></tr>
+        <tr><td>Conservativo</td><td>-30%</td><td>2.68</td><td>2.4</td><td>+2.8%</td></tr>
+        <tr><td>Worst case</td><td>-40%</td><td>2.30</td><td>2.0</td><td>+2.4%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="caveat">
+    <p><strong>Cosa non abbiamo dimostrato</strong></p>
+    <p>Che funzioni in live con soldi reali. Che funzioni in un bear market prolungato. Che i numeri si traducano 1:1. Il sistema &egrave; in paper trading &mdash; zero capitale rischiato. I prossimi mesi decideranno.</p>
+  </div>
+</section>
+
+<div class="full-link">
+  <a href="overview.html">Versione completa con tutti i dettagli tecnici &rarr;</a>
+</div>
+
+<footer>
+  <p>Refract &middot; Post-Audit 21 Marzo 2026</p>
+  <p style="margin-top:4px">Documento informativo. Non costituisce consulenza finanziaria.</p>
+</footer>
+
+</div>
+</body>
+</html>
