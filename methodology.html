@@ -241,6 +241,7 @@
   <table>
     <tr><th>Metrica</th><th>Valore</th></tr>
     <tr><td>IC score asymmetry @8h (OOS, raw / dm7d)</td><td class="val-gold">+0.301 / +0.237</td></tr>
+    <tr><td>IC sentiment aggregato @8h (OOS, raw / dm7d)</td><td class="val-gold">+0.291 / +0.243</td></tr>
     <tr><td>Newey-West p-value</td><td>&lt; 1e-10</td></tr>
     <tr><td>FDR Benjamini-Hochberg</td><td>4/5 TIER 1 pass al livello 0.05</td></tr>
     <tr><td>Bootstrap 95% CI (ensemble @8h)</td><td>[+0.200, +0.292]</td></tr>
@@ -291,7 +292,7 @@
   <div class="table-wrap">
   <table>
     <tr><th>Finestra</th><th>REF S1 PF dm</th><th>ASYM8 PF dm</th><th>Nota</th></tr>
-    <tr><td>6h</td><td class="val-red">0.76</td><td class="val-red">0.84</td><td class="val-dim">Rimuove il momentum che il segnale cattura</td></tr>
+    <tr><td>6h</td><td class="val-red">0.76</td><td class="val-red">0.84</td><td class="val-dim">Finestra inferiore al holding period del trade</td></tr>
     <tr><td>12h</td><td class="val-red">0.79</td><td>1.01</td><td></td></tr>
     <tr><td>24h</td><td class="val-red">0.88</td><td class="val-red">0.96</td><td></td></tr>
     <tr><td>2d</td><td>0.99</td><td>1.09</td><td></td></tr>
@@ -523,7 +524,7 @@
 </section>
 
 <footer>
-  <p>Refract<sup style="font-size:7px">&trade;</sup> &mdash; Documento per review tecnica &middot; 23 Mar 2026 &middot; Bozza</p>
+  <p>Refract<sup style="font-size:7px">&trade;</sup> &mdash; Documento per review tecnica &middot; 23 Mar 2026 &middot; v1.0</p>
 </footer>
 
 </div>
