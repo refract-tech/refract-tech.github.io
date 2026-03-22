@@ -81,7 +81,7 @@
 </div>
 
 <div class="info">
-  <p>Questo progetto &egrave; stato costruito interamente con l'assistenza di modelli AI (Claude, Gemini) da un autore senza background formale in data science o finanza quantitativa. Ogni fase &mdash; dalla raccolta dati alla validazione statistica &mdash; &egrave; stata progettata, implementata e verificata utilizzando AI come strumento di amplificazione di un approccio metodico e scettico.</p>
+  <p>Questo progetto nasce da una ricerca indipendente. Ho utilizzato modelli AI (Claude, Gemini) come strumento per l'implementazione del codice e dei test statistici. L'architettura del sistema, la formulazione delle ipotesi, e l'identificazione dei bias sono frutto di un'indagine metodica personale, senza background formale in data science o finanza quantitativa.</p>
   <p>Lo scopo di questo documento &egrave; permettere a un reviewer esperto di valutare la correttezza metodologica, identificare errori, e fornire feedback critico. Le formule dei segnali proprietari non sono incluse.</p>
 </div>
 
@@ -165,7 +165,7 @@
   <p><strong>Metodo:</strong> LogisticRegression (Platt Scaling) con expanding-window cross-validation temporale (6 fold, stessi del walk-forward).</p>
   <ul>
     <li><strong>Input:</strong> segnale combinato primario (valore continuo)</li>
-    <li><strong>Target:</strong> outcome binario a 4h &mdash; il prezzo &egrave; salito o sceso rispetto al momento della news? (con dead zone di 0.05% per escludere movimenti trascurabili)</li>
+    <li><strong>Target:</strong> outcome binario a 4h &mdash; il prezzo &egrave; salito o sceso rispetto al momento della news? (con dead zone di 0.05% per rimuovere il rumore microstrutturale &mdash; spread e bid-ask bounce &mdash; che non &egrave; tradabile nella realt&agrave;)</li>
     <li><strong>N previsioni out-of-sample:</strong> 43.362</li>
   </ul>
   <div class="highlight">
@@ -484,7 +484,7 @@
 <section>
   <h2><span class="section-num">18</span>Limitazioni note</h2>
   <div class="caveat">
-    <p><strong>1. Periodo:</strong> 13 mesi, prevalentemente bull market su Gold (+79%). Non testato su bear market prolungato o mercato laterale.</p>
+    <p><strong>1. Periodo:</strong> 13 mesi, prevalentemente bull market su Gold (+79%). Non testato su bear market prolungato. Sebbene il periodo sia limitato su scala macro, l'alta frequenza del campionamento (finestre di 4-8h su 31.750 candele M15 e 50.888 news) fornisce profondit&agrave; statistica sufficiente per validare l'edge intraday.</p>
     <p><strong>2. Live validation limitata:</strong> 18 trade calcolati retroattivamente su dati live (non eseguiti in tempo reale). Insufficiente per validazione statistica.</p>
     <p><strong>3. Dipendenza da LLM:</strong> la classificazione dipende da un modello che pu&ograve; essere aggiornato dal fornitore senza preavviso.</p>
     <p><strong>4. Pesi segnale combinato:</strong> scelti dopo aver visto i primi dati. Non ottimizzati numericamente, ma la scelta &egrave; informata dai dati.</p>
