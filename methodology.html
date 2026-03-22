@@ -33,7 +33,7 @@
   h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: var(--text); margin-top: 20px; }
   p { color: var(--text-dim); margin-bottom: 14px; font-size: 14px; }
   p strong { color: var(--text); }
-  ul { color: var(--text-dim); font-size: 14px; margin-bottom: 14px; padding-left: 20px; }
+  ul, ol { color: var(--text-dim); font-size: 14px; margin-bottom: 14px; padding-left: 20px; }
   li { margin-bottom: 6px; }
   li strong { color: var(--text); }
   .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
@@ -81,7 +81,8 @@
 </div>
 
 <div class="info">
-  <p>Questo progetto &egrave; stato costruito interamente con l'assistenza di modelli AI (Claude, Gemini) da un autore senza background formale in data science o finanza quantitativa. Lo scopo di questo documento &egrave; permettere a un reviewer esperto di valutare la correttezza metodologica e identificare errori. Le formule dei segnali proprietari non sono incluse.</p>
+  <p>Questo progetto &egrave; stato costruito interamente con l'assistenza di modelli AI (Claude, Gemini) da un autore senza background formale in data science o finanza quantitativa. Ogni fase &mdash; dalla raccolta dati alla validazione statistica &mdash; &egrave; stata progettata, implementata e verificata utilizzando AI come strumento di amplificazione di un approccio metodico e scettico.</p>
+  <p>Lo scopo di questo documento &egrave; permettere a un reviewer esperto di valutare la correttezza metodologica, identificare errori, e fornire feedback critico. Le formule dei segnali proprietari non sono incluse.</p>
 </div>
 
 <div class="stats-bar">
@@ -93,34 +94,36 @@
   <div class="stat"><div class="stat-value gold">12/12</div><div class="stat-label">Robustness tests</div></div>
 </div>
 
-<!-- 1. PROGETTO -->
+<!-- 1 -->
 <section>
   <h2><span class="section-num">01</span>Il progetto</h2>
-  <p>Refract &egrave; un sistema di classificazione e analisi di news finanziarie. Un LLM classifica ogni news assegnando direzione, rilevanza e categoria. Le classificazioni vengono aggregate in segnali proprietari che misurano il <strong>regime informativo</strong> del mercato.</p>
-  <p>La validazione &egrave; stata condotta correlando i segnali con i prezzi XAU/USD. Il risultato principale: IC fino a <strong>+0.252 su rendimenti demeaned</strong> (7 giorni), confermato stabile cross-regime e cross-direzione.</p>
+  <p>Refract &egrave; un sistema di classificazione e analisi di news finanziarie basato su AI. Un LLM classifica ogni news in tempo reale assegnando direzione, rilevanza, categoria e urgenza. Le classificazioni vengono aggregate in segnali proprietari che misurano il <strong>regime informativo</strong> del mercato.</p>
+  <p>La validazione &egrave; stata condotta attraverso la correlazione con i prezzi di mercato (XAU/USD): l'unico modo per misurare oggettivamente se le classificazioni AI contengono informazione predittiva &egrave; verificare se correlano con i movimenti effettivi del prezzo. Il trading system che ne deriva &egrave; un possibile output applicativo, non l'obiettivo primario del progetto.</p>
+  <p>Il risultato principale: le classificazioni AI producono segnali con Information Coefficient (IC) fino a <strong>+0.252 su rendimenti demeaned</strong> (7 giorni), confermato stabile cross-regime e cross-direzione su 13 mesi e 50.888 news.</p>
 </section>
 
-<!-- 2. DATASET -->
+<!-- 2 -->
 <section>
   <h2><span class="section-num">02</span>Dataset</h2>
-  <div class="two-col">
-    <div class="card">
-      <div class="card-title">News</div>
-      <p><strong>50.888</strong> articoli, NewsAPI.ai, Feb 2025 &ndash; Mar 2026. 10 fonti (Reuters, Bloomberg, CNBC, ecc.). Body 200+ parole.</p>
-    </div>
-    <div class="card">
-      <div class="card-title">Prezzi</div>
-      <p><strong>31.750</strong> candele M15 XAU/USD. TwelveData API. Verificate a campione (0 discrepanze > 0.01%).</p>
-    </div>
-  </div>
-  <p>Classificazione: LLM congelato, temperatura 0.3, prompt frozen. Output JSON: 21 campi. Nessun fine-tuning.</p>
+  <p><strong>News:</strong> 50.888 articoli finanziari, NewsAPI.ai, Feb 2025 &ndash; Mar 2026 (13 mesi). Fonti: Reuters, Bloomberg, Investing.com, FXStreet, CNBC, Kitco, Yahoo Finance, ForexLive, MarketWatch, OilPrice. Lingua: inglese. Testo medio: 200+ parole (body, non solo titoli).</p>
+  <p><strong>Prezzi:</strong> 31.750 candele M15 XAU/USD (OHLCV). Fonte: TwelveData API (storico). Verificati a campione contro TradingView e yfinance (0 discrepanze &gt; 0.01%).</p>
+  <p><strong>Classificazione AI:</strong> ogni news classificata da un LLM (modello congelato, temperatura 0.3) con prompt frozen. Output strutturato JSON: 21 campi tra cui relevance_score (0-100), direction (BULLISH/BEARISH/NEUTRAL), category, urgency. Nessun fine-tuning &mdash; il modello &egrave; usato as-is via API.</p>
+  <p><strong>Outcome:</strong> return calcolato come (price_Xh &minus; price_at_news) / price_at_news per X = 1, 4, 8, 24 ore. price_at_news &egrave; il close della candela M15 pi&ugrave; vicina al timestamp della news.</p>
 </section>
 
-<!-- 3. SEGNALI -->
+<!-- 3 -->
 <section>
   <h2><span class="section-num">03</span>Segnali e IC</h2>
-  <p>38 segnali &times; 4 orizzonti = 152 test. IC = Spearman rank correlation, OOS su 6 fold. <strong>&ldquo;dm7d&rdquo;</strong> = IC su rendimenti demeaned (return &minus; media rolling 7 giorni), che isola il contributo del segnale dal trend di mercato.</p>
+  <p>38 segnali candidati costruiti su 4 orizzonti temporali (1h, 4h, 8h, 24h) = 152 test totali.</p>
+  <p><strong>Tre famiglie:</strong></p>
+  <ul>
+    <li><strong>AI rolling</strong> &mdash; aggregazioni temporali delle classificazioni delle news</li>
+    <li><strong>Tecnici</strong> &mdash; RSI, SMA20, ATR (indicatori standard calcolati sulle candele M15)</li>
+    <li><strong>Proprietari</strong> &mdash; combinazioni di segnali AI e tecnici (formule non divulgate)</li>
+  </ul>
+  <p>Ogni segnale produce un valore continuo per ogni news. Nessun segnale &egrave; binario.</p>
 
+  <h3>Top segnali validati (OOS, IC raw e debiased)</h3>
   <div class="table-wrap">
   <table>
     <tr><th>Segnale</th><th>IC @8h raw</th><th>IC @8h dm7d</th><th>Drop</th><th>Regime-proof</th></tr>
@@ -132,127 +135,218 @@
     <tr><td>Refract Index (5 comp.)</td><td>+0.132</td><td>+0.152</td><td class="val-green">+15%</td><td class="val-green">0.96</td></tr>
   </table>
   </div>
-  <p style="font-size:12px;color:var(--text-muted);">Condizionati su relevance_score &ge; 70. &ldquo;Regime-proof&rdquo; = min(IC bull, IC non-bull) / max. Tutti i segnali hanno 6/6 fold positivi.</p>
+  <p style="font-size:12px;color:var(--text-muted);">IC = Spearman rank correlation, OOS su 6 fold. &ldquo;dm7d&rdquo; = IC su rendimenti demeaned (return &minus; media rolling 7 giorni), che isola il contributo puro del segnale dal drift di mercato. &ldquo;Regime-proof&rdquo; = min(IC bull, IC non-bull) / max: valori vicini a 1.0 = stabilit&agrave; cross-regime. Condizionati su relevance_score &ge; 70. Tutti 6/6 fold positivi.</p>
 </section>
 
-<!-- 4. WALK-FORWARD -->
+<!-- 4 -->
 <section>
   <h2><span class="section-num">04</span>Walk-Forward OOS</h2>
-  <p>Expanding-window TimeSeriesSplit, 6 fold. Nessun parametro ottimizzato sui dati di test. Metriche: Newey-West HAC p-value, FDR Benjamini-Hochberg su 152 test, Bootstrap CI 10K reps.</p>
+  <p><strong>Metodo:</strong> expanding-window TimeSeriesSplit (scikit-learn) con 6 fold.</p>
+  <ul>
+    <li>Fold 1: train su primi ~8.000 news, test sul blocco successivo (~8.500 news)</li>
+    <li>Fold 2: train su primi ~17.000, test sul blocco successivo</li>
+    <li>... (expanding: il training set cresce a ogni fold)</li>
+    <li>Fold 6: train su primi ~42.000, test sulle ultime ~8.500</li>
+  </ul>
+  <p><strong>Nessun parametro &egrave; ottimizzato sui dati di test.</strong> I segnali sono calcolati con formule fisse &mdash; non c'&egrave; training nel senso ML. Il walk-forward valida che l'IC sia stabile nel tempo, non che i parametri siano ottimali.</p>
+  <p><strong>Eccezione:</strong> i pesi di un segnale proprietario combinato sono stati scelti analizzando i dati dei primi fold. &Egrave; un potenziale source di in-sample bias, mitigato dal fatto che i pesi sono semplici e non ottimizzati numericamente.</p>
+  <h3>Metriche OOS</h3>
+  <ul>
+    <li><strong>IC:</strong> Spearman rank correlation tra segnale e rendimento effettivo, calcolato separatamente per ogni fold, poi mediato.</li>
+    <li><strong>p-value:</strong> Newey-West HAC standard errors con lag automatico (Bartlett kernel). Corregge per autocorrelazione seriale.</li>
+    <li><strong>FDR:</strong> Benjamini-Hochberg al livello 0.05 su tutti i 152 test (38 segnali &times; 4 TF).</li>
+    <li><strong>Bootstrap CI:</strong> 10.000 ricampionamenti con sostituzione.</li>
+  </ul>
 </section>
 
-<!-- 5. BRIER -->
+<!-- 5 -->
 <section>
-  <h2><span class="section-num">05</span>Calibrazione (Brier Score)</h2>
-  <p>Platt Scaling su segnale primario, expanding-window 6 fold. <strong>Brier Score OOS: 0.2139</strong> su 43.362 previsioni (0.0 = perfetto, 0.25 = nessuna informazione).</p>
+  <h2><span class="section-num">05</span>Calibrazione probabilistica (Brier Score)</h2>
+  <p><strong>Metodo:</strong> LogisticRegression (Platt Scaling) con expanding-window cross-validation temporale (6 fold, stessi del walk-forward).</p>
+  <ul>
+    <li><strong>Input:</strong> segnale combinato primario (valore continuo)</li>
+    <li><strong>Target:</strong> outcome binario a 4h &mdash; il prezzo &egrave; salito o sceso rispetto al momento della news? (con dead zone di 0.05% per escludere movimenti trascurabili)</li>
+    <li><strong>N previsioni out-of-sample:</strong> 43.362</li>
+  </ul>
+  <div class="highlight">
+    <p><strong>Brier Score OOS: 0.2139</strong> (ricalcolato nell'audit: 0.2129, diff 0.001). Il Brier Score misura l'errore quadratico medio tra le probabilit&agrave; previste e gli outcome reali (0.0 = perfetto, 0.25 = nessuna informazione).</p>
+  </div>
 </section>
 
-<!-- 6. TRADING -->
+<!-- 6 -->
 <section>
-  <h2><span class="section-num">06</span>Trading System</h2>
-  <p>Gate: indicatore di regime rolling proprietario. Entry: EMA 9/21 crossover su candele H1 chiuse (post-audit fix, &minus;20% PF). Exit: cambio regime + timeout 8h + stop 2.5&times; ATR14 su LOW/HIGH. Risk: cooldown 4h, max 1 posizione per strategia, costo 0.02%.</p>
-  <p><strong>480 configurazioni testate.</strong> Tutte PF &gt; 2.0. Mediana PF 3.03.</p>
+  <h2><span class="section-num">06</span>Trading System Simulation</h2>
+  <p><strong>Gate:</strong> basato su un indicatore di regime rolling (proprietario). Soglie asimmetriche &mdash; diversi threshold per LONG e SHORT. Il gate richiede direction della news coerente con la direzione del trade e score minimo.</p>
+  <p><strong>Entry:</strong> EMA 9/21 crossover su candele H1 (aggregate dalle M15). Solo candele CHIUSE &mdash; l'EMA al tempo T usa solo candele con timestamp &lt; T (post-audit fix, ha ridotto il PF del 20%). Finestra massima: 4h dalla news. Se nessun crossover entro 4h, il trade viene saltato.</p>
+  <p><strong>Exit</strong> (prima condizione che scatta):</p>
+  <ol>
+    <li>Cambio di regime: l'indicatore rolling crossa una soglia opposta (check ogni ora)</li>
+    <li>Timeout: 8h dall'entry</li>
+    <li>Stop loss: 2.5&times; ATR14 (calcolato su candele M15). Per LONG, trigger su LOW della candela (non CLOSE). Per SHORT, trigger su HIGH.</li>
+  </ol>
+  <p><strong>Risk:</strong> cooldown 4h minimo tra trade consecutivi, max 1 posizione per strategia, costo 0.02% flat per trade (spread + commissione).</p>
+  <p><strong>480 configurazioni testate</strong> variando soglie di gate, exit, e filtri di qualit&agrave;. Tutte 480 producono PF &gt; 2.0. La mediana &egrave; PF 3.03. Il worst case &egrave; PF 2.15.</p>
 </section>
 
-<!-- 7. ALPHA -->
+<!-- 7 -->
 <section>
   <h2><span class="section-num">07</span>Alpha Decomposition</h2>
-  <p>200 permutazioni: direzioni randomizzate, stesse regole di entry/exit.</p>
+  <p>Per separare il contributo del segnale AI dal profitto strutturale dovuto al trend di mercato (+79% su Gold nel periodo), abbiamo eseguito un permutation test.</p>
+  <p><strong>Metodo:</strong> 200 simulazioni in cui le direzioni dei trade vengono randomizzate (LONG &harr; SHORT) mantenendo le stesse regole di entry, exit e risk management.</p>
   <div class="table-wrap">
   <table>
     <tr><th>Componente</th><th>PF</th><th>Quota</th></tr>
-    <tr><td>Exit logic + trend (floor)</td><td>1.93</td><td>52%</td></tr>
+    <tr><td>Exit logic + trend di mercato (floor)</td><td>1.93</td><td>52%</td></tr>
     <tr class="winner"><td><strong>Alpha AI (il segnale)</strong></td><td class="val-gold">+1.78</td><td class="val-gold">48%</td></tr>
     <tr><td><strong>Totale</strong></td><td class="val-green">3.71</td><td>100%</td></tr>
   </table>
   </div>
-  <p><strong>Z-score: 5.12</strong> (p &lt; 0.1%). Alpha SHORT (+1.90, Z=5.18) pi&ugrave; forte del LONG (+1.58, Z=3.05) &mdash; il segnale aggiunge pi&ugrave; valore andando contro il trend dominante.</p>
+  <p><strong>Z-score: 5.12</strong> (p &lt; 0.1%). Su 200 simulazioni casuali, nessuna ha raggiunto PF 3.71. L'alpha &egrave; pi&ugrave; forte sugli SHORT (+1.90, Z=5.18) che sui LONG (+1.58, Z=3.05) &mdash; il segnale aggiunge pi&ugrave; valore quando va contro il trend dominante.</p>
 </section>
 
-<!-- 8. AUDIT -->
+<!-- 8 -->
 <section>
   <h2><span class="section-num">08</span>Audit indipendente</h2>
   <div class="audit-badge">10/10 CHECK PASS</div>
-  <p>Script separato (~600 righe) scritto da zero. 3 bug trovati e corretti (EMA look-ahead &minus;20% PF, stop su CLOSE &rarr; LOW, data gap Pasqua). Verifica cross-AI con Gemini: PF match esatto (3.71). <strong>Tre codebase, tre AI, stesso risultato.</strong></p>
+  <p>Uno script separato (~600 righe) scritto da zero, senza riusare codice della pipeline originale. Ricalcola tutti i numeri indipendentemente.</p>
+  <div class="table-wrap">
+  <table>
+    <tr><th>#</th><th>Check</th><th>Risultato</th></tr>
+    <tr><td>1</td><td>Trade reconstruction (247 trade da zero)</td><td class="val-green">PF match esatto</td></tr>
+    <tr><td>2</td><td>Entry/exit price candela per candela</td><td class="val-green">0 errori</td></tr>
+    <tr><td>3</td><td>Look-ahead bias</td><td class="val-green">0 violazioni (trovato e corretto bias EMA, &minus;20% PF)</td></tr>
+    <tr><td>4</td><td>IC indipendente (20 segnali &times; 2 TF)</td><td class="val-green">Diff 0.0000 su tutti e 20</td></tr>
+    <tr><td>5</td><td>Brier Score ricalcolato</td><td class="val-green">0.2139 vs 0.2129 (diff 0.001)</td></tr>
+    <tr><td>6</td><td>Trade concorrenti</td><td class="val-green">Max 6 (gap Pasqua, corretto)</td></tr>
+    <tr><td>7</td><td>Cost sensitivity (5 livelli)</td><td class="val-green">PF &gt; 2.0 fino a 0.10%. Breakeven 0.36%</td></tr>
+    <tr><td>8</td><td>Fold stability + trend test</td><td class="val-green">6/6 fold PF &gt; 1.0. Spearman r=&minus;0.09, p=0.87</td></tr>
+    <tr><td>9</td><td>Permutation test (200 reps, full engine)</td><td class="val-green">Z-score 5.12</td></tr>
+    <tr><td>10</td><td>Data quality</td><td class="val-green">&lt; 0.5% anomalie</td></tr>
+  </table>
+  </div>
+  <p><strong>3 bug trovati e corretti prima del deploy:</strong></p>
+  <ol>
+    <li>EMA look-ahead: entry su candela non ancora chiusa. Fix: &minus;20% PF.</li>
+    <li>Stop loss: trigger su CLOSE invece di LOW. Fix: 4 trade impattati.</li>
+    <li>Data gap (Pasqua): entry guard implementata.</li>
+  </ol>
+  <h3>Verifica cross-AI</h3>
+  <p>L'intero audit &egrave; stato ripetuto indipendentemente da un secondo LLM (Gemini) con codice scritto da zero in un ambiente separato. Risultati iniziali discrepanti (PF 2.34) dovuti a due differenze implementative. Dopo allineamento: PF 3.71 &mdash; match esatto. <strong>Tre codebase indipendenti, tre AI, stesso risultato.</strong></p>
 </section>
 
-<!-- 9. RISULTATI -->
+<!-- 9 -->
 <section>
-  <h2><span class="section-num">09</span>Risultati principali</h2>
+  <h2><span class="section-num">09</span>Risultati principali (post-audit)</h2>
   <div class="table-wrap">
   <table>
     <tr><th>Metrica</th><th>Valore</th></tr>
-    <tr><td>IC segnale primario @8h (raw / dm7d)</td><td class="val-gold">+0.301 / +0.237</td></tr>
+    <tr><td>IC segnale primario @8h (OOS, raw / dm7d)</td><td class="val-gold">+0.301 / +0.237</td></tr>
     <tr><td>Newey-West p-value</td><td>&lt; 1e-10</td></tr>
-    <tr><td>FDR Benjamini-Hochberg</td><td>4/5 TIER 1 pass</td></tr>
-    <tr><td>Block Bootstrap 95% CI</td><td>[+0.100, +0.367]</td></tr>
+    <tr><td>FDR Benjamini-Hochberg</td><td>4/5 TIER 1 pass al livello 0.05</td></tr>
+    <tr><td>Bootstrap 95% CI (ensemble @8h)</td><td>[+0.200, +0.292]</td></tr>
     <tr><td>Brier Score OOS (N=43.362)</td><td>0.2139</td></tr>
+    <tr><td>Trade (config primaria, post-fix)</td><td>218</td></tr>
     <tr><td>Profit Factor (raw / dm7d)</td><td class="val-green">3.71 / 2.53</td></tr>
     <tr><td>Win Rate</td><td>63.3%</td></tr>
-    <tr><td>Sharpe Ratio (calendario)</td><td>3.4</td></tr>
+    <tr><td>Sharpe Ratio (calendario, annualizzato)</td><td>3.4</td></tr>
     <tr><td>Max Drawdown</td><td>3.1%</td></tr>
-    <tr><td>Alpha (permutation test)</td><td>+1.78 (Z=5.12)</td></tr>
-    <tr><td>CSCV Probability of Overfitting</td><td class="val-green">4.3%</td></tr>
+    <tr><td>Breakeven cost</td><td>0.36% per trade</td></tr>
+    <tr><td>Alpha (permutation test)</td><td>+1.78 (Z=5.12, p &lt; 0.1%)</td></tr>
+    <tr><td>Verifica cross-AI</td><td class="val-green">PF match esatto (3.71)</td></tr>
   </table>
   </div>
 </section>
 
-<!-- 10. ROBUSTEZZA -->
+<!-- 10 -->
 <section>
   <h2><span class="section-num">10</span>Robustezza del segnale</h2>
-  <p>8 test per escludere che i risultati siano un artefatto del bull market (+79%), del data mining, o dell'overfitting.</p>
+  <p>Per escludere che i risultati siano un artefatto del bull market (+79% su Gold nel periodo), del data mining, o dell'overfitting, abbiamo eseguito 8 test aggiuntivi.</p>
 
-  <h3>Regime-conditional IC (sc &ge; 70)</h3>
+  <h3>10a. Regime-conditional IC (sc &ge; 70)</h3>
+  <p>Il dataset copre 8 mesi bull (&gt;+3% mensile) e 6 mesi non-bull (&lt;+3%, inclusi 2 bear).</p>
   <div class="table-wrap">
   <table>
     <tr><th>Segnale</th><th>IC @8h BULL</th><th>IC @8h NON-BULL</th></tr>
-    <tr><td>Accelerazione</td><td>+0.381</td><td>+0.178</td></tr>
-    <tr><td>Sentiment aggregato</td><td>+0.239</td><td class="val-green">+0.385</td></tr>
+    <tr><td>Accelerazione sentiment</td><td>+0.381</td><td>+0.178</td></tr>
+    <tr><td>Sentiment aggregato 6h</td><td>+0.239</td><td class="val-green">+0.385</td></tr>
     <tr><td>Score asymmetry</td><td>+0.348</td><td>+0.227</td></tr>
   </table>
   </div>
-  <p style="font-size:12px;">Nessun segnale crolla nei mesi non-bull. Il sentiment aggregato &egrave; <strong>pi&ugrave; forte</strong> fuori dal bull market.</p>
+  <p>Nessun segnale crolla a zero nei mesi non-bull. Il sentiment aggregato &egrave; <strong>pi&ugrave; forte</strong> fuori dal bull market &mdash; discrimina meglio quando il mercato non &egrave; in trend facile.</p>
 
-  <h3>Direction-neutral IC (sc &ge; 70)</h3>
+  <h3>10b. Direction-neutral IC (sc &ge; 70)</h3>
+  <p>IC calcolato separatamente su news BULLISH e BEARISH, per escludere che il segnale funzioni solo in una direzione.</p>
   <div class="table-wrap">
   <table>
-    <tr><th>Segnale</th><th>IC su BULL news</th><th>IC su BEAR news</th></tr>
+    <tr><th>Segnale</th><th>IC @8h su BULL news</th><th>IC @8h su BEAR news</th></tr>
     <tr><td>Accelerazione</td><td>+0.288</td><td class="val-green">+0.311</td></tr>
     <tr><td>Sentiment aggregato</td><td>+0.218</td><td class="val-green">+0.320</td></tr>
     <tr><td>Score asymmetry</td><td>+0.277</td><td>+0.245</td></tr>
   </table>
   </div>
-  <p style="font-size:12px;">Il segnale funziona <strong>meglio sulle BEAR news</strong> &mdash; non &egrave; un artefatto direzionale.</p>
+  <p>Il segnale funziona <strong>meglio sulle BEAR news</strong> &mdash; non &egrave; un artefatto direzionale.</p>
 
-  <h3>PF demeaned (rimozione drift locale)</h3>
-  <p>PF ricalcolato su rendimenti demeaned a diverse finestre. La finestra influenza il risultato:</p>
+  <h3>10c. PF demeaned (rimozione drift locale)</h3>
+  <p>Per isolare il contributo del segnale dal trend di mercato, abbiamo ricalcolato il PF su rendimenti demeaned (rendimento del trade &minus; media rolling dei rendimenti sullo stesso orizzonte). La finestra di demeaning influenza il risultato:</p>
   <div class="table-wrap">
   <table>
     <tr><th>Finestra</th><th>REF S1 PF dm</th><th>ASYM8 PF dm</th><th>Nota</th></tr>
-    <tr><td>6h</td><td class="val-red">0.76</td><td class="val-red">0.84</td><td class="val-dim">Rimuove il momentum catturato dal segnale</td></tr>
+    <tr><td>6h</td><td class="val-red">0.76</td><td class="val-red">0.84</td><td class="val-dim">Rimuove il momentum che il segnale cattura</td></tr>
+    <tr><td>12h</td><td class="val-red">0.79</td><td>1.01</td><td></td></tr>
     <tr><td>24h</td><td class="val-red">0.88</td><td class="val-red">0.96</td><td></td></tr>
     <tr><td>2d</td><td>0.99</td><td>1.09</td><td></td></tr>
     <tr><td>3d</td><td>1.00</td><td>1.10</td><td></td></tr>
     <tr class="winner"><td><strong>7d</strong></td><td class="val-green"><strong>2.53</strong></td><td class="val-green"><strong>3.62</strong></td><td>Benchmark per holding period 4-8h</td></tr>
   </table>
   </div>
+  <p>Con finestre sotto 48h, il demeaning rimuove il momentum intraday che il segnale sta effettivamente identificando. La finestra 7d misura se il segnale batte il trend settimanale &mdash; e lo batte con PF 2.5-3.6.</p>
 
-  <h3>Test riassuntivi</h3>
+  <h3>10d. CSCV &mdash; Probability of Backtest Overfitting</h3>
+  <p>Combinatorial Symmetric Cross-Validation (Bailey et al. 2014). 12 configurazioni di strategia, 8 blocchi temporali, 70 combinazioni train/test.</p>
+  <div class="check"><p><strong>PBO (below median): 4.3%</strong> &mdash; nel 95.7% dei casi la strategia migliore su train resta sopra la mediana su test.</p></div>
+  <div class="check"><p><strong>PBO (negative OOS): 0.0%</strong> &mdash; in nessuna combinazione la migliore strategia perde soldi su test.</p></div>
+  <p>Test/train PnL ratio: media 1.08, mediana 0.92.</p>
+
+  <h3>10e. Deflated Sharpe Ratio</h3>
+  <p>Il DSR (Bailey &amp; de Prado 2014) corregge lo Sharpe per il numero di strategie testate. Con 1380 config totali il DSR fallisce, ma le config non sono indipendenti &mdash; sono ~10-20 famiglie con varianti parametriche correlate.</p>
   <div class="table-wrap">
   <table>
-    <tr><th>Test</th><th>Cosa esclude</th><th>Risultato</th></tr>
-    <tr><td>CSCV (PBO)</td><td>Overfitting da selezione</td><td class="val-green">4.3%</td></tr>
-    <tr><td>Deflated Sharpe (N<sub>eff</sub>=20)</td><td>Data mining</td><td class="val-green">99.99%</td></tr>
-    <tr><td>Block Bootstrap 10K</td><td>Struttura seriale</td><td class="val-green">99.7-100% &gt; 0</td></tr>
-    <tr><td>Purged/Embargo CV</td><td>Leakage tra fold</td><td class="val-green">IC invariato</td></tr>
-    <tr><td>Permutation Z=5.12</td><td>Trend di mercato</td><td class="val-green">p &lt; 0.1%</td></tr>
-    <tr><td>Trimmed PF (&minus;5%)</td><td>Dipendenza da outlier</td><td class="val-green">PF sale (3.41&rarr;3.92)</td></tr>
-    <tr><td>Cross-AI (3 codebase)</td><td>Bug implementativi</td><td class="val-green">Match esatto</td></tr>
+    <tr><th>N effettivo</th><th>Expected max SR</th><th>DSR</th></tr>
+    <tr><td>10</td><td>2.15</td><td class="val-green">100% PASS</td></tr>
+    <tr><td>20</td><td>2.45</td><td class="val-green">99.99% PASS</td></tr>
+    <tr><td>50</td><td>2.80</td><td class="val-green">99.98% PASS</td></tr>
+    <tr><td>100</td><td>3.03</td><td class="val-green">98.5% PASS</td></tr>
   </table>
   </div>
+
+  <h3>10f. Block Bootstrap</h3>
+  <p>10.000 ricampionamenti con blocchi settimanali (preserva autocorrelazione).</p>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Segnale</th><th>IC @8h medio</th><th>95% CI</th><th>% &gt; 0</th></tr>
+    <tr><td>Score asymmetry</td><td>+0.238</td><td>[+0.100, +0.367]</td><td class="val-green">100%</td></tr>
+    <tr><td>Sentiment aggregato 6h</td><td>+0.257</td><td>[+0.102, +0.398]</td><td class="val-green">99.9%</td></tr>
+    <tr><td>Sentiment pesato &times; dir</td><td>+0.141</td><td>[+0.049, +0.224]</td><td class="val-green">99.8%</td></tr>
+  </table>
+  </div>
+
+  <h3>10g. Purged/Embargo Cross-Validation</h3>
+  <p>IC con purge 24h + embargo 8h ai confini dei fold: differenza &lt; 0.003 rispetto all'IC standard. <strong>Nessun leakage tra fold.</strong></p>
+
+  <h3>10h. Trimmed Profit Factor</h3>
+  <p>Rimuovendo i trade estremi (top e bottom 5%), il PF <strong>sale</strong>:</p>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Trim</th><th>REF S1 PF</th><th>ASYM8 PF</th></tr>
+    <tr><td>0% (raw)</td><td>3.41</td><td>5.89</td></tr>
+    <tr class="winner"><td>5%</td><td class="val-green">3.92</td><td class="val-green">5.95</td></tr>
+    <tr class="winner"><td>10%</td><td class="val-green">4.91</td><td class="val-green">6.79</td></tr>
+  </table>
+  </div>
+  <p>Il sistema non dipende da pochi trade fortunati.</p>
 </section>
 
-<!-- 11. REGIME TRADING -->
+<!-- 11 -->
 <section>
   <h2><span class="section-num">11</span>Performance per regime</h2>
   <div class="table-wrap">
@@ -277,14 +371,22 @@
       <div class="card-title">Cross-strategy correlation</div>
       <p>Correlazione mensile PnL: <strong>r=0.835</strong></p>
       <p>Mesi dove entrambe perdono: <strong>0/14</strong></p>
+      <p>Mesi dove il combinato &egrave; negativo: <strong>1/14</strong></p>
     </div>
   </div>
 </section>
 
-<!-- 12. MULTI-STRATEGIA -->
+<!-- 12 -->
 <section>
-  <h2><span class="section-num">12</span>Multi-strategia</h2>
-  <p>900+ configurazioni testate. 4 strategie selezionate, tutte Z-score &gt; 3.0:</p>
+  <h2><span class="section-num">12</span>Il meccanismo NEUTRAL</h2>
+  <p>Circa il <strong>74%</strong> delle news classificate dall'LLM risulta NEUTRAL. Questa proporzione non &egrave; stata progettata &mdash; &egrave; emersa dalla struttura dei dati. L'indicatore di regime include i NEUTRAL nel denominatore: quando il mercato consolida, le news diventano pi&ugrave; incerte, la quota di NEUTRAL sale, e l'indicatore scende sotto la soglia SHORT.</p>
+  <p>Questo meccanismo spiega perch&eacute; il sistema produce trade SHORT profittevoli durante un bull market del 79%: non cerca attivamente segnali ribassisti, ma rileva <strong>l'assenza di convinzione rialzista</strong> nel flusso informativo.</p>
+</section>
+
+<!-- 13 -->
+<section>
+  <h2><span class="section-num">13</span>Multi-strategia</h2>
+  <p>900+ configurazioni testate. 4 strategie selezionate per il deploy, tutte con Z-score &gt; 3.0:</p>
   <div class="table-wrap">
   <table>
     <tr><th>#</th><th>Tipo gate</th><th>PF raw</th><th>PF dm7d</th><th>N trade</th><th>Mesi neg.</th></tr>
@@ -294,31 +396,129 @@
     <tr><td>4</td><td>Idem + trailing TP</td><td class="val-gold">6.33</td><td class="val-dim">&mdash;</td><td>114</td><td class="val-green">0/13</td></tr>
   </table>
   </div>
+  <p>Le strategie 3 e 4 sono basate su un segnale volume-independent &mdash; non dipende dal conteggio delle news, solo dalla loro qualit&agrave; relativa.</p>
 </section>
 
-<!-- 13. LIMITAZIONI -->
+<!-- 14 -->
 <section>
-  <h2><span class="section-num">13</span>Limitazioni</h2>
-  <div class="caveat">
-    <p><strong>Periodo:</strong> 13 mesi, prevalentemente bull market (+79%). Non testato su bear prolungato.</p>
-    <p><strong>Dipendenza LLM:</strong> il modello pu&ograve; essere aggiornato senza preavviso.</p>
-    <p><strong>Decay stimato:</strong> &minus;15/20% strutturale + 17-21% da regime. PF atteso in live: ~2.5-3.0.</p>
-    <p><strong>Correlazione:</strong> r=0.835 tra strategie. Diversificazione limitata.</p>
-    <p><strong>Background:</strong> nessuna formazione formale. Metodologia verificata con 3 implementazioni indipendenti.</p>
+  <h2><span class="section-num">14</span>Stabilit&agrave; per mese</h2>
+  <p>Su 14 mesi di calendario, 13 sono positivi per la configurazione primaria.</p>
+  <h3>Fold OOS</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Fold</th><th>Trade</th><th>PF</th><th>Return</th><th>Periodo</th></tr>
+    <tr><td>1</td><td>52</td><td class="val-green">5.04</td><td>+24.5%</td><td>Feb-Apr 2025</td></tr>
+    <tr><td>2</td><td>32</td><td>3.12</td><td>+7.5%</td><td>Apr-Jun 2025</td></tr>
+    <tr><td>3</td><td>38</td><td>2.47</td><td>+5.8%</td><td>Jun-Aug 2025</td></tr>
+    <tr><td>4</td><td>29</td><td>2.91</td><td>+10.6%</td><td>Aug-Oct 2025</td></tr>
+    <tr><td>5</td><td>37</td><td>1.85</td><td>+4.0%</td><td>Oct-Dec 2025</td></tr>
+    <tr><td>6</td><td>11</td><td class="val-dim">33.15</td><td>+19.7%</td><td class="val-dim">Jan-Mar 2026 (N insufficiente)</td></tr>
+  </table>
+  </div>
+  <p>Tutti i fold PF &gt; 1.0. Test di trend temporale: Spearman r=&minus;0.09, p=0.87 (nessun decadimento del segnale nel tempo). Il fold 6 ha N troppo basso per essere statisticamente significativo.</p>
+  <p><strong>Trimmed mean</strong> (10 mesi centrali, escludendo i 2 migliori e i 2 peggiori): PF core 3.25, WR 65.6%, return +4.0%/mese.</p>
+</section>
+
+<!-- 15 -->
+<section>
+  <h2><span class="section-num">15</span>Audit allineamento Live vs WF</h2>
+  <p>Prima del deploy in produzione, abbiamo verificato 8 potenziali discrepanze tra le condizioni del walk-forward e quelle del sistema live:</p>
+  <div class="table-wrap">
+  <table>
+    <tr><th>#</th><th>Item</th><th>Match?</th></tr>
+    <tr><td>1</td><td>Score threshold</td><td class="val-green">Identico</td></tr>
+    <tr><td>2</td><td>Timezone (UTC)</td><td class="val-green">Identico</td></tr>
+    <tr><td>3</td><td>Body text (200 char)</td><td class="val-green">Identico</td></tr>
+    <tr><td>4</td><td>Cold start (24h storia)</td><td class="val-green">Implementato</td></tr>
+    <tr><td>5</td><td>Candele (TwelveData M15 XAU/USD)</td><td class="val-green">Stesso provider e simbolo</td></tr>
+    <tr><td>6</td><td>Feed news (NewsAPI.ai, 10 fonti)</td><td class="val-green">Stesse fonti del WF</td></tr>
+    <tr><td>7</td><td>RSS parallelo</td><td>Trovato e corretto (disabilitato)</td></tr>
+    <tr><td>8</td><td>Dedup cross-keyword group</td><td>Trovato e corretto</td></tr>
+  </table>
+  </div>
+  <p>EMA verificata: diff 0.000000 tra WF e live sulle stesse candele.</p>
+</section>
+
+<!-- 16 -->
+<section>
+  <h2><span class="section-num">16</span>Scala computazionale</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Fase</th><th>Volume</th></tr>
+    <tr><td>News classificate dall'LLM</td><td>50.888</td></tr>
+    <tr><td>Candele M15 analizzate</td><td>31.750</td></tr>
+    <tr><td>Segnali &times; TF testati</td><td>152</td></tr>
+    <tr><td>Configurazioni trading testate</td><td>480 + 900+</td></tr>
+    <tr><td>Permutazioni (full engine re-execution)</td><td>200</td></tr>
+    <tr><td>Previsioni OOS per Brier Score</td><td>43.362</td></tr>
+    <tr><td>Block bootstrap ricampionamenti</td><td>10.000</td></tr>
+    <tr><td>CSCV combinazioni</td><td>70</td></tr>
+    <tr><td>Verifiche indipendenti cross-AI</td><td>3</td></tr>
+  </table>
   </div>
 </section>
 
-<!-- 14. DOMANDE -->
+<!-- 17 -->
 <section>
-  <h2><span class="section-num">14</span>Domande per il reviewer</h2>
+  <h2><span class="section-num">17</span>Sintesi: probabilit&agrave; di artefatto</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Test</th><th>Cosa esclude</th><th>Risultato</th></tr>
+    <tr><td>Newey-West p-value</td><td>Autocorrelazione seriale</td><td class="val-green">&lt; 1e-10</td></tr>
+    <tr><td>FDR Benjamini-Hochberg</td><td>Multiple testing</td><td class="val-green">4/5 TIER 1 pass</td></tr>
+    <tr><td>Block Bootstrap 10K</td><td>Struttura seriale</td><td class="val-green">99.7-100% &gt; 0</td></tr>
+    <tr><td>Purged/Embargo CV</td><td>Leakage tra fold</td><td class="val-green">IC invariato</td></tr>
+    <tr><td>CSCV (PBO)</td><td>Overfitting da selezione</td><td class="val-green">4.3%</td></tr>
+    <tr><td>Deflated Sharpe (N<sub>eff</sub>=20)</td><td>Data mining</td><td class="val-green">99.99%</td></tr>
+    <tr><td>Permutation Z=5.12</td><td>Trend di mercato</td><td class="val-green">p &lt; 0.1%</td></tr>
+    <tr><td>IC regime-conditional</td><td>Bias da bull market</td><td class="val-green">IC +0.18-0.39 nei non-bull</td></tr>
+    <tr><td>IC demeaned 7d</td><td>Drift locale</td><td class="val-green">IC +0.19-0.25 (drop 9-21%)</td></tr>
+    <tr><td>IC direction-neutral</td><td>Bias direzionale</td><td class="val-green">IC BEAR &ge; IC BULL</td></tr>
+    <tr><td>Cross-AI (3 codebase)</td><td>Bug implementativi</td><td class="val-green">Match esatto</td></tr>
+    <tr><td>Trimmed PF</td><td>Dipendenza da outlier</td><td class="val-green">PF sale rimuovendo estremi</td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- 18 -->
+<section>
+  <h2><span class="section-num">18</span>Limitazioni note</h2>
+  <div class="caveat">
+    <p><strong>1. Periodo:</strong> 13 mesi, prevalentemente bull market su Gold (+79%). Non testato su bear market prolungato o mercato laterale.</p>
+    <p><strong>2. Live validation limitata:</strong> 18 trade calcolati retroattivamente su dati live (non eseguiti in tempo reale). Insufficiente per validazione statistica.</p>
+    <p><strong>3. Dipendenza da LLM:</strong> la classificazione dipende da un modello che pu&ograve; essere aggiornato dal fornitore senza preavviso.</p>
+    <p><strong>4. Pesi segnale combinato:</strong> scelti dopo aver visto i primi dati. Non ottimizzati numericamente, ma la scelta &egrave; informata dai dati.</p>
+    <p><strong>5. Decay stimato WF&rarr;live:</strong> &minus;15/20% strutturale + 17-21% da regime (IC demeaned). PF atteso in live: ~2.5-3.0 per la strategia migliore.</p>
+    <p><strong>6. Volume news live vs WF:</strong> il live potrebbe avere pi&ugrave; news del WF, con potenziale impatto sull'indicatore di regime. Alcune strategie sono protette da questo effetto, altre potrebbero risentirne.</p>
+    <p><strong>7. Correlazione cross-strategy:</strong> r=0.835, diversificazione limitata.</p>
+    <p><strong>8. Background dell'autore:</strong> nessuna formazione formale in data science o finanza quantitativa. Metodologia verificata con 3 implementazioni indipendenti, ma potrebbero esserci errori concettuali non identificati. &Egrave; il motivo principale per cui cerchiamo una review esterna.</p>
+  </div>
+</section>
+
+<!-- 19 -->
+<section>
+  <h2><span class="section-num">19</span>Domande per il reviewer</h2>
+  <p>Queste sono le aree dove abbiamo pi&ugrave; incertezza e dove il feedback di un esperto sarebbe pi&ugrave; prezioso:</p>
   <div class="card">
-    <p><strong>1.</strong> L'IC Spearman &egrave; la metrica giusta? Ci sono non-linearit&agrave; nel rapporto segnale-rendimento che richiederebbero binned IC o conditional monotonicity test?</p>
-    <p><strong>2.</strong> L'expanding-window TimeSeriesSplit &egrave; appropriato per news con clustering temporale? Servirebbe un calendar-time approach?</p>
-    <p><strong>3.</strong> Il demeaning a 7 giorni &egrave; la finestra corretta per holding period 4-8h? La scelta della finestra cambia il PF del 40-60% (vedi tabella sezione 10).</p>
-    <p><strong>4.</strong> Il Brier Score con dead zone 0.05% potrebbe essere inflato escludendo i casi pi&ugrave; difficili?</p>
-    <p><strong>5.</strong> Le classificazioni AI sono stazionarie? Esistono test per verificarlo?</p>
-    <p><strong>6.</strong> La correlazione r=0.835 invalida la diversificazione? Quale sarebbe accettabile?</p>
-    <p><strong>7.</strong> C'&egrave; un errore concettuale nell'approccio? Il progetto &egrave; costruito con AI &mdash; tre LLM hanno verificato implementazione e numeri ma potrebbero condividere lo stesso blind spot. Cosa verificherebbe per primo?</p>
+    <p><strong>1.</strong> L'IC Spearman &egrave; la metrica giusta per questo tipo di segnale? Ci sono non-linearit&agrave; nel rapporto segnale-rendimento che Spearman non cattura e che richiederebbero un approccio diverso (binned IC, conditional monotonicity test)?</p>
+  </div>
+  <div class="card">
+    <p><strong>2.</strong> L'expanding-window TimeSeriesSplit &egrave; appropriato per news con clustering temporale? Le news arrivano a grappoli (FOMC, NFP, escalation geopolitiche). Un calendar-time approach o un cluster-robust method sarebbe pi&ugrave; corretto?</p>
+  </div>
+  <div class="card">
+    <p><strong>3.</strong> Il demeaning a 7 giorni &egrave; la finestra corretta per isolare l'alpha dal drift? Per un sistema con holding period di 4-8 ore, quale benchmark di demeaning userebbe? La scelta della finestra cambia il PF del 40-60% (da 0.96 a 3.62 per ASYM8 &mdash; vedi tabella sezione 10c).</p>
+  </div>
+  <div class="card">
+    <p><strong>4.</strong> Il Brier Score con dead zone 0.05% &egrave; una calibrazione standard? L'esclusione dei movimenti sotto lo 0.05% potrebbe inflare il Brier Score eliminando i casi pi&ugrave; difficili da prevedere?</p>
+  </div>
+  <div class="card">
+    <p><strong>5.</strong> Le classificazioni AI sono stazionarie? Se il modello AI viene aggiornato o se il linguaggio delle news cambia nel tempo, l'IC potrebbe degradare. Esistono test per verificare la stazionariet&agrave; delle classificazioni?</p>
+  </div>
+  <div class="card">
+    <p><strong>6.</strong> La correlazione r=0.835 tra le strategie invalida la diversificazione? Con due strategie che condividono la stessa logica di exit, il rischio &egrave; concentrato. Quale correlazione sarebbe accettabile?</p>
+  </div>
+  <div class="card">
+    <p><strong>7.</strong> C'&egrave; un errore concettuale nell'approccio complessivo? Il progetto &egrave; stato costruito interamente con AI. Tre LLM diversi hanno verificato implementazione e numeri, ma potrebbero condividere lo stesso blind spot metodologico. Cosa verificherebbe per primo?</p>
   </div>
 </section>
 
