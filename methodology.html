@@ -184,15 +184,15 @@
     <li>Timeout: 8h dall'entry</li>
     <li>Stop loss: 2.5&times; ATR14 (calcolato su candele M15). Per LONG, trigger su LOW della candela (non CLOSE). Per SHORT, trigger su HIGH.</li>
   </ol>
-  <p><strong>Risk:</strong> cooldown 4h minimo tra trade consecutivi, max 1 posizione per strategia, costo 0.02% flat per trade (spread + commissione).</p>
-  <p><strong>480 configurazioni testate</strong> variando soglie di gate, exit, e filtri di qualit&agrave;. Tutte 480 producono PF &gt; 2.0. La mediana &egrave; PF 3.03. Il worst case &egrave; PF 2.15.</p>
+  <p><strong>Risk:</strong> cooldown 4h minimo tra trade consecutivi, max 1 posizione per strategia, costo 0.02% flat per trade (spread + commissione). Breakeven cost: 0.36% &mdash; il sistema tollera uno slippage fino a 18&times; l'assunzione base prima di perdere l'edge statistico.</p>
+  <p><strong>480 configurazioni testate</strong> variando soglie di gate, exit, e filtri di qualit&agrave;. Tutte 480 producono PF &gt; 2.0. La mediana &egrave; PF 3.03. Il worst case &egrave; PF 2.15. Le 900+ configurazioni aggiuntive (ricerca esaustiva) costituiscono una mappatura dello spazio parametrico, non un'ottimizzazione del rendimento: l'alpha risiede in un plateau di stabilit&agrave; ampio, non in un picco isolato.</p>
 </section>
 
 <!-- 7 -->
 <section>
   <h2><span class="section-num">07</span>Alpha Decomposition</h2>
   <p>Per separare il contributo del segnale AI dal profitto strutturale dovuto al trend di mercato (+79% su Gold nel periodo), abbiamo eseguito un permutation test.</p>
-  <p><strong>Metodo:</strong> 200 simulazioni in cui le direzioni dei trade vengono randomizzate (LONG &harr; SHORT) mantenendo le stesse regole di entry, exit e risk management.</p>
+  <p><strong>Metodo:</strong> 200 simulazioni in cui viene randomizzata unicamente la direzione (LONG &harr; SHORT) fornita dall'LLM. Timestamp di entry, logiche di sizing, e regole di exit (stop loss, belief flip, timeout) sono mantenuti rigorosamente intatti. Lo Z-score misura quindi esclusivamente il potere di classificazione direzionale dell'AI, depurato dalle abilit&agrave; di risk management dell'engine.</p>
   <div class="table-wrap">
   <table>
     <tr><th>Componente</th><th>PF</th><th>Quota</th></tr>
@@ -300,7 +300,7 @@
     <tr class="winner"><td><strong>7d</strong></td><td class="val-green"><strong>2.53</strong></td><td class="val-green"><strong>3.62</strong></td><td class="val-dim">La scelta della finestra &egrave; un parametro metodologico aperto &mdash; vedi domanda 3</td></tr>
   </table>
   </div>
-  <p>La scelta della finestra di demeaning influenza significativamente il risultato. Presentiamo tutti i livelli per trasparenza. Vedi domanda 3.</p>
+  <p>La scelta della finestra di demeaning influenza significativamente il risultato. La degradazione a 6-12h &egrave; strutturale: la news funge da catalizzatore per un rilascio di liquidit&agrave; immediato &mdash; sottrarre la media a 6h significa sottrarre l'esatto impulso generato dalla news. Il demeaning a 7 giorni isola il segnale dal drift passivo di lungo periodo. Presentiamo tutti i livelli per trasparenza. Vedi domanda 3.</p>
 
   <h3>10d. CSCV &mdash; Probability of Backtest Overfitting</h3>
   <p>Combinatorial Symmetric Cross-Validation (Bailey et al. 2014). 12 configurazioni di strategia, 8 blocchi temporali, 70 combinazioni train/test.</p>
