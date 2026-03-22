@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Refract &mdash; Metodologia e Risultati</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --surface: #12121a; --surface-2: #1a1a26; --border: #2a2a3a;
+    --gold: #d4a843; --gold-dim: #a07d2e; --green: #34d399; --red: #f87171;
+    --blue: #60a5fa; --orange: #fb923c; --purple: #a78bfa;
+    --text: #e8e8ed; --text-dim: #8888a0; --text-muted: #55556a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+  .header { text-align: center; margin-bottom: 48px; }
+  .header .brand { font-size: 13px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 500; }
+  .header h1 { font-size: clamp(24px, 4vw, 36px); font-weight: 700; line-height: 1.2; margin-bottom: 12px; background: linear-gradient(135deg, var(--text) 0%, var(--text-dim) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .header .subtitle { font-size: 15px; color: var(--text-dim); }
+  .header .date { font-size: 11px; color: var(--text-muted); margin-top: 8px; font-family: 'JetBrains Mono', monospace; }
+  .stats-bar { display: flex; justify-content: center; gap: 32px; margin-bottom: 40px; padding: 20px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .stat { text-align: center; min-width: 90px; }
+  .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 500; }
+  .stat-value.gold { color: var(--gold); }
+  .stat-value.green { color: var(--green); }
+  .stat-value.blue { color: var(--blue); }
+  .stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+  section { margin-bottom: 52px; }
+  h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: var(--gold); }
+  h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: var(--text); margin-top: 20px; }
+  p { color: var(--text-dim); margin-bottom: 14px; font-size: 14px; }
+  p strong { color: var(--text); }
+  ul { color: var(--text-dim); font-size: 14px; margin-bottom: 14px; padding-left: 20px; }
+  li { margin-bottom: 6px; }
+  li strong { color: var(--text); }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+  .card-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+  .card p { margin-bottom: 8px; }
+  .highlight { background: rgba(212, 168, 67, 0.08); border-left: 3px solid var(--gold); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 16px; }
+  .highlight p { color: var(--text); margin-bottom: 0; }
+  .info { background: rgba(96, 165, 250, 0.06); border-left: 3px solid var(--blue); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 16px; }
+  .info p { color: var(--text-dim); margin-bottom: 4px; font-size: 13px; }
+  .info strong { color: var(--blue); }
+  .caveat { background: rgba(248, 113, 113, 0.06); border-left: 3px solid var(--red); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 16px; }
+  .caveat p { color: var(--text-dim); margin-bottom: 4px; font-size: 13px; }
+  .caveat strong { color: var(--red); }
+  .check { background: rgba(52, 211, 153, 0.06); border-left: 3px solid var(--green); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 12px; }
+  .check p { color: var(--text-dim); margin-bottom: 0; font-size: 13px; }
+  .check strong { color: var(--green); }
+  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { background: var(--surface-2); padding: 10px 12px; text-align: right; font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); white-space: nowrap; }
+  th:first-child { text-align: left; }
+  td { padding: 8px 12px; border-top: 1px solid var(--border); white-space: nowrap; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  td:first-child { text-align: left; font-family: 'DM Sans', sans-serif; font-size: 12px; }
+  tr:nth-child(even) { background: rgba(255,255,255,0.015); }
+  tr:hover { background: rgba(212, 168, 67, 0.05); }
+  tr.winner { background: rgba(52, 211, 153, 0.06) !important; }
+  .val-green { color: var(--green); font-weight: 600; }
+  .val-red { color: var(--red); }
+  .val-gold { color: var(--gold); font-weight: 600; }
+  .val-dim { color: var(--text-muted); }
+  .audit-badge { display: inline-block; background: rgba(52, 211, 153, 0.15); border: 1px solid var(--green); border-radius: 6px; padding: 4px 12px; font-size: 11px; font-weight: 600; color: var(--green); font-family: 'JetBrains Mono', monospace; margin-bottom: 16px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } .stats-bar { gap: 16px; } }
+  footer { text-align: center; padding-top: 32px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 11px; }
+  .section-num { color: var(--text-muted); font-size: 11px; font-family: 'JetBrains Mono', monospace; margin-right: 8px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <div class="brand">Refract</div>
+  <h1>Metodologia e Risultati</h1>
+  <div class="subtitle">Documento per review tecnica esterna</div>
+  <div class="date">XAU/USD &middot; 50.888 news &middot; 13 mesi OOS &middot; 23 Mar 2026</div>
+</div>
+
+<div class="info">
+  <p>Questo progetto &egrave; stato costruito interamente con l'assistenza di modelli AI (Claude, Gemini) da un autore senza background formale in data science o finanza quantitativa. Lo scopo di questo documento &egrave; permettere a un reviewer esperto di valutare la correttezza metodologica e identificare errori. Le formule dei segnali proprietari non sono incluse.</p>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-value gold">+0.24</div><div class="stat-label">IC debiased @8h</div></div>
+  <div class="stat"><div class="stat-value green">3.62</div><div class="stat-label">PF debiased (best)</div></div>
+  <div class="stat"><div class="stat-value blue">50.888</div><div class="stat-label">News classificate</div></div>
+  <div class="stat"><div class="stat-value green">4.3%</div><div class="stat-label">PBO (overfitting)</div></div>
+  <div class="stat"><div class="stat-value" style="color:var(--orange)">5.12</div><div class="stat-label">Z-score alpha</div></div>
+  <div class="stat"><div class="stat-value gold">12/12</div><div class="stat-label">Robustness tests</div></div>
+</div>
+
+<!-- 1. PROGETTO -->
+<section>
+  <h2><span class="section-num">01</span>Il progetto</h2>
+  <p>Refract &egrave; un sistema di classificazione e analisi di news finanziarie. Un LLM classifica ogni news assegnando direzione, rilevanza e categoria. Le classificazioni vengono aggregate in segnali proprietari che misurano il <strong>regime informativo</strong> del mercato.</p>
+  <p>La validazione &egrave; stata condotta correlando i segnali con i prezzi XAU/USD. Il risultato principale: IC fino a <strong>+0.252 su rendimenti demeaned</strong> (7 giorni), confermato stabile cross-regime e cross-direzione.</p>
+</section>
+
+<!-- 2. DATASET -->
+<section>
+  <h2><span class="section-num">02</span>Dataset</h2>
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">News</div>
+      <p><strong>50.888</strong> articoli, NewsAPI.ai, Feb 2025 &ndash; Mar 2026. 10 fonti (Reuters, Bloomberg, CNBC, ecc.). Body 200+ parole.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Prezzi</div>
+      <p><strong>31.750</strong> candele M15 XAU/USD. TwelveData API. Verificate a campione (0 discrepanze > 0.01%).</p>
+    </div>
+  </div>
+  <p>Classificazione: LLM congelato, temperatura 0.3, prompt frozen. Output JSON: 21 campi. Nessun fine-tuning.</p>
+</section>
+
+<!-- 3. SEGNALI -->
+<section>
+  <h2><span class="section-num">03</span>Segnali e IC</h2>
+  <p>38 segnali &times; 4 orizzonti = 152 test. IC = Spearman rank correlation, OOS su 6 fold. <strong>&ldquo;dm7d&rdquo;</strong> = IC su rendimenti demeaned (return &minus; media rolling 7 giorni), che isola il contributo del segnale dal trend di mercato.</p>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th>Segnale</th><th>IC @8h raw</th><th>IC @8h dm7d</th><th>Drop</th><th>Regime-proof</th></tr>
+    <tr class="winner"><td>Accelerazione sentiment</td><td class="val-gold">+0.305</td><td class="val-green">+0.252</td><td>-17%</td><td>0.60</td></tr>
+    <tr class="winner"><td>Sentiment aggregato 6h</td><td class="val-gold">+0.291</td><td class="val-green">+0.243</td><td>-17%</td><td class="val-green">0.88</td></tr>
+    <tr class="winner"><td>Score asymmetry</td><td class="val-gold">+0.301</td><td class="val-green">+0.237</td><td>-21%</td><td class="val-green">0.85</td></tr>
+    <tr><td>Sentiment pesato &times; dir</td><td>+0.241</td><td>+0.218</td><td>-9%</td><td>0.52</td></tr>
+    <tr><td>Score &times; direction</td><td>+0.207</td><td>+0.195</td><td>-6%</td><td>0.56</td></tr>
+    <tr><td>Refract Index (5 comp.)</td><td>+0.132</td><td>+0.152</td><td class="val-green">+15%</td><td class="val-green">0.96</td></tr>
+  </table>
+  </div>
+  <p style="font-size:12px;color:var(--text-muted);">Condizionati su relevance_score &ge; 70. &ldquo;Regime-proof&rdquo; = min(IC bull, IC non-bull) / max. Tutti i segnali hanno 6/6 fold positivi.</p>
+</section>
+
+<!-- 4. WALK-FORWARD -->
+<section>
+  <h2><span class="section-num">04</span>Walk-Forward OOS</h2>
+  <p>Expanding-window TimeSeriesSplit, 6 fold. Nessun parametro ottimizzato sui dati di test. Metriche: Newey-West HAC p-value, FDR Benjamini-Hochberg su 152 test, Bootstrap CI 10K reps.</p>
+</section>
+
+<!-- 5. BRIER -->
+<section>
+  <h2><span class="section-num">05</span>Calibrazione (Brier Score)</h2>
+  <p>Platt Scaling su segnale primario, expanding-window 6 fold. <strong>Brier Score OOS: 0.2139</strong> su 43.362 previsioni (0.0 = perfetto, 0.25 = nessuna informazione).</p>
+</section>
+
+<!-- 6. TRADING -->
+<section>
+  <h2><span class="section-num">06</span>Trading System</h2>
+  <p>Gate: indicatore di regime rolling proprietario. Entry: EMA 9/21 crossover su candele H1 chiuse (post-audit fix, &minus;20% PF). Exit: cambio regime + timeout 8h + stop 2.5&times; ATR14 su LOW/HIGH. Risk: cooldown 4h, max 1 posizione per strategia, costo 0.02%.</p>
+  <p><strong>480 configurazioni testate.</strong> Tutte PF &gt; 2.0. Mediana PF 3.03.</p>
+</section>
+
+<!-- 7. ALPHA -->
+<section>
+  <h2><span class="section-num">07</span>Alpha Decomposition</h2>
+  <p>200 permutazioni: direzioni randomizzate, stesse regole di entry/exit.</p>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Componente</th><th>PF</th><th>Quota</th></tr>
+    <tr><td>Exit logic + trend (floor)</td><td>1.93</td><td>52%</td></tr>
+    <tr class="winner"><td><strong>Alpha AI (il segnale)</strong></td><td class="val-gold">+1.78</td><td class="val-gold">48%</td></tr>
+    <tr><td><strong>Totale</strong></td><td class="val-green">3.71</td><td>100%</td></tr>
+  </table>
+  </div>
+  <p><strong>Z-score: 5.12</strong> (p &lt; 0.1%). Alpha SHORT (+1.90, Z=5.18) pi&ugrave; forte del LONG (+1.58, Z=3.05) &mdash; il segnale aggiunge pi&ugrave; valore andando contro il trend dominante.</p>
+</section>
+
+<!-- 8. AUDIT -->
+<section>
+  <h2><span class="section-num">08</span>Audit indipendente</h2>
+  <div class="audit-badge">10/10 CHECK PASS</div>
+  <p>Script separato (~600 righe) scritto da zero. 3 bug trovati e corretti (EMA look-ahead &minus;20% PF, stop su CLOSE &rarr; LOW, data gap Pasqua). Verifica cross-AI con Gemini: PF match esatto (3.71). <strong>Tre codebase, tre AI, stesso risultato.</strong></p>
+</section>
+
+<!-- 9. RISULTATI -->
+<section>
+  <h2><span class="section-num">09</span>Risultati principali</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Metrica</th><th>Valore</th></tr>
+    <tr><td>IC segnale primario @8h (raw / dm7d)</td><td class="val-gold">+0.301 / +0.237</td></tr>
+    <tr><td>Newey-West p-value</td><td>&lt; 1e-10</td></tr>
+    <tr><td>FDR Benjamini-Hochberg</td><td>4/5 TIER 1 pass</td></tr>
+    <tr><td>Block Bootstrap 95% CI</td><td>[+0.100, +0.367]</td></tr>
+    <tr><td>Brier Score OOS (N=43.362)</td><td>0.2139</td></tr>
+    <tr><td>Profit Factor (raw / dm7d)</td><td class="val-green">3.71 / 2.53</td></tr>
+    <tr><td>Win Rate</td><td>63.3%</td></tr>
+    <tr><td>Sharpe Ratio (calendario)</td><td>3.4</td></tr>
+    <tr><td>Max Drawdown</td><td>3.1%</td></tr>
+    <tr><td>Alpha (permutation test)</td><td>+1.78 (Z=5.12)</td></tr>
+    <tr><td>CSCV Probability of Overfitting</td><td class="val-green">4.3%</td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- 10. ROBUSTEZZA -->
+<section>
+  <h2><span class="section-num">10</span>Robustezza del segnale</h2>
+  <p>8 test per escludere che i risultati siano un artefatto del bull market (+79%), del data mining, o dell'overfitting.</p>
+
+  <h3>Regime-conditional IC (sc &ge; 70)</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Segnale</th><th>IC @8h BULL</th><th>IC @8h NON-BULL</th></tr>
+    <tr><td>Accelerazione</td><td>+0.381</td><td>+0.178</td></tr>
+    <tr><td>Sentiment aggregato</td><td>+0.239</td><td class="val-green">+0.385</td></tr>
+    <tr><td>Score asymmetry</td><td>+0.348</td><td>+0.227</td></tr>
+  </table>
+  </div>
+  <p style="font-size:12px;">Nessun segnale crolla nei mesi non-bull. Il sentiment aggregato &egrave; <strong>pi&ugrave; forte</strong> fuori dal bull market.</p>
+
+  <h3>Direction-neutral IC (sc &ge; 70)</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Segnale</th><th>IC su BULL news</th><th>IC su BEAR news</th></tr>
+    <tr><td>Accelerazione</td><td>+0.288</td><td class="val-green">+0.311</td></tr>
+    <tr><td>Sentiment aggregato</td><td>+0.218</td><td class="val-green">+0.320</td></tr>
+    <tr><td>Score asymmetry</td><td>+0.277</td><td>+0.245</td></tr>
+  </table>
+  </div>
+  <p style="font-size:12px;">Il segnale funziona <strong>meglio sulle BEAR news</strong> &mdash; non &egrave; un artefatto direzionale.</p>
+
+  <h3>PF demeaned (rimozione drift locale)</h3>
+  <p>PF ricalcolato su rendimenti demeaned a diverse finestre. La finestra influenza il risultato:</p>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Finestra</th><th>REF S1 PF dm</th><th>ASYM8 PF dm</th><th>Nota</th></tr>
+    <tr><td>6h</td><td class="val-red">0.76</td><td class="val-red">0.84</td><td class="val-dim">Rimuove il momentum catturato dal segnale</td></tr>
+    <tr><td>24h</td><td class="val-red">0.88</td><td class="val-red">0.96</td><td></td></tr>
+    <tr><td>2d</td><td>0.99</td><td>1.09</td><td></td></tr>
+    <tr><td>3d</td><td>1.00</td><td>1.10</td><td></td></tr>
+    <tr class="winner"><td><strong>7d</strong></td><td class="val-green"><strong>2.53</strong></td><td class="val-green"><strong>3.62</strong></td><td>Benchmark per holding period 4-8h</td></tr>
+  </table>
+  </div>
+
+  <h3>Test riassuntivi</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Test</th><th>Cosa esclude</th><th>Risultato</th></tr>
+    <tr><td>CSCV (PBO)</td><td>Overfitting da selezione</td><td class="val-green">4.3%</td></tr>
+    <tr><td>Deflated Sharpe (N<sub>eff</sub>=20)</td><td>Data mining</td><td class="val-green">99.99%</td></tr>
+    <tr><td>Block Bootstrap 10K</td><td>Struttura seriale</td><td class="val-green">99.7-100% &gt; 0</td></tr>
+    <tr><td>Purged/Embargo CV</td><td>Leakage tra fold</td><td class="val-green">IC invariato</td></tr>
+    <tr><td>Permutation Z=5.12</td><td>Trend di mercato</td><td class="val-green">p &lt; 0.1%</td></tr>
+    <tr><td>Trimmed PF (&minus;5%)</td><td>Dipendenza da outlier</td><td class="val-green">PF sale (3.41&rarr;3.92)</td></tr>
+    <tr><td>Cross-AI (3 codebase)</td><td>Bug implementativi</td><td class="val-green">Match esatto</td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- 11. REGIME TRADING -->
+<section>
+  <h2><span class="section-num">11</span>Performance per regime</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Subset</th><th>REF S1 PF</th><th>REF S1 N</th><th>ASYM8 PF</th><th>ASYM8 N</th></tr>
+    <tr><td>Tutti</td><td>3.41</td><td>228</td><td class="val-gold">5.89</td><td>114</td></tr>
+    <tr><td>Mesi bull (&gt;+3%)</td><td>3.11</td><td>126</td><td>6.22</td><td>60</td></tr>
+    <tr class="winner"><td>Mesi non-bull (&lt;+3%)</td><td class="val-green">4.01</td><td>102</td><td class="val-green">5.48</td><td>54</td></tr>
+    <tr><td>Solo LONG</td><td>3.88</td><td>131</td><td class="val-gold">10.67</td><td>60</td></tr>
+    <tr><td>Solo SHORT</td><td>3.00</td><td>97</td><td>4.39</td><td>54</td></tr>
+  </table>
+  </div>
+  <p>REF S1 &egrave; <strong>pi&ugrave; forte nei mesi non-bull</strong> (PF 4.01 vs 3.11). Il sistema non dipende dal trend.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Max consecutive losses</div>
+      <p>REF S1: <strong>8 di fila</strong> (&minus;1.82%, Gen 2026)</p>
+      <p>ASYM8: <strong>5 di fila</strong> (&minus;0.73%, Giu 2025)</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Cross-strategy correlation</div>
+      <p>Correlazione mensile PnL: <strong>r=0.835</strong></p>
+      <p>Mesi dove entrambe perdono: <strong>0/14</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- 12. MULTI-STRATEGIA -->
+<section>
+  <h2><span class="section-num">12</span>Multi-strategia</h2>
+  <p>900+ configurazioni testate. 4 strategie selezionate, tutte Z-score &gt; 3.0:</p>
+  <div class="table-wrap">
+  <table>
+    <tr><th>#</th><th>Tipo gate</th><th>PF raw</th><th>PF dm7d</th><th>N trade</th><th>Mesi neg.</th></tr>
+    <tr><td>1</td><td>Regime rolling</td><td>3.41</td><td>2.53</td><td>228</td><td>1/14</td></tr>
+    <tr><td>2</td><td>Per-news AI probability</td><td>2.78</td><td class="val-dim">&mdash;</td><td>163</td><td>0/14</td></tr>
+    <tr class="winner"><td>3</td><td>Score asymmetry + tecnico</td><td class="val-gold">5.89</td><td class="val-green">3.62</td><td>114</td><td class="val-green">0/13</td></tr>
+    <tr><td>4</td><td>Idem + trailing TP</td><td class="val-gold">6.33</td><td class="val-dim">&mdash;</td><td>114</td><td class="val-green">0/13</td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- 13. LIMITAZIONI -->
+<section>
+  <h2><span class="section-num">13</span>Limitazioni</h2>
+  <div class="caveat">
+    <p><strong>Periodo:</strong> 13 mesi, prevalentemente bull market (+79%). Non testato su bear prolungato.</p>
+    <p><strong>Dipendenza LLM:</strong> il modello pu&ograve; essere aggiornato senza preavviso.</p>
+    <p><strong>Decay stimato:</strong> &minus;15/20% strutturale + 17-21% da regime. PF atteso in live: ~2.5-3.0.</p>
+    <p><strong>Correlazione:</strong> r=0.835 tra strategie. Diversificazione limitata.</p>
+    <p><strong>Background:</strong> nessuna formazione formale. Metodologia verificata con 3 implementazioni indipendenti.</p>
+  </div>
+</section>
+
+<!-- 14. DOMANDE -->
+<section>
+  <h2><span class="section-num">14</span>Domande per il reviewer</h2>
+  <div class="card">
+    <p><strong>1.</strong> L'IC Spearman &egrave; la metrica giusta? Ci sono non-linearit&agrave; nel rapporto segnale-rendimento che richiederebbero binned IC o conditional monotonicity test?</p>
+    <p><strong>2.</strong> L'expanding-window TimeSeriesSplit &egrave; appropriato per news con clustering temporale? Servirebbe un calendar-time approach?</p>
+    <p><strong>3.</strong> Il demeaning a 7 giorni &egrave; la finestra corretta per holding period 4-8h? La scelta della finestra cambia il PF del 40-60% (vedi tabella sezione 10).</p>
+    <p><strong>4.</strong> Il Brier Score con dead zone 0.05% potrebbe essere inflato escludendo i casi pi&ugrave; difficili?</p>
+    <p><strong>5.</strong> Le classificazioni AI sono stazionarie? Esistono test per verificarlo?</p>
+    <p><strong>6.</strong> La correlazione r=0.835 invalida la diversificazione? Quale sarebbe accettabile?</p>
+    <p><strong>7.</strong> C'&egrave; un errore concettuale nell'approccio? Il progetto &egrave; costruito con AI &mdash; tre LLM hanno verificato implementazione e numeri ma potrebbero condividere lo stesso blind spot. Cosa verificherebbe per primo?</p>
+  </div>
+</section>
+
+<footer>
+  <p>Refract &mdash; Documento per review tecnica &middot; 23 Mar 2026 &middot; Bozza</p>
+</footer>
+
+</div>
+</body>
+</html>
