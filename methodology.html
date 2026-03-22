@@ -87,7 +87,7 @@
 
 <div class="stats-bar">
   <div class="stat"><div class="stat-value gold">+0.24</div><div class="stat-label">IC debiased @8h</div></div>
-  <div class="stat"><div class="stat-value green">3.62</div><div class="stat-label">PF debiased (best)</div></div>
+  <div class="stat"><div class="stat-value green">5.48</div><div class="stat-label">PF non-bull (ASYM8)</div></div>
   <div class="stat"><div class="stat-value blue">50.888</div><div class="stat-label">News classificate</div></div>
   <div class="stat"><div class="stat-value green">4.3%</div><div class="stat-label">PBO (overfitting)</div></div>
   <div class="stat"><div class="stat-value" style="color:var(--orange)">5.12</div><div class="stat-label">Z-score alpha</div></div>
@@ -240,7 +240,7 @@
   <div class="table-wrap">
   <table>
     <tr><th>Metrica</th><th>Valore</th></tr>
-    <tr><td>IC segnale primario @8h (OOS, raw / dm7d)</td><td class="val-gold">+0.301 / +0.237</td></tr>
+    <tr><td>IC score asymmetry @8h (OOS, raw / dm7d)</td><td class="val-gold">+0.301 / +0.237</td></tr>
     <tr><td>Newey-West p-value</td><td>&lt; 1e-10</td></tr>
     <tr><td>FDR Benjamini-Hochberg</td><td>4/5 TIER 1 pass al livello 0.05</td></tr>
     <tr><td>Bootstrap 95% CI (ensemble @8h)</td><td>[+0.200, +0.292]</td></tr>
@@ -296,10 +296,10 @@
     <tr><td>24h</td><td class="val-red">0.88</td><td class="val-red">0.96</td><td></td></tr>
     <tr><td>2d</td><td>0.99</td><td>1.09</td><td></td></tr>
     <tr><td>3d</td><td>1.00</td><td>1.10</td><td></td></tr>
-    <tr class="winner"><td><strong>7d</strong></td><td class="val-green"><strong>2.53</strong></td><td class="val-green"><strong>3.62</strong></td><td>Benchmark per holding period 4-8h</td></tr>
+    <tr class="winner"><td><strong>7d</strong></td><td class="val-green"><strong>2.53</strong></td><td class="val-green"><strong>3.62</strong></td><td class="val-dim">La scelta della finestra &egrave; un parametro metodologico aperto &mdash; vedi domanda 3</td></tr>
   </table>
   </div>
-  <p>Con finestre sotto 48h, il demeaning rimuove il momentum intraday che il segnale sta effettivamente identificando. La finestra 7d misura se il segnale batte il trend settimanale &mdash; e lo batte con PF 2.5-3.6.</p>
+  <p>La scelta della finestra di demeaning influenza significativamente il risultato. Presentiamo tutti i livelli per trasparenza. Vedi domanda 3.</p>
 
   <h3>10d. CSCV &mdash; Probability of Backtest Overfitting</h3>
   <p>Combinatorial Symmetric Cross-Validation (Bailey et al. 2014). 12 configurazioni di strategia, 8 blocchi temporali, 70 combinazioni train/test.</p>
@@ -488,7 +488,7 @@
     <p><strong>2. Live validation limitata:</strong> 18 trade calcolati retroattivamente su dati live (non eseguiti in tempo reale). Insufficiente per validazione statistica.</p>
     <p><strong>3. Dipendenza da LLM:</strong> la classificazione dipende da un modello che pu&ograve; essere aggiornato dal fornitore senza preavviso.</p>
     <p><strong>4. Pesi segnale combinato:</strong> scelti dopo aver visto i primi dati. Non ottimizzati numericamente, ma la scelta &egrave; informata dai dati.</p>
-    <p><strong>5. Decay stimato WF&rarr;live:</strong> &minus;15/20% strutturale + 17-21% da regime (IC demeaned). PF atteso in live: ~2.5-3.0 per la strategia migliore.</p>
+    <p><strong>5. Decay stimato WF&rarr;live:</strong> &minus;15/20% strutturale + 17-21% da regime (IC demeaned). PF atteso in live: 2.5-4.0 a seconda del regime e del modello di debiasing.</p>
     <p><strong>6. Volume news live vs WF:</strong> il live potrebbe avere pi&ugrave; news del WF, con potenziale impatto sull'indicatore di regime. Alcune strategie sono protette da questo effetto, altre potrebbero risentirne.</p>
     <p><strong>7. Correlazione cross-strategy:</strong> r=0.835, diversificazione limitata.</p>
     <p><strong>8. Background dell'autore:</strong> nessuna formazione formale in data science o finanza quantitativa. Metodologia verificata con 3 implementazioni indipendenti, ma potrebbero esserci errori concettuali non identificati. &Egrave; il motivo principale per cui cerchiamo una review esterna.</p>
