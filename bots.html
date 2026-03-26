@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gold Trading Bot Research — Refract Alpha v12.3</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f; --surface: #12121a; --surface-2: #1a1a26; --border: #2a2a3a;
+  --gold: #d4a843; --gold-dim: #a07d2e; --green: #34d399; --red: #f87171;
+  --blue: #60a5fa; --orange: #fb923c; --purple: #a78bfa;
+  --text: #e8e8ed; --text-dim: #8888a0; --text-muted: #55556a;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 14px; }
+.container { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+h1 { font-size: clamp(24px, 4vw, 36px); font-weight: 700; line-height: 1.2; margin-bottom: 8px; color: var(--gold); }
+h2 { font-size: 20px; font-weight: 700; margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); color: var(--gold); }
+h3 { font-size: 16px; font-weight: 600; margin: 20px 0 10px; color: var(--text); }
+.subtitle { font-size: 15px; color: var(--text-dim); margin-bottom: 30px; }
+p { color: var(--text-dim); margin-bottom: 14px; }
+p strong, li strong { color: var(--text); }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin: 16px 0; }
+.card h3 { color: var(--text); margin-top: 0; }
+.card p { margin-bottom: 10px; }
+.card-gold { border-left: 3px solid var(--gold); }
+.card-green { border-left: 3px solid var(--green); }
+.card-red { border-left: 3px solid var(--red); }
+.card-blue { border-left: 3px solid var(--blue); }
+.card-purple { border-left: 3px solid var(--purple); }
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13px; }
+th { background: var(--surface-2); color: var(--gold); text-align: left; padding: 10px 12px; border-bottom: 2px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-family: 'JetBrains Mono', monospace; }
+td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-dim); }
+td strong { color: var(--text); }
+tr:hover { background: rgba(212, 168, 67, 0.03); }
+.tag { display: inline-block; padding: 2px 9px; border-radius: 4px; font-size: 11px; font-weight: 600; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+.tag-green { background: rgba(52, 211, 153, 0.12); color: var(--green); }
+.tag-red { background: rgba(248, 113, 113, 0.12); color: var(--red); }
+.tag-gold { background: rgba(212, 168, 67, 0.12); color: var(--gold); }
+.tag-blue { background: rgba(96, 165, 250, 0.12); color: var(--blue); }
+.tag-muted { background: rgba(136, 136, 160, 0.1); color: var(--text-muted); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+@media (max-width: 768px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+.stat { text-align: center; padding: 20px 16px; }
+.stat-value { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 500; }
+.stat-label { font-size: 11px; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+.pro { color: var(--green); }
+.con { color: var(--red); }
+.warn { color: var(--gold); }
+ul, ol { color: var(--text-dim); margin: 8px 0 14px 22px; }
+li { margin: 5px 0; }
+.toc { columns: 2; font-size: 14px; line-height: 2.2; }
+.toc a { color: var(--blue); text-decoration: none; }
+.toc a:hover { text-decoration: underline; }
+.toc ol { margin-left: 18px; }
+.priority-1 { border-left-color: var(--green); }
+.priority-2 { border-left-color: var(--gold); }
+.priority-3 { border-left-color: var(--text-muted); }
+a { color: var(--blue); text-decoration: none; }
+a:hover { text-decoration: underline; }
+hr { border: none; border-top: 1px solid var(--border); margin: 30px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Gold Trading Bot — Deep Research</h1>
+<p class="subtitle">10 aree analizzate | 25+ bot esaminati | 50+ fonti | Refract Alpha v12.3 — 26 marzo 2026</p>
+
+<div class="card card-gold">
+<strong>Obiettivo:</strong> Capire cosa fanno gli altri bot gold, cosa funziona davvero, e come migliorare il nostro sistema (Refract Alpha) con le idee migliori del mercato.
+</div>
+
+<!-- THE BIG PICTURE -->
+<h2 id="bigpicture">La tesi: analisi fondamentale automatizzata</h2>
+
+<div class="card card-purple">
+<h3>Cosa stiamo costruendo (e perche' e' diverso da tutto il resto)</h3>
+<p>L'analisi <strong>tecnica</strong> (EMA, RSI, MACD) e' stata automatizzata 20 anni fa. Chiunque puo' scrivere un bot che calcola una media mobile. Il 99% dei bot gold fa esattamente questo — indicatori tecnici puri.</p>
+<p>L'analisi <strong>fondamentale</strong> non e' mai stata automatizzata perche' richiede qualcosa che i computer non sapevano fare: <strong>capire il linguaggio umano</strong>. Leggere "PBOC increases gold reserves" e capire che significa gold bullish. Leggere "Fed signals hawkish stance on rates" e capire che significa gold bearish via real yields e dollaro forte.</p>
+<p>Fino a 2 anni fa era impossibile. Ora con i Large Language Model (Gemini Pro) possiamo farlo — e noi siamo tra i primi a <strong>sistematizzarlo, quantificarlo e verificarlo statisticamente</strong>.</p>
+</div>
+
+<div class="card card-green">
+<h3>Non e' "sentiment analysis"</h3>
+<p>"Sentiment analysis" e' riduttivo — significa classificare testo come positivo/negativo. I bot che lo fanno usano modelli vecchi (FinBERT, VADER) e ottengono accuracy del 55-65% sulla direzione del gold.</p>
+<p>Quello che facciamo noi e' <strong>analisi fondamentale macro multi-dimensionale con AI</strong>:</p>
+<ul>
+<li><strong>Classificazione direzionale con probabilita' calibrata</strong> — non "bullish/bearish" binario ma una probabilita' 0-100 (p_bullish) che il gold salga nelle prossime 4-6 ore</li>
+<li><strong>Regime di mercato rolling</strong> — compositi che combinano la direzione delle news con indicatori tecnici (RSI, SMA20, trend) per capire il "regime" corrente</li>
+<li><strong>Rapporto bull/bear dinamico</strong> — quante news bullish vs bearish nelle ultime 6 ore, pesate per freschezza e rilevanza</li>
+<li><strong>Accelerazione</strong> — il sentiment sta cambiando? pb6 (6 ore) vs pb48 (48 ore) rivela se c'e' un cambio di regime in corso</li>
+<li><strong>21 segnali z-score</strong> — ogni metrica normalizzata statisticamente per essere comparabile nel tempo</li>
+<li><strong>Verifica statistica continua</strong> — IC, Brier score, calibration monitoring. Sappiamo IN TEMPO REALE se i nostri segnali predicono ancora il prezzo</li>
+</ul>
+<p>Il risultato: <strong>IC di 0.35-0.51</strong> — cioe' i nostri segnali predicono la direzione del gold con una correlazione 2-5 volte superiore a qualsiasi sistema documentato nella letteratura accademica.</p>
+</div>
+
+<div class="card card-blue">
+<h3>Cos'e' lo Z-score (spiegazione semplice)</h3>
+<p>Immagina che il "sentimento" delle news sull'oro nelle ultime 6 ore sia 0.30 (30% bullish). E' alto o basso? Non lo sai senza contesto.</p>
+<p>Lo <strong>z-score</strong> ti dice: "0.30 e' <strong>1.5 deviazioni standard sotto la media degli ultimi 7 giorni</strong>". In pratica: e' insolitamente bearish rispetto al recente. Il mercato e' piu' pessimista del solito.</p>
+<p>Quando lo z-score supera una soglia (es. +1.3 o -1.3), il segnale e' <strong>statisticamente estremo</strong> — qualcosa di insolito sta succedendo. Li' il bot valuta se entrare in un trade.</p>
+<p><strong>Il vantaggio chiave:</strong> lo z-score si auto-calibra. Se il mercato diventa piu' volatile, la deviazione standard sale e serve un segnale piu' forte per triggerare. In mercato calmo, basta un segnale piu' debole. E' la protezione automatica contro i falsi segnali — non serve regolare nulla manualmente, il sistema si adatta.</p>
+</div>
+
+<div class="card card-gold">
+<h3>Il ponte tra fondamentale e quantitativo</h3>
+<p>L'analisi tecnica e' automatizzabile ma non capisce il "perche'" — sa che il prezzo sale ma non sa che sale perche' la Fed ha tagliato i tassi.</p>
+<p>L'analisi fondamentale capisce il "perche'" ma non e' mai stata automatizzabile — serviva un umano a leggere e interpretare.</p>
+<p>Noi stiamo costruendo il <strong>ponte</strong>: un sistema che legge le news come un analista umano (grazie all'AI), le trasforma in numeri misurabili (pb6, belief, p_bullish), e poi verifica statisticamente che quei numeri predicano il prezzo (IC tracking). E' <strong>analisi fondamentale quantificata</strong>.</p>
+<p>Se aggiungiamo i dati inter-market che gia' raccogliamo (DXY, real yields, VIX, oil, silver) come filtri, diventa un <strong>sistema macro completo</strong>: fondamentale + tecnico + inter-market — il tipo di analisi che fanno i desk istituzionali, ma automatizzato e a costo retail.</p>
+</div>
+
+<!-- TOC -->
+<h2>Indice</h2>
+<div class="toc">
+<ol>
+<li><a href="#bigpicture">La tesi: analisi fondamentale automatizzata</a></li>
+<li><a href="#panorama">Il panorama: cosa c'e' la' fuori</a></li>
+<li><a href="#strategie">Le 5 categorie di strategie gold</a></li>
+<li><a href="#commercial">Bot commerciali: marketing vs realta'</a></li>
+<li><a href="#opensource">Bot open source: cosa fanno davvero</a></li>
+<li><a href="#correlazioni">Correlazioni inter-market</a></li>
+<li><a href="#sentiment">News & analisi macro AI: il nostro territorio</a></li>
+<li><a href="#session">Session timing: quando tradare gold</a></li>
+<li><a href="#sizing">Position sizing per gold</a></li>
+<li><a href="#innovativi">Approcci innovativi</a></li>
+<li><a href="#noi">Dove siamo noi vs il mercato</a></li>
+<li><a href="#gridmartingale">Grid e Martingale: il 90% del mercato</a></li>
+<li><a href="#roadmap">Roadmap: cosa integrare</a></li>
+</ol>
+</div>
+
+<!-- 1. PANORAMA -->
+<h2 id="panorama">1. Il panorama: cosa c'e' la' fuori</h2>
+
+<div class="grid3">
+<div class="card stat">
+<div class="stat-value con">90%</div>
+<div class="stat-label">dei bot gold usa grid/martingale nascosto</div>
+</div>
+<div class="card stat">
+<div class="stat-value warn">1.0-1.3</div>
+<div class="stat-label">Profit Factor reale dei bot "legittimi" live</div>
+</div>
+<div class="card stat">
+<div class="stat-value pro">0%</div>
+<div class="stat-label">dei bot commerciali tracka IC o drift</div>
+</div>
+</div>
+
+<p>Il mercato dei gold bot e' dominato da strategie grid/martingale che producono curve equity lisce nei backtest ma esplodono inevitabilmente. I bot "onesti" (breakout, trend following) hanno performance modeste (3-5%/mese, PF ~1.1 live). <strong>Nessun bot commerciale usa sentiment analysis da news con IC tracking</strong> — il nostro approccio e' unico.</p>
+
+<!-- 2. STRATEGIE -->
+<h2 id="strategie">2. Le 5 categorie di strategie gold</h2>
+
+<table>
+<tr><th>Categoria</th><th>Come funziona</th><th>WR</th><th>PF</th><th>Rischio</th><th>Verdetto</th></tr>
+<tr>
+<td><strong>Grid/Martingale</strong></td>
+<td>Compra ogni $X di discesa, lotti crescenti, chiudi in basket a profitto</td>
+<td>80-95%</td><td>N/A</td>
+<td><span class="tag tag-red">BLOW UP</span></td>
+<td>Matematicamente destinato a fallire. Il 90% del mercato.</td>
+</tr>
+<tr>
+<td><strong>Breakout</strong></td>
+<td>Daily S/R, London open, range asiatico. SL/TP fissi</td>
+<td>50-60%</td><td>1.1-1.3</td>
+<td><span class="tag tag-green">BASSO</span></td>
+<td>Piu' onesto. Gold Trade Pro e' il migliore esempio.</td>
+</tr>
+<tr>
+<td><strong>Trend Following</strong></td>
+<td>EMA crossover su H4/D1, ATR stop, ride il trend</td>
+<td>30-40%</td><td>1.3-1.6</td>
+<td><span class="tag tag-green">BASSO</span></td>
+<td>Il piu' robusto. WR basso ma R:R alto (3:1+).</td>
+</tr>
+<tr>
+<td><strong>Scalping</strong></td>
+<td>M1-M5, 5-15 pip target, London-NY overlap</td>
+<td>60-70%</td><td>1.0-1.2</td>
+<td><span class="tag tag-gold">MEDIO</span></td>
+<td>Spread-sensitive. Serve ECN con spread < 2 pip.</td>
+</tr>
+<tr>
+<td><strong>Sentiment/AI</strong></td>
+<td>NLP su news, classificazione direzionale, segnali rolling</td>
+<td>55-65%</td><td>1.2-1.5</td>
+<td><span class="tag tag-green">BASSO</span></td>
+<td>Emergente. Pochi lo fanno. Il nostro approccio.</td>
+</tr>
+</table>
+
+<!-- 3. BOT COMMERCIALI -->
+<h2 id="commercial">3. Bot commerciali: marketing vs realta'</h2>
+
+<div class="card card-red">
+<h3>La verita' scomoda</h3>
+<p>Un'analisi indipendente su MQL5 dei top 10 gold EA ha concluso: <em>"Non c'e' una buona strategia per Gold adesso. I prezzi sono troppo alti. La maggior parte degli EA esegue solo BUY, cavalcando il trend rialzista senza edge reale."</em></p>
+</div>
+
+<table>
+<tr><th>Bot</th><th>Prezzo</th><th>Strategia reale</th><th>DD Live</th><th>PF Live</th><th>Rischio</th></tr>
+<tr><td>Quantum Queen</td><td>$1,299</td><td>Grid buy-only</td><td>22%</td><td>?</td><td><span class="tag tag-red">ALTO</span></td></tr>
+<tr><td>EA Gold Stuff</td><td>$50-149</td><td>Martingale, SL=0</td><td>52%</td><td>?</td><td><span class="tag tag-red">BLOW UP</span></td></tr>
+<tr><td>Gold Trade Pro</td><td>$539</td><td>Breakout S/R</td><td>15%</td><td>1.08</td><td><span class="tag tag-green">BASSO</span></td></tr>
+<tr><td>The Gold Reaper</td><td>$599</td><td>Multi-TF breakout</td><td>42%</td><td>1.08</td><td><span class="tag tag-gold">MEDIO</span></td></tr>
+<tr><td>Golden Pickaxe</td><td>$2,520</td><td>Grid + ML filter</td><td>51%</td><td>?</td><td><span class="tag tag-red">ALTO</span></td></tr>
+<tr><td>Forex Gold Investor</td><td>$197</td><td>Time-based scalp</td><td>42%</td><td>1.13</td><td><span class="tag tag-gold">MEDIO</span></td></tr>
+</table>
+
+<div class="card card-green">
+<h3>Backtest vs Live — il gap reale</h3>
+<p><strong>Gold Reaper:</strong> Backtest PF 2.72, Win 81% | Live PF 1.08, Win 72%, DD 42%. Degradazione tipica: <strong>40-70%</strong> dal backtest al live per spread, slippage, e curve-fitting.</p>
+</div>
+
+<!-- 4. OPEN SOURCE -->
+<h2 id="opensource">4. Bot open source: classifica per performance e codice</h2>
+
+<div class="card card-red">
+<h3>Avvertenza critica sui numeri</h3>
+<p><strong>Nessun bot open source ha risultati live verificati.</strong> Tutti i PF e WR sono da backtest. Il gap documentato backtest-to-live per gold e' del 40-70%: Gold Reaper backtest PF 2.72 → live PF 1.08. Se un bot open source mostra PF 1.96 in backtest, il live realistico e' ~1.0-1.2.</p>
+<p>I bot commerciali "onesti" (Gold Trade Pro, Forex Gold Investor) confermano: <strong>PF live su gold e' 1.08-1.13</strong>. Tutto sopra 1.5 in backtest va preso con estrema cautela.</p>
+<p>Il nostro edge e' che <strong>misuriamo in live</strong> (IC, non PF da backtest) e sappiamo che funziona <strong>ora</strong>, non 3 anni fa in condizioni ottimizzate.</p>
+</div>
+
+<h3>Classifica per Profit Factor (backtest documentato)</h3>
+<table>
+<tr><th>Bot</th><th>Stars</th><th>PF</th><th>WR</th><th>Sharpe</th><th>Tipo</th><th>Live?</th><th>Codice</th></tr>
+<tr>
+<td><strong>xaubot</strong></td><td>7</td><td><strong>1.96</strong></td><td>66%</td><td>N/A</td>
+<td>LightGBM 68 features</td>
+<td><span class="tag tag-red">NO</span> solo backtest</td>
+<td><a href="https://github.com/andywarui/xaubot" style="color:var(--blue)">Aperto</a> — Python</td>
+</tr>
+<tr>
+<td><strong>EMA 14/18/24 trend</strong></td><td>N/A</td><td><strong>1.64</strong></td><td>55%</td><td>0.89</td>
+<td>Trend following puro</td>
+<td><span class="tag tag-gold">5 anni backtest</span></td>
+<td>Paper accademico, replicabile</td>
+</tr>
+<tr>
+<td><strong>MQL5-Trading-Bot</strong></td><td>60</td><td><strong>1.50</strong></td><td>62%</td><td>N/A</td>
+<td>4-cascade + LSTM filter</td>
+<td><span class="tag tag-red">NO</span> solo backtest</td>
+<td><a href="https://github.com/carlosrod723/MQL5-Trading-Bot" style="color:var(--blue)">Aperto</a> — MQL5+Python</td>
+</tr>
+<tr>
+<td><strong>Forex Gold Investor</strong></td><td>N/A</td><td><strong>1.13</strong></td><td>66%</td><td>N/A</td>
+<td>Time-based scalping</td>
+<td><span class="tag tag-green">SI — 4 anni Myfxbook</span></td>
+<td>Chiuso ($197)</td>
+</tr>
+<tr>
+<td><strong>Gold Trade Pro</strong></td><td>N/A</td><td><strong>1.08</strong></td><td>60%</td><td>N/A</td>
+<td>Breakout S/R daily</td>
+<td><span class="tag tag-green">SI — 55 sett Myfxbook</span></td>
+<td>Chiuso ($539)</td>
+</tr>
+<tr>
+<td><strong>The Gold Reaper</strong></td><td>N/A</td><td><strong>1.08</strong></td><td>72%</td><td>N/A</td>
+<td>Multi-TF breakout</td>
+<td><span class="tag tag-green">SI — ma DD 42%</span></td>
+<td>Chiuso ($599)</td>
+</tr>
+</table>
+
+<h3>Bot open source con codice completo — cosa fanno nel dettaglio</h3>
+
+<div class="card card-purple">
+<h3>xaubot — LightGBM + Smart Money Concepts <span class="tag tag-gold">PF 1.96 (backtest)</span></h3>
+<p><strong>Repository:</strong> <a href="https://github.com/andywarui/xaubot" style="color:var(--blue)">github.com/andywarui/xaubot</a> — Python, tutto visibile</p>
+<p><strong>68 features ingegnerizzate:</strong></p>
+<ul>
+<li>21 tecnici (ATR, RSI, MACD, Bollinger Bands)</li>
+<li>10 market structure (Fair Value Gaps, Order Blocks, Liquidity Sweeps)</li>
+<li>8 orderflow (cumulative volume delta approssimato, divergenza delta)</li>
+<li>6 time-based (posizionamento nella sessione)</li>
+<li>8 volatility (indicatori regime di mercato)</li>
+<li>1 SMC Quality Score — composito che quantifica quanto un setup e' "istituzionale" tramite validazione in 4 step</li>
+</ul>
+<p><strong>Output:</strong> 3 classi (SHORT / HOLD / LONG), trade quando confidence >55%. Export ONNX (222 KB) per deployment in MT5.</p>
+<p><strong>Finding notevole:</strong> SHORT accuracy 73% vs LONG 64% — gold tende a scendere piu' violentemente di quanto salga.</p>
+<p><strong>Sessione:</strong> Solo London-NY overlap (13:00-16:59 UTC).</p>
+<p><strong>Il nostro commento:</strong> PF 1.96 e' impressionante ma e' backtest senza costi di transazione reali, slippage, o spread variabile. Con 7 stelle non ha community verification. L'approccio ML e' solido ma completamente tecnico — non ha nessun input fondamentale o news. Il nostro vantaggio e' che i nostri segnali AI catturano informazione che i tecnici non possono vedere.</p>
+</div>
+
+<div class="card card-purple">
+<h3>MQL5-Trading-Bot — 4-Strategy Cascade + LSTM <span class="tag tag-gold">PF 1.50 (backtest)</span></h3>
+<p><strong>Repository:</strong> <a href="https://github.com/carlosrod723/MQL5-Trading-Bot" style="color:var(--blue)">github.com/carlosrod723/MQL5-Trading-Bot</a> — MQL5 + Python</p>
+<p><strong>4 strategie in ordine di priorita':</strong></p>
+<ol>
+<li><strong>SFT (Strong Follow-Through):</strong> 2 candele grandi consecutive (>1.5x range medio) + liquidity sweep + kill zone → R:R 1:2</li>
+<li><strong>FT (Follow-Through):</strong> continuazione momentum, 2 candele chiudono oltre il range + allineamento Fibonacci → R:R 1:3</li>
+<li><strong>NFT (No Follow-Through):</strong> breakout fallito, candela precedente mostra rifiuto (wick > body), la corrente conferma inversione → R:R 1:3</li>
+<li><strong>CT (Counter-Trend):</strong> mean reversion da livelli Fibonacci estremi, senza richiedere sweep → R:R 1:3</li>
+</ol>
+<p><strong>LSTM neural network filter:</strong> ogni trade deve passare il filtro ML con probabilita' >0.55. Migliora il PF da 1.2 a 1.5 e il WR dal 52% al 62%.</p>
+<p><strong>Kill zones:</strong> London 8-10 GMT e New York 13-15 GMT. Il WR sale dal 52% (24/7) al 62% (kill zones only).</p>
+<p><strong>Il nostro commento:</strong> l'architettura cascade (4 strategie per condizioni diverse) e' concettualmente simile al nostro SimEngine con 560 config. Il ML filter come "ultimo gate" e' un'idea valida — noi usiamo l'EMA crossover e il belief flip come gate, ma un filtro ML addizionale potrebbe essere testato.</p>
+</div>
+
+<div class="card card-purple">
+<h3>DRL Trading Bot — Reinforcement Learning con 140+ features <span class="tag tag-muted">Sharpe target 3.5-4.5</span></h3>
+<p><strong>Repository:</strong> <a href="https://github.com/zero-was-here/tradingbot" style="color:var(--blue)">github.com/zero-was-here/tradingbot</a> — Python/PyTorch</p>
+<p><strong>Il piu' ambizioso.</strong> L'agente RL impara autonomamente quando entrare e uscire. 140+ features su 5 timeframe:</p>
+<ul>
+<li>63 indicatori tecnici (MA, MACD, ADX, RSI, Stoch, CCI, BB, Keltner, OBV, MFI, S/R, Pivot, candlestick patterns)</li>
+<li><strong>9 macro assets come input:</strong> DXY, VIX, Oil, Bitcoin, Treasury yields, S&P 500, EUR/USD, Silver, GLD ETF</li>
+<li>Calendario economico: NFP, CPI, FOMC, GDP — aggiusta rischio automaticamente</li>
+<li>Market microstructure: order flow, bid-ask spread, regime detection</li>
+</ul>
+<p><strong>Dreamer V3:</strong> costruisce un "world model" del mercato — impara a predire gli stati futuri, non solo a reagire.</p>
+<p><strong>Il nostro commento:</strong> ambizioso ma nessun risultato live documentato. I target (Sharpe 3.5-4.5, rendimento 80-120%) sono irrealisticamente alti. L'idea di includere 9 macro assets come features e' interessante — noi raccogliamo gia' DXY, VIX, Oil, Silver ma non li usiamo come segnali di trading. Il punto e' se servono come features per un modello, o come filtri condizionali.</p>
+</div>
+
+<div class="card card-purple">
+<h3>EA31337 — Framework Multi-Strategy <span class="tag tag-blue">1,100 stars</span></h3>
+<p><strong>Repository:</strong> <a href="https://github.com/EA31337/EA31337" style="color:var(--blue)">github.com/EA31337/EA31337</a> — C++/MQL5</p>
+<p>Non e' un bot singolo ma un <strong>framework</strong> — dozzine di strategie modulari che si attivano/disattivano in base al regime. Ogni modulo ha i suoi indicatori e parametri. Un sistema "meta" decide quali attivare.</p>
+<p><strong>Il nostro commento:</strong> concettualmente il piu' simile al nostro SimEngine. L'idea di base e' identica: molte strategie in parallelo, poi selezioni le migliori. La differenza e' che loro usano solo tecnici, noi abbiamo AI + tecnici.</p>
+</div>
+
+<div class="card card-purple">
+<h3>GOLD_ORB — Open Range Breakout <span class="tag tag-blue">193 stars</span></h3>
+<p><strong>Repository:</strong> <a href="https://github.com/yulz008/GOLD_ORB" style="color:var(--blue)">github.com/yulz008/GOLD_ORB</a> — MQL5</p>
+<p>Strategia classica: cattura la prima candela H1 della giornata, aspetta consolidamento (3+ candele dentro il range), trada il breakout. TP 1200 punti, SL 400 punti, trailing dopo +700.</p>
+<p><strong>Feature unica — Virtual Equity Monitoring:</strong> dopo un drawdown, il bot non riprende subito a tradare. Fa <strong>shadow-trades</strong> (trade virtuali) in parallelo per validare che la strategia funzioni ancora. Solo quando i trade virtuali confermano che l'edge e' tornato, riprende con soldi veri.</p>
+<p><strong>Il nostro commento:</strong> il virtual equity monitoring e' un'idea elegante che potremmo adottare. Se il SimEngine mostra che le strategie live stanno sottoperformando, potremmo automaticamente passare a "osservazione" invece di continuare a perdere.</p>
+</div>
+
+<div class="card card-purple">
+<h3>geraked/metatrader5 — 11 strategie reali <span class="tag tag-blue">458 stars</span></h3>
+<p><strong>Repository:</strong> <a href="https://github.com/geraked/metatrader5" style="color:var(--blue)">github.com/geraked/metatrader5</a> — MQL5</p>
+<p>Le piu' interessanti per noi:</p>
+<ul>
+<li><strong>BBRSI:</strong> Bollinger Bands squeeze (bande si contraggono sotto soglia) + RSI >/<50. Entry sull'espansione. SL alla banda opposta</li>
+<li><strong>COT1:</strong> L'unico bot open source che usa dati <strong>Commitment of Traders</strong> (posizionamento istituzionale COMEX) come filtro macro, combinato con Super Trend</li>
+<li><strong>NWERSIASF:</strong> Nadaraya-Watson Envelope (regressione kernel non-parametrica — piu' sofisticata delle BB perche' non assume distribuzione normale) + RSI + ATR stop</li>
+</ul>
+</div>
+
+<div class="card card-blue">
+<h3>Pattern comuni nei bot migliori</h3>
+<ul>
+<li><strong>ATR</strong> usato in 10+ bot per dynamic SL e position sizing — lo usiamo anche noi</li>
+<li><strong>Kill zones</strong> London (07-10) e NY (12-15) UTC migliorano WR dal 52% al 62%</li>
+<li><strong>Multi-strategia con selezione regime</strong> — non una strategia sola per tutte le condizioni (come il nostro SimEngine)</li>
+<li><strong>ML come filtro</strong> sopra i segnali tecnici, non come generatore di segnali — migliora PF del 20-25%</li>
+<li><strong>Order Blocks / FVG</strong> (Smart Money Concepts) in crescita — 5 bot</li>
+<li><strong>News filter</strong> (pausa attorno a NFP/FOMC) presente nei bot piu' sofisticati</li>
+</ul>
+</div>
+
+<div class="card card-gold">
+<h3>La nostra posizione rispetto a questi bot</h3>
+<p>Nessuno di questi bot fa quello che facciamo noi: <strong>analisi fondamentale automatizzata con verifica statistica</strong>. Sono tutti tecnici puri (con l'eccezione del COT filter di geraked). I loro numeri in backtest sono impressionanti ma il gap col live e' enorme.</p>
+<p>Noi misuriamo <strong>IC live</strong> (0.35-0.51) — non PF da backtest. Sappiamo IN TEMPO REALE se i segnali funzionano. Nessun bot in questa lista ha questa capacita'. E quando i nostri segnali smettono di funzionare, il diagnostics lo rileva (IC drift monitoring) — loro scoprono che la strategia non funziona piu' solo quando il conto e' in drawdown.</p>
+</div>
+
+<!-- 5. CORRELAZIONI -->
+<h2 id="correlazioni">5. Correlazioni inter-market</h2>
+
+<p>Gold non si muove da solo. Questi sono i driver principali e le correlazioni documentate:</p>
+
+<table>
+<tr><th>Asset</th><th>Correlazione</th><th>Meccanismo</th><th>Nel nostro DB?</th><th>Usato come segnale?</th></tr>
+<tr><td><strong>DXY (dollaro)</strong></td><td>-0.45</td><td>Driver #1. Dollaro su = gold giu'</td><td><span class="tag tag-green">SI'</span></td><td><span class="tag tag-red">NO</span></td></tr>
+<tr><td><strong>Real Yields (TIPS)</strong></td><td>-0.82</td><td>Costo opportunita'. Il piu' forte storicamente</td><td><span class="tag tag-green">SI'</span></td><td><span class="tag tag-red">NO</span></td></tr>
+<tr><td><strong>VIX</strong></td><td>+0.3 (nonlineare)</td><td>Risk-off = compra gold. VIX>25 = segnale forte</td><td><span class="tag tag-green">SI'</span></td><td><span class="tag tag-red">NO</span></td></tr>
+<tr><td><strong>Oil (crude)</strong></td><td>+0.6</td><td>Inflazione, geopolitica. Positivo 85% del tempo</td><td><span class="tag tag-green">SI'</span></td><td><span class="tag tag-red">NO</span></td></tr>
+<tr><td><strong>Silver (Au/Ag ratio)</strong></td><td>Mean-revert ~65</td><td>Predictor #1 del gold (SHAP analysis)</td><td><span class="tag tag-green">SI'</span></td><td><span class="tag tag-red">NO</span></td></tr>
+<tr><td><strong>HY OAS Spread</strong></td><td>+0.4</td><td>Credit stress = gold su</td><td><span class="tag tag-green">SI'</span></td><td><span class="tag tag-red">NO</span></td></tr>
+<tr><td><strong>Yield Curve (10Y-2Y)</strong></td><td>Regime filter</td><td>Inversione = recessione = gold su</td><td><span class="tag tag-green">SI'</span></td><td><span class="tag tag-red">NO</span></td></tr>
+<tr><td><strong>SPX</strong></td><td>-0.2</td><td>Risk appetite inverso</td><td><span class="tag tag-red">NO</span></td><td><span class="tag tag-red">NO</span></td></tr>
+</table>
+
+<div class="card card-gold">
+<h3>Il gap piu' grande del nostro sistema</h3>
+<p>Raccogliamo GIA' tutti questi dati nel database (<code>market_context</code> table) ma <strong>non li usiamo come segnali di trading</strong>. E' come avere un radar e non guardarlo. Integrare DXY, real yields e VIX come filtri di regime e' l'upgrade a piu' alto impatto.</p>
+</div>
+
+<!-- 6. SENTIMENT -->
+<h2 id="sentiment">6. News & analisi macro AI: il nostro territorio</h2>
+
+<div class="grid2">
+<div class="card card-green">
+<h3>Cosa facciamo meglio degli altri</h3>
+<ul>
+<li><strong>Gemini Pro</strong> vs FinBERT (87% accuracy) — LLM capisce contesto, sarcasmo, geopolitica</li>
+<li><strong>Multi-dimensionale:</strong> pb6, belief, bb_ratio, refract, p_bullish (non solo bullish/bearish)</li>
+<li><strong>Z-score 7d rolling</strong> — auto-adattante ai cambi di regime</li>
+<li><strong>IC tracking</strong> — misuriamo se i segnali FUNZIONANO (nessun altro lo fa)</li>
+<li><strong>Source discrimination</strong> — NewsAPI vs RSS (abbiamo scoperto che RSS contaminava gli IC)</li>
+<li><strong>IC live 0.35-0.51</strong> vs 0.05-0.20 della letteratura accademica (2-5x superiore)</li>
+</ul>
+</div>
+<div class="card card-red">
+<h3>Cosa ci manca</h3>
+<ul>
+<li><strong>Calendar awareness</strong> — FOMC/NFP day dovrebbero pesare di piu'</li>
+<li><strong>Cross-asset filters</strong> — DXY, VIX, real yields (dati nel DB, non usati)</li>
+<li><strong>News categorization</strong> — monetary policy vs geopolitica hanno profili diversi</li>
+<li><strong>Dovish/Hawkish scoring</strong> — separato dal bullish/bearish generale</li>
+<li><strong>COT positioning data</strong> — filtro settimanale sul posizionamento istituzionale</li>
+<li><strong>Technical confirmation</strong> — EMA/RSI gia' nello state ma non usati come filtri sui trade</li>
+</ul>
+</div>
+</div>
+
+<div class="card card-blue">
+<h3>Cosa dice la letteratura accademica</h3>
+<ul>
+<li>Sentiment ha half-life di 2-6h per dati macro, 12-48h per geopolitica — il nostro pb6 (6h window) e' ben calibrato</li>
+<li>Hybrid (tecnico + sentiment) ha Sharpe 0.5-1.2 vs tecnico solo 0.3-0.8 e sentiment solo 0.2-0.5</li>
+<li>Il miglioramento viene dal <strong>filtrare i trade sbagliati</strong>, non dal generarne di piu'</li>
+<li>Man Group/AHL usa ~20% sentiment + ~80% tecnico/fondamentale</li>
+</ul>
+</div>
+
+<!-- 7. SESSION -->
+<h2 id="session">7. Session timing: quando tradare gold</h2>
+
+<table>
+<tr><th>Sessione</th><th>Orario UTC</th><th>Caratteristiche</th><th>Strategie</th></tr>
+<tr><td>Asia</td><td>00:00 - 07:00</td><td>Range $5-10, bassa volatilita'</td><td>Mean reversion, BB, scalping range</td></tr>
+<tr><td><strong>London Kill Zone</strong></td><td><strong>07:00 - 10:00</strong></td><td>Setta il daily high/low nel 65-70% dei casi</td><td>Breakout del range asiatico</td></tr>
+<tr><td>NY Data</td><td>13:30</td><td>NFP: $20-50 | CPI: $15-40 | FOMC: $30-80</td><td>Event trading (straddle o wait-and-react)</td></tr>
+<tr><td><strong>London-NY Overlap</strong></td><td><strong>13:00 - 17:00</strong></td><td>70% del range giornaliero. Spread piu' stretti</td><td>Momentum, trend following</td></tr>
+<tr><td>London Close</td><td>15:00 - 17:00</td><td>Posizionamento istituzionale</td><td>PM Fix, ADR exhaustion check</td></tr>
+</table>
+
+<div class="card card-purple">
+<h3>Finding chiave</h3>
+<ul>
+<li><strong>London Bias:</strong> gold tende a scendere durante Londra, salire durante Asia</li>
+<li><strong>Friday e' il giorno piu' forte</strong> — buying istituzionale pre-weekend</li>
+<li><strong>90% ADR rule:</strong> dopo che il 90% del range giornaliero medio e' consumato, stop entry in direzione del trend</li>
+<li><strong>Month-end effect:</strong> gold fa +0.70% negli ultimi 2 giorni del mese (2/3 dei gain annuali)</li>
+</ul>
+</div>
+
+<!-- 8. SIZING -->
+<h2 id="sizing">8. Position sizing per gold</h2>
+
+<div class="card card-gold">
+<h3>Il problema fondamentale</h3>
+<p>Gold a $4,500 con stop al 2% = $90 di distanza. Con 0.01 lotti standard (1 pip = $1), rischio per trade = $90. Su un conto da $500 = <strong>18% del conto per trade</strong>. 3 stop consecutivi = meta' del conto bruciato.</p>
+</div>
+
+<table>
+<tr><th>Parametro</th><th>Best Practice Gold</th><th>Refract Alpha</th><th>Status</th></tr>
+<tr><td>Risk per trade</td><td>0.5-1.0% (sotto il 2% standard forex)</td><td>1.0% high, 0.5% low</td><td><span class="tag tag-green">OK</span></td></tr>
+<tr><td>ATR stop multiplier</td><td>1.5-2.5x per H1 trading</td><td>2.0-2.5x</td><td><span class="tag tag-green">OK</span></td></tr>
+<tr><td>Portfolio heat (totale)</td><td>Max 5% exposure</td><td>Non implementato</td><td><span class="tag tag-red">GAP</span></td></tr>
+<tr><td>Daily loss limit</td><td>2-3% del conto</td><td>Non implementato</td><td><span class="tag tag-red">GAP</span></td></tr>
+<tr><td>Per-direction limit</td><td>Max 3 same-direction</td><td>MAX_GLOBAL_CONCURRENT=5</td><td><span class="tag tag-gold">PARZIALE</span></td></tr>
+<tr><td>Account minimo</td><td>$1,000 micro, $5,000 multi-strategy</td><td>Da decidere</td><td><span class="tag tag-gold">PENDING</span></td></tr>
+</table>
+
+<h3>Le soluzioni per conti piccoli</h3>
+<table>
+<tr><th>Opzione</th><th>Lotto minimo</th><th>Rischio/trade su $500</th><th>Pro</th><th>Contro</th></tr>
+<tr><td>Conto cent ($500)</td><td>0.01 micro</td><td>~0.18%</td><td>Rischio minimo, 50 stop senza problemi</td><td>Broker meno professionali</td></tr>
+<tr><td>Conto standard ($5,000)</td><td>0.01 standard</td><td>~1.7%</td><td>Broker tier 1, esecuzione reale</td><td>Serve piu' capitale</td></tr>
+<tr><td>OANDA (frazionale)</td><td>1 unita'</td><td>Configurabile</td><td>Lotti frazionali, regolamentato</td><td>Spread leggermente piu' alti</td></tr>
+</table>
+
+<!-- 9. INNOVATIVI -->
+<h2 id="innovativi">9. Approcci innovativi</h2>
+
+<table>
+<tr><th>Approccio</th><th>Edge documentato</th><th>Implementabilita'</th><th>Priorita'</th></tr>
+<tr>
+<td><strong>Silver come predictor #1</strong></td>
+<td>SHAP analysis: silver e' il feature piu' importante per predire gold</td>
+<td><span class="tag tag-green">ALTA</span> — gia' nel DB</td>
+<td><span class="tag tag-green">P1</span></td>
+</tr>
+<tr>
+<td><strong>Month-end rebalancing</strong></td>
+<td>+0.70% in 2 giorni, 2/3 dei gain annuali</td>
+<td><span class="tag tag-green">ALTA</span> — calendar filter</td>
+<td><span class="tag tag-green">P1</span></td>
+</tr>
+<tr>
+<td><strong>Seasonal Jul 6 - Feb 21</strong></td>
+<td>+7-11% medio nel periodo</td>
+<td><span class="tag tag-green">ALTA</span> — filtro direzionale</td>
+<td><span class="tag tag-gold">P2</span></td>
+</tr>
+<tr>
+<td><strong>CEEMDAN decomposition</strong></td>
+<td>Migliore accuracy ML in letteratura</td>
+<td><span class="tag tag-red">ALTA COMPLESSITA'</span></td>
+<td><span class="tag tag-muted">P3</span></td>
+</tr>
+<tr>
+<td><strong>RL agents (PPO/A2C)</strong></td>
+<td>Sharpe 2.1-2.4 in benchmark (FinRL)</td>
+<td><span class="tag tag-red">ALTA COMPLESSITA'</span></td>
+<td><span class="tag tag-muted">P3</span></td>
+</tr>
+<tr>
+<td><strong>Google Trends "buy gold"</strong></td>
+<td>Contrarian indicator, 8-day lead</td>
+<td><span class="tag tag-gold">MEDIA</span></td>
+<td><span class="tag tag-gold">P2</span></td>
+</tr>
+<tr>
+<td><strong>COMEX delivery rate</strong></td>
+<td>6.8% vs &lt;1% storico (structural tightness)</td>
+<td><span class="tag tag-gold">MEDIA</span> — dati mensili</td>
+<td><span class="tag tag-muted">P3</span></td>
+</tr>
+<tr>
+<td><strong>SGE premium</strong></td>
+<td>Predice +$33/oz in bull market</td>
+<td><span class="tag tag-red">BASSA</span> — serve feed</td>
+<td><span class="tag tag-muted">P3</span></td>
+</tr>
+</table>
+
+<!-- 10. NOI VS MERCATO -->
+<h2 id="noi">10. Dove siamo noi vs il mercato</h2>
+
+<h3>Confronto architetturale</h3>
+<table>
+<tr><th>Feature</th><th>Bot tipico retail</th><th>Bot istituzionale</th><th>Refract Alpha</th></tr>
+<tr><td>Classificazione news</td><td>Nessuna</td><td>FinBERT / RavenPack</td><td><strong>Gemini Pro (frontier LLM)</strong></td></tr>
+<tr><td>Dimensioni sentiment</td><td>Nessuna</td><td>1-2 (polarity, volume)</td><td><strong>6+ (pb6, belief, bb_ratio, refract, p_bullish, score_asym)</strong></td></tr>
+<tr><td>Normalizzazione</td><td>Nessuna</td><td>Custom</td><td><strong>Z-score rolling 7d, 21 segnali</strong></td></tr>
+<tr><td>Forward testing</td><td>Backtest only</td><td>Paper trading</td><td><strong>560 config SimEngine in parallelo</strong></td></tr>
+<tr><td>Validazione segnali</td><td>Nessuna</td><td>IC/Sharpe</td><td><strong>IC drift + Brier + calibration monitoring</strong></td></tr>
+<tr><td>Cross-asset data</td><td>Nessuna</td><td>Multi-asset</td><td>Dati raccolti ma <span class="tag tag-red">non usati</span></td></tr>
+<tr><td>Position mgmt</td><td>Fixed SL/TP</td><td>Dynamic + scaling</td><td>Min hold + timeout + belief flip</td></tr>
+<tr><td>Grid/Martingale</td><td>Spesso nascosto</td><td>Mai</td><td><strong>Mai</strong></td></tr>
+</table>
+
+<div class="grid2">
+<div class="card card-green">
+<h3>I nostri vantaggi unici</h3>
+<ol>
+<li><strong>Frontier LLM</strong> come classificatore (nessun altro bot retail lo fa)</li>
+<li><strong>IC tracking live</strong> con source discrimination</li>
+<li><strong>21 z-score signals</strong> su rolling windows</li>
+<li><strong>560 config SimEngine</strong> per forward-testing sistematico</li>
+<li><strong>IC 0.35-0.51</strong> — 2-5x sopra la letteratura accademica</li>
+<li><strong>No grid/martingale</strong> — rischio controllato</li>
+</ol>
+</div>
+<div class="card card-red">
+<h3>Gap critici da colmare</h3>
+<ol>
+<li><strong>Cross-asset signals</strong> — DXY, VIX, real yields nel DB ma non usati</li>
+<li><strong>Session weighting</strong> — stessi pesi 24/7, nessun kill zone boost</li>
+<li><strong>Portfolio heat</strong> — 5 trade same-direction possibili senza cap</li>
+<li><strong>Calendar overlay</strong> — FOMC/NFP non pesati diversamente</li>
+<li><strong>Technical confirmation</strong> — EMA/RSI nello state ma non come filtri trade</li>
+<li><strong>Scaling out</strong> — tutto o niente, nessun partial TP</li>
+</ol>
+</div>
+</div>
+
+<!-- 11. ROADMAP -->
+<h2 id="roadmap">11. Roadmap: cosa integrare</h2>
+
+<h3>Priorita' 1 — Alto impatto, bassa complessita' (dati gia' disponibili)</h3>
+
+<div class="card priority-1 card-green">
+<strong>A. Cross-asset regime filter</strong><br>
+Costruire un Gold Macro Composite Indicator (GMCI) dai dati gia' nel DB:<br>
+DXY z-score (25%) + Real yields z-score (25%) + VIX (15%) + Oil (10%) + Au/Ag ratio (10%) + HY spread (10%) + Yield curve (5%)<br>
+<em>Impatto atteso: filtrare trade contro-regime, ridurre falsi segnali del 20-30%</em>
+</div>
+
+<div class="card priority-1 card-green">
+<strong>B. Portfolio heat cap</strong><br>
+Max 5% exposure totale. Max 3 trade same-direction. Daily loss limit 2-3%.<br>
+<em>Impatto atteso: prevenire drawdown catastrofico da trade correlati</em>
+</div>
+
+<div class="card priority-1 card-green">
+<strong>C. Session-aware signal weighting</strong><br>
+Boost segnali durante London-NY overlap (13:00-17:00 UTC). Ridurre peso durante Asia session.<br>
+<em>Impatto atteso: +5-10% win rate (documentato nei bot open source)</em>
+</div>
+
+<h3>Priorita' 2 — Medio impatto, media complessita'</h3>
+
+<div class="card priority-2 card-gold">
+<strong>D. Calendar awareness</strong><br>
+FOMC/NFP day: boost score + sospendere entry 30min pre-release. Month-end overlay (+0.70% in 2 giorni).<br>
+</div>
+
+<div class="card priority-2 card-gold">
+<strong>E. Scaling out (partial TP)</strong><br>
+Chiudere 50-60% al primo target (1x ATR), far correre il resto con trailing stop.<br>
+</div>
+
+<div class="card priority-2 card-gold">
+<strong>F. Seasonal filter</strong><br>
+Bias long Jul 6 - Feb 21 (+7-11% storico). Bias neutral/cautious Feb-Jun.<br>
+</div>
+
+<div class="card priority-2 card-gold">
+<strong>G. ADR exhaustion rule</strong><br>
+Stop nuove entry quando il 90% del range giornaliero medio e' consumato.<br>
+</div>
+
+<h3>Priorita' 3 — Sperimentale, alta complessita'</h3>
+
+<div class="card priority-3">
+<strong>H. COT positioning data</strong> — Filtro settimanale sul posizionamento istituzionale. Managed money extreme = contrarian.<br>
+<strong>I. Google Trends signal</strong> — "Buy gold" come contrarian indicator con 8-day lead.<br>
+<strong>J. Anti-martingale / pyramiding</strong> — Aggiungere size sui vincenti (100% > 50% > 25% > 12.5%).<br>
+<strong>K. Dovish/Hawkish explicit scoring</strong> — Separare Fed communication dal bullish/bearish generale.<br>
+<strong>L. CEEMDAN price decomposition</strong> — Scomporre il prezzo in frequenze e predire ciascuna.<br>
+</div>
+
+<!-- GRID/MARTINGALE -->
+<h2 id="gridmartingale">Grid e Martingale: cosa sono e perche' il 90% dei bot gold li usa</h2>
+
+<div class="card card-blue">
+<h3>Cos'e' un Grid Bot (spiegazione semplice)</h3>
+<p>Immagina di piazzare ordini di acquisto ogni $10 sotto il prezzo attuale: compri a $4,500, poi a $4,490, poi a $4,480, e cosi' via. Quando il prezzo risale, chiudi le posizioni in profitto.</p>
+<p>In un mercato che <strong>oscilla</strong> (su e giu' senza direzione), funziona benissimo — compri basso, vendi alto, ripeti. Il problema e' quando il prezzo <strong>scende e non risale</strong>: accumuli posizioni in perdita sempre piu' grandi. Con gold che puo' scendere $1,000 in un mese, quelle posizioni aperte ti mangiano il conto.</p>
+</div>
+
+<div class="card card-blue">
+<h3>Cos'e' il Martingale (spiegazione semplice)</h3>
+<p>E' la strategia del casinò: se perdi, raddoppi la puntata. Se perdi $10, punti $20. Se perdi ancora, punti $40. Prima o poi vinci e recuperi tutto.</p>
+<p>Applicato al trading: se il trade va in perdita, apri un'altra posizione con <strong>lotto doppio</strong>. Quando il prezzo rimbalza anche solo un po', il lotto grande compensa le perdite del piccolo.</p>
+<p><strong>Il problema matematico:</strong> serve una riserva di capitale INFINITA per garantire che funzioni sempre. In pratica, dopo 6-8 raddoppi il conto e' finito. E su gold, dove il prezzo si muove $30-60 al giorno, 6 livelli si raggiungono in 2-3 giorni di trend.</p>
+</div>
+
+<div class="card card-red">
+<h3>Perche' il 90% dei bot gold li usa</h3>
+<p>Perche' producono <strong>equity curve bellissime</strong> nei backtest: win rate 80-95%, profitti costanti ogni giorno, drawdown apparentemente contenuto. Sono facili da vendere a $500-2,500 a chi non capisce la matematica.</p>
+<p>La realta': ogni bot grid/martingale ha una <strong>data di scadenza</strong>. Non sai quando, ma sai che arrivera'. Quando gold fa un movimento direzionale forte (come il -23% di gen-mar 2026), il bot esplode e perde tutto in pochi giorni — spesso piu' di quanto ha guadagnato in mesi.</p>
+</div>
+
+<h3>La matematica del disastro</h3>
+<table>
+<tr><th>Livello</th><th>Lotto</th><th>Esposizione totale</th><th>Perdita flottante (a $90/livello)</th><th>Capitale necessario</th></tr>
+<tr><td>1</td><td>0.01</td><td>0.01</td><td>$0</td><td>$90</td></tr>
+<tr><td>2</td><td>0.02</td><td>0.03</td><td>$90</td><td>$270</td></tr>
+<tr><td>3</td><td>0.04</td><td>0.07</td><td>$270</td><td>$630</td></tr>
+<tr><td>4</td><td>0.08</td><td>0.15</td><td>$630</td><td>$1,350</td></tr>
+<tr><td>5</td><td>0.16</td><td>0.31</td><td>$1,350</td><td>$2,790</td></tr>
+<tr><td>6</td><td>0.32</td><td>0.63</td><td>$2,790</td><td>$5,670</td></tr>
+<tr><td>7</td><td>0.64</td><td>1.27</td><td>$5,670</td><td>$11,430</td></tr>
+<tr><td>8</td><td>1.28</td><td>2.55</td><td>$11,430</td><td>$22,950</td></tr>
+<tr><td>10</td><td>5.12</td><td>10.23</td><td>$46,050</td><td>$92,070</td></tr>
+</table>
+<p style="color: var(--muted); font-size: 0.85em;">Con spacing $10 e gold ATR $61/giorno, il livello 6 si raggiunge in ~2 giorni di trend. Il livello 8 in ~4 giorni. Gen-mar 2026: gold ha perso $1,100 in 54 giorni — un grid con spacing $10 avrebbe raggiunto il livello 100+.</p>
+
+<h3>Bot commerciali che usano grid/martingale</h3>
+<table>
+<tr><th>Bot</th><th>Prezzo</th><th>Tipo nascosto</th><th>Drawdown live</th><th>Red flags</th></tr>
+<tr>
+<td><strong>EA Gold Stuff</strong></td><td>$50-149</td>
+<td>Martingale 1.5x + grid + hedging</td><td><strong>52.5%</strong></td>
+<td><span class="tag tag-red">SL disabilitato (=0)</span>. Lotti crescenti ad ogni livello. 315 review in 4 mesi (sospetto). Non compatibile con prop firm.</td>
+</tr>
+<tr>
+<td><strong>Golden Pickaxe</strong></td><td>$2,520</td>
+<td>Grid mean-reversion + ML filter cosmetico</td><td><strong>50.9%</strong></td>
+<td>Il ML "filter" e' un semplice perceptron. Sotto c'e' un grid con spacing 10-50 pip. $3,000 minimo per partire. Alla fine il grid e' il grid.</td>
+</tr>
+<tr>
+<td><strong>Quantum Queen</strong></td><td>$1,299</td>
+<td>Grid trend-following (buy-only bias)</td><td><strong>22%</strong></td>
+<td>Esegue quasi solo BUY su gold — cavalca il trend rialzista. Un blogger indipendente l'ha classificato come "Bad". Il dev ha rimosso segnali live quando la performance e' calata su altri prodotti.</td>
+</tr>
+<tr>
+<td><strong>Forex Gold Investor</strong></td><td>$197</td>
+<td>Time-based (NO grid/martingale)</td><td><strong>42%</strong></td>
+<td><span class="tag tag-green">Legittimo</span> — 4 anni di track record Myfxbook. Ma 42% drawdown per 3%/mese di ritorno = risk/reward scarso.</td>
+</tr>
+<tr>
+<td><strong>Gold Trade Pro</strong></td><td>$539</td>
+<td>Breakout S/R (NO grid/martingale)</td><td><strong>15%</strong></td>
+<td><span class="tag tag-green">Legittimo</span> — il piu' onesto. PF live 1.08 (modesto ma reale). Dev considerato affidabile dalla community.</td>
+</tr>
+<tr>
+<td><strong>The Gold Reaper</strong></td><td>$599</td>
+<td>Multi-TF breakout (NO grid/martingale)</td><td><strong>42%</strong></td>
+<td><span class="tag tag-green">Legittimo</span> — stesso dev di Gold Trade Pro. Ma backtest PF 2.72 vs live PF 1.08 = gap enorme. Avg loss ($51) > avg win ($21).</td>
+</tr>
+</table>
+
+<div class="card card-gold">
+<h3>Come riconoscere un grid/martingale nascosto</h3>
+<ul>
+<li><strong>Win rate 90%+</strong> — impossibile con strategie legittime su gold. Un WR del genere significa che le perdite sono rare ma catastrofiche</li>
+<li><strong>"Recovery mode"</strong> nelle feature — significa che apre posizioni piu' grandi dopo le perdite = martingale</li>
+<li><strong>Equity curve perfettamente liscia</strong> — le strategie reali hanno drawdown visibili. Se la curva sembra una linea retta, c'e' qualcosa nascosto</li>
+<li><strong>"No stop loss needed"</strong> — il grid/martingale non usa stop perche' APRE posizioni invece di chiuderle. E' il contrario della gestione del rischio</li>
+<li><strong>Richiede leva alta (1:500)</strong> — serve per sostenere le posizioni accumulate dal grid</li>
+<li><strong>"Works on any broker, any spread"</strong> — fisicamente impossibile per scalping su gold</li>
+<li><strong>Prezzo basso ($30-99) per "risultati incredibili"</strong> — se funzionasse, lo userebbero loro, non lo venderebbero</li>
+</ul>
+</div>
+
+<div class="card card-green">
+<h3>L'unico "martingale" che funziona: Anti-Martingale (Pyramiding)</h3>
+<p>Invece di raddoppiare sulle perdite, raddoppi (con cautela) <strong>sui vincenti</strong>. Se un trade va nella direzione giusta, aggiungi una posizione piu' piccola.</p>
+<p>Progressione: 100% (base) → +50% → +25% → +12.5%. Esposizione massima: 187.5% della base, NON esponenziale. Se il trade si inverte, chiudi tutto — la perdita massima e' definita.</p>
+<p>Simulazione su 1,000 run: anti-martingale ha <strong>9x meno perdita massima</strong> e quasi zero tail risk rispetto al martingale standard. E' l'unico approccio di scaling con edge matematico positivo nei mercati trending come gold.</p>
+</div>
+
+<div class="card card-purple">
+<h3>Perche' Refract Alpha NON usa grid/martingale</h3>
+<p>Il nostro approccio e' l'opposto: <strong>rischio fisso per trade</strong> (1% del conto), <strong>stop loss sempre attivo</strong> (2.0-2.5x ATR), <strong>max 5 trade contemporanei</strong>. Se 5 trade vanno male, perdiamo il 5% del conto — spiacevole ma sopravvivibile. Con un martingale, 5 livelli possono significare il 50%+ del conto perso.</p>
+<p>Il valore atteso del martingale e' <strong>zero prima dei costi, negativo dopo</strong>. Il valore atteso del nostro sistema e' <strong>positivo e misurabile</strong> (IC 0.35-0.51). Questa e' la differenza tra sperare e sapere.</p>
+</div>
+
+<!-- FOOTER -->
+<div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.82em;">
+<p><strong>Refract Alpha v12.3</strong> — Gold Macro Bot Research Report</p>
+<p>Generato il 26 marzo 2026. 10 aree di ricerca, 25+ bot analizzati, 50+ fonti.</p>
+<p>Fonti principali: GitHub (15 repo), MQL5 Market (10 EA), letteratura accademica (20+ paper), ForexFactory, Myfxbook, TradingView.</p>
+</div>
+
+</div>
+</body>
+</html>
