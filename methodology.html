@@ -108,7 +108,7 @@
   <p><strong>News:</strong> 50.888 articoli finanziari, NewsAPI.ai, Feb 2025 &ndash; Mar 2026 (13 mesi). Fonti: Reuters, Bloomberg, Investing.com, FXStreet, CNBC, Kitco, Yahoo Finance, ForexLive, MarketWatch, OilPrice. Lingua: inglese. Testo medio: 200+ parole (body, non solo titoli).</p>
   <p><strong>Prezzi:</strong> 31.750 candele M15 XAU/USD (OHLCV). Fonte: TwelveData API (storico). Verificati a campione contro TradingView e yfinance (0 discrepanze &gt; 0.01%).</p>
   <p><strong>Classificazione AI:</strong> ogni news classificata da un LLM (modello congelato, temperatura 0.3) con prompt frozen. Output strutturato JSON: 21 campi tra cui relevance_score (0-100), direction (BULLISH/BEARISH/NEUTRAL), category, urgency. Nessun fine-tuning &mdash; il modello &egrave; usato as-is via API.</p>
-  <p><strong>Outcome:</strong> return calcolato come (price_Xh &minus; price_at_news) / price_at_news per X = 1, 4, 8, 24 ore. price_at_news &egrave; il close della candela M15 pi&ugrave; vicina al timestamp della news.</p>
+  <p><strong>Outcome:</strong> return calcolato come (price_Xh &minus; price_at_news) / price_at_news per X = 1, 4, 8, 24 ore. price_at_news &egrave; l'open della candela M15 immediatamente successiva al timestamp della news (via bisect_right), eliminando qualsiasi possibilit&agrave; di look-ahead bias.</p>
 </section>
 
 <!-- 3 -->
@@ -154,7 +154,7 @@
   <ul>
     <li><strong>IC:</strong> Spearman rank correlation tra segnale e rendimento effettivo, calcolato separatamente per ogni fold, poi mediato.</li>
     <li><strong>p-value:</strong> Newey-West HAC standard errors con lag automatico (Bartlett kernel). Corregge per autocorrelazione seriale.</li>
-    <li><strong>FDR:</strong> Benjamini-Hochberg al livello 0.05 su tutti i 152 test (38 segnali &times; 4 TF).</li>
+    <li><strong>FDR:</strong> Benjamini-Hochberg al livello 0.05 applicato ai 5 segnali Tier 1 primari (S1-S7, best timeframe).</li>
     <li><strong>Bootstrap CI:</strong> 10.000 ricampionamenti con sostituzione.</li>
   </ul>
 </section>
@@ -185,6 +185,7 @@
     <li>Stop loss: 2.5&times; ATR14 (calcolato su candele M15). Per LONG, trigger su LOW della candela (non CLOSE). Per SHORT, trigger su HIGH.</li>
   </ol>
   <p><strong>Risk:</strong> cooldown 4h minimo tra trade consecutivi, max 1 posizione per strategia, costo 0.02% flat per trade (spread + commissione). Breakeven cost: 0.36% &mdash; il sistema tollera uno slippage fino a 18&times; l'assunzione base prima di perdere l'edge statistico.</p>
+  <p><strong>Gate coverage:</strong> il simulatore WF replica i gate principali di delivery, ma non include semantic dedup, structured dedup e dynamic tier thresholds. Questi gate riducono il volume di trade in produzione ma non alterano la direzionalit&agrave; dei segnali.</p>
   <p><strong>480 configurazioni testate</strong> variando soglie di gate, exit, e filtri di qualit&agrave;. Tutte 480 producono PF &gt; 2.0. La mediana &egrave; PF 3.03. Il worst case &egrave; PF 2.15. Le 900+ configurazioni aggiuntive (ricerca esaustiva) costituiscono una mappatura dello spazio parametrico, non un'ottimizzazione del rendimento: l'alpha risiede in un plateau di stabilit&agrave; ampio, non in un picco isolato. Confermato da CSCV con PBO 4.3% (sezione 10d).</p>
 </section>
 
@@ -454,7 +455,7 @@
     <tr><td>Previsioni OOS per Brier Score</td><td>43.362</td></tr>
     <tr><td>Block bootstrap ricampionamenti</td><td>10.000</td></tr>
     <tr><td>CSCV combinazioni</td><td>70</td></tr>
-    <tr><td>Verifiche indipendenti cross-AI</td><td>3</td></tr>
+    <tr><td>Verifiche indipendenti cross-AI</td><td>4 (Claude Opus, Claude Code, Gemini, ChatGPT 5.4 High)</td></tr>
   </table>
   </div>
 </section>
@@ -475,7 +476,7 @@
     <tr><td>IC regime-conditional</td><td>Bias da bull market</td><td class="val-green">IC +0.18-0.39 nei non-bull</td></tr>
     <tr><td>IC demeaned 7d</td><td>Drift locale</td><td class="val-green">IC +0.19-0.25 (drop 9-21%)</td></tr>
     <tr><td>IC direction-neutral</td><td>Bias direzionale</td><td class="val-green">IC BEAR &ge; IC BULL</td></tr>
-    <tr><td>Cross-AI (3 codebase)</td><td>Bug implementativi</td><td class="val-green">Match esatto</td></tr>
+    <tr><td>Cross-AI (4 codebase)</td><td>Bug implementativi</td><td class="val-green">Match esatto + audit adversariale</td></tr>
     <tr><td>Trimmed PF</td><td>Dipendenza da outlier</td><td class="val-green">PF sale rimuovendo estremi</td></tr>
   </table>
   </div>
@@ -498,7 +499,24 @@
 
 <!-- 19 -->
 <section>
-  <h2><span class="section-num">19</span>Domande per il reviewer</h2>
+  <h2><span class="section-num">19</span>Audit log</h2>
+
+  <h3>Addendum Post-Audit (29 Mar 2026)</h3>
+
+  <p>Successivamente alla prima stesura di questo documento, l'intera codebase e gli artifact numerici sono stati sottoposti a un audit indipendente aggiuntivo in modalit&agrave; read-only da <strong>ChatGPT 5.4 High</strong> (il modello pi&ugrave; avanzato disponibile al 29 marzo 2026), con ricomputazione dei principali risultati direttamente dal database Walk-Forward. L'audit ha verificato in particolare: logica di price_at_news, assenza di look-ahead bias nelle variabili contestuali e nei rolling signal, calcolo degli Information Coefficient out-of-sample su 6 fold temporali, Brier Score e coerenza tra script, JSON di output e valori riportati in questa pagina.</p>
+
+  <p>L'audit ha confermato i risultati core del sistema, incluso il Brier Score OOS = 0.2139, la correttezza del price matching e la riproducibilit&agrave; dei principali segnali base. Durante la verifica sono per&ograve; emersi alcuni disallineamenti tra documentazione e reportistica finale: in particolare, una convenzione di soglia utilizzata in uno script di calcolo degli IC proprietari non era allineata alla soglia canonica della pipeline Walk-Forward. A seguito dell'audit, gli artifact finali sono stati riallineati alla specifica operativa canonica: <code>relevance_score &ge; 30</code> per i segnali rolling proprietari.</p>
+
+  <p>L'audit ha inoltre portato a tre correzioni documentali importanti. Primo, price_at_news &egrave; ora descritto esplicitamente come l'open della prima candela M15 successiva al timestamp della news, selezionata via <code>bisect_right</code>, e non come il close della candela pi&ugrave; vicina. Secondo, il riferimento alla correzione Benjamini-Hochberg &egrave; ora limitato ai segnali Tier 1 primari, coerentemente con il perimetro effettivamente coperto dagli script finali. Terzo, i test di validazione secondari sono stati annotati dove opportuno per distinguere chiaramente tra script che replicano esattamente la pipeline principale e script esplorativi che utilizzano proxy o dataset diversi.</p>
+
+  <p>Infine, i valori pubblicati per p_bullish sono stati rigenerati dal database corrente, sostituendo artifact precedenti non pi&ugrave; coerenti con lo stato finale del dataset. Questo addendum non modifica la conclusione sostanziale del lavoro: l'edge quantitativo principale resta confermato. Serve invece a rendere pienamente allineati codice, numeri pubblicati e testo metodologico, cos&igrave; che il documento rifletta in modo rigoroso la versione finale auditata del progetto.</p>
+
+  <p><strong>Verifiche indipendenti aggiornate:</strong> 4 AI (Claude Opus, Claude Code, Gemini, ChatGPT 5.4 High) hanno ora rivisto implementazione e numeri.</p>
+</section>
+
+<!-- 20 -->
+<section>
+  <h2><span class="section-num">20</span>Domande per il reviewer</h2>
   <p>Queste sono le aree dove abbiamo pi&ugrave; incertezza e dove il feedback di un esperto sarebbe pi&ugrave; prezioso:</p>
   <div class="card">
     <p><strong>1.</strong> L'IC Spearman &egrave; la metrica giusta per questo tipo di segnale? Ci sono non-linearit&agrave; nel rapporto segnale-rendimento che Spearman non cattura e che richiederebbero un approccio diverso (binned IC, conditional monotonicity test)?</p>
@@ -524,7 +542,8 @@
 </section>
 
 <footer>
-  <p>Refract<sup style="font-size:7px">&trade;</sup> &mdash; Documento per review tecnica &middot; 23 Mar 2026 &middot; v1.0</p>
+  <p>Refract<sup style="font-size:7px">&trade;</sup> &mdash; Documento per review tecnica &middot; 23 Mar 2026 &middot; v1.1 (29 Mar 2026)</p>
+  <p style="font-size:11px;color:var(--text-muted);">Documento aggiornato post-audit indipendente: riallineamento metodologico, rigenerazione artifact finali e normalizzazione dei valori pubblicati.</p>
 </footer>
 
 </div>

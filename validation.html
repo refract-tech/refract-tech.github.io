@@ -131,12 +131,13 @@
 <tbody>
 <tr class="winner"><td>1. Entry ritardato</td><td>Alpha dipende dalla latenza</td><td>97% IC retention a +15min</td><td class="val-green">SUPERATO</td></tr>
 <tr class="winner"><td>2. Breakout naive</td><td>&Egrave; momentum, non NLP</td><td>NLP PF 2.40 vs naive PF 0.72</td><td class="val-green">SUPERATO</td></tr>
-<tr class="winner"><td>3. Clustering eventi</td><td>IC inflazionato da news duplicate</td><td>IC aumenta col clustering (1.1&ndash;1.6&times;)</td><td class="val-green">SUPERATO</td></tr>
-<tr class="winner"><td>4. Dead zone Brier</td><td>Dead zone invalida il Brier</td><td>Differenza +0.0007 (irrilevante)</td><td class="val-green">SUPERATO</td></tr>
-<tr class="winner"><td>5. Cross-asset</td><td>Servono indicatori di mercato</td><td>RSI&lt;40 come filtro &rarr; IC 2.6&times;</td><td class="val-green">CONFERMATO</td></tr>
+<tr class="winner"><td>3. Clustering eventi</td><td>IC inflazionato da news duplicate</td><td>IC aumenta col clustering (1.1&ndash;1.6&times;)</td><td class="val-green">SUPERATO*</td></tr>
+<tr class="winner"><td>4. Dead zone Brier</td><td>Dead zone invalida il Brier</td><td>Differenza +0.0007 (irrilevante)</td><td class="val-green">SUPERATO*</td></tr>
+<tr class="winner"><td>5. Cross-asset</td><td>Servono indicatori di mercato</td><td>RSI&lt;40 come filtro &rarr; IC 2.6&times;</td><td class="val-green">CONFERMATO*</td></tr>
 </tbody>
 </table>
 </div>
+<p style="font-size:11px;color:var(--text-muted);">* Caveat metodologici: Test 3 usa proxy per alcuni segnali proprietari; Test 4 usa alerts.db (dataset live) anzich&eacute; WF DB; Test 5 usa net_bullish_24h come proxy per belief. Dettagli nelle rispettive sezioni.</p>
 </section>
 
 <!-- ═══════════════ SEZIONE 3: TEST 1 ═══════════════ -->
@@ -245,6 +246,7 @@
 
 <p>Il clustering di news non gonfia l&rsquo;IC &mdash; lo sopprime tramite rumore per-news. L&rsquo;IC clusterizzato (solo osservazioni indipendenti) &egrave; pi&ugrave; alto dell&rsquo;IC per-news per ogni segnale. L&rsquo;alpha &egrave; reale alla scala temporale decisionale di 4 ore.</p>
 <p><strong>Script:</strong> <code>tools/wf_test_clustered_ic.py</code></p>
+<p style="font-size:11px;color:var(--text-muted);">Nota: sxdf, fresh_pb e score_asym sono approssimati con proxy dal WF DB (pct_bullish_weighted_24h, pb6, dir_x_score). I segnali esatti della pipeline live usano formule di aggregazione leggermente diverse.</p>
 </section>
 
 <!-- ═══════════════ SEZIONE 6: TEST 4 ═══════════════ -->
@@ -270,6 +272,7 @@
 </div>
 
 <p>La dead zone rimuove solo il 6.8% delle osservazioni (59/873). All&rsquo;orizzonte di 4 ore sull&rsquo;oro, il prezzo raramente si muove meno di $2.25 (0.05%). La dead zone &egrave; una scelta pragmatica a impatto zero sul Brier Score.</p>
+<p style="font-size:11px;color:var(--text-muted);">Nota: questo test usa il dataset live (alerts.db), non il WF DB. I risultati sono complementari alla validazione OOS del Walk-Forward.</p>
 
 <div class="retracted">
 <p><strong>Rivalutazione reviewer:</strong> <em>&ldquo;Ritrattato. Una differenza di +0.0007 &egrave; statisticamente priva di significato. L&rsquo;orizzonte a 4 ore sull&rsquo;oro fuoriesce naturalmente dalla banda dello 0.05% nel 93.2% dei casi. Rischio residuo: nessuno.&rdquo;</em></p>
@@ -324,13 +327,14 @@
 </div>
 
 <p><strong>Script:</strong> <code>tools/wf_test_crossasset.py</code></p>
+<p style="font-size:11px;color:var(--text-muted);">Nota: il campo &ldquo;belief&rdquo; in questo test &egrave; popolato con net_bullish_24h (proxy), non con il p4_belief della pipeline live. La conclusione (cross-asset come gate, non come blend) resta valida indipendentemente dal proxy.</p>
 </section>
 
 <!-- ═══════════════ SEZIONE 8: SANITY CHECK ═══════════════ -->
 <section>
 <h2><span class="section-num">08</span>Validazione script &mdash; Sanity check</h2>
 
-<p>Tutti e 5 gli script di test sono stati validati rispetto ai valori IC noti del Walk-Forward per garantire la correttezza prima di fidarsi dei risultati.</p>
+<p>I 5 script di test sono stati confrontati con i valori IC noti del Walk-Forward. I test 3, 4 e 5 utilizzano proxy o dataset parzialmente diversi (vedi caveat nelle rispettive sezioni).</p>
 
 <div class="table-wrap">
 <table>
@@ -344,7 +348,7 @@
 </table>
 </div>
 
-<p>Deviazione massima: 0.023 unit&agrave; IC. Differenza spiegata da minori differenze di filtraggio (soglia score, subset di osservazioni). Tutti gli script producono risultati consistenti e riproducibili attraverso implementazioni indipendenti.</p>
+<p>Deviazione massima: 0.023 unit&agrave; IC. Differenza spiegata da minori differenze di filtraggio (soglia score, subset di osservazioni). I risultati sono coerenti con i risultati principali, con i caveat indicati nelle sezioni dei singoli test.</p>
 </section>
 
 <!-- ═══════════════ SEZIONE 9: RIVALUTAZIONE REVIEWER ═══════════════ -->
@@ -546,11 +550,26 @@
 </table>
 </div>
 
-<p>Tutti i test sono stati eseguiti sullo stesso database Walk-Forward. Gli script sono deterministici e validati indipendentemente rispetto a valori IC noti. Un reviewer esterno pu&ograve; riprodurre tutti i risultati a partire dal database e dagli script.</p>
+<p>Tutti i test sono stati eseguiti sullo stesso database Walk-Forward (eccetto Test 4 che usa alerts.db &mdash; vedi nota in sezione 06). Gli script sono deterministici e validati indipendentemente rispetto a valori IC noti. Un reviewer esterno pu&ograve; riprodurre tutti i risultati a partire dal database e dagli script.</p>
+</section>
+
+<!-- ═══════════════ SEZIONE 16: AUDIT ═══════════════ -->
+<section>
+<h2><span class="section-num">16</span>Addendum Post-Audit (29 Mar 2026)</h2>
+<p>L'intera codebase, gli script di validazione e gli artifact numerici sono stati sottoposti a un audit indipendente da <strong>ChatGPT 5.4 High</strong> in modalit&agrave; read-only, con ricomputazione dei principali risultati dal database Walk-Forward.</p>
+<p><strong>Correzioni applicate a questa pagina:</strong></p>
+<ul>
+  <li><strong>Test 3</strong> (clustering): annotato che sxdf, fresh_pb e score_asym sono proxy dal WF DB, non segnali esatti della pipeline live.</li>
+  <li><strong>Test 4</strong> (Brier): chiarito che usa alerts.db (dataset live), complementare alla validazione WF.</li>
+  <li><strong>Test 5</strong> (cross-asset): annotato che il campo &ldquo;belief&rdquo; &egrave; popolato con net_bullish_24h (proxy).</li>
+  <li><strong>Riproducibilit&agrave;</strong>: precisato che Test 4 usa un dataset diverso dal WF.</li>
+</ul>
+<p>Nessuna correzione ha modificato le conclusioni dei test. I finding originali del reviewer restano confermati o superati. Vedi <a href="methodology.html" style="color:var(--gold)">Metodologia sezione 19</a> per l'addendum completo.</p>
 </section>
 
 <footer>
-Refract&trade; Validazione &middot; 28 Mar 2026 &middot; Documento companion di <a href="methodology.html" style="color:var(--gold)">Metodologia e Risultati</a>
+Refract&trade; Validazione &middot; 28 Mar 2026 &middot; v1.1 (post-audit 29 Mar 2026) &middot; Documento companion di <a href="methodology.html" style="color:var(--gold)">Metodologia e Risultati</a>
+<p style="font-size:11px;color:var(--text-muted);">Aggiornato post-audit indipendente: annotazioni proxy, chiarimento dataset e riallineamento documentale.</p>
 </footer>
 
 </div>
