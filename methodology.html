@@ -247,9 +247,9 @@
     <tr><td>FDR Benjamini-Hochberg</td><td>4/5 TIER 1 pass al livello 0.05</td></tr>
     <tr><td>Bootstrap 95% CI (ensemble @8h)</td><td>[+0.200, +0.292]</td></tr>
     <tr><td>Brier Score OOS (N=43.362)</td><td>0.2139</td></tr>
-    <tr><td>Trade (config primaria, post-fix)</td><td>218</td></tr>
+    <tr><td>Trade (config primaria, post-fix, multi-strategy cap=4)</td><td>189</td></tr>
     <tr><td>Profit Factor (raw / dm7d)</td><td class="val-green">3.71 / 2.53</td></tr>
-    <tr><td>Win Rate</td><td>63.3%</td></tr>
+    <tr><td>Win Rate</td><td>64.0%</td></tr>
     <tr><td>Sharpe Ratio (calendario, annualizzato)</td><td>3.4</td></tr>
     <tr><td>Max Drawdown</td><td>3.1%</td></tr>
     <tr><td>Breakeven cost</td><td>0.36% per trade</td></tr>
@@ -354,7 +354,7 @@
   <div class="table-wrap">
   <table>
     <tr><th>Subset</th><th>REF S1 PF</th><th>REF S1 N</th><th>ASYM8 PF</th><th>ASYM8 N</th></tr>
-    <tr><td>Tutti</td><td>3.41</td><td>228</td><td class="val-gold">5.89</td><td>114</td></tr>
+    <tr><td>Tutti</td><td>3.71</td><td>189</td><td class="val-gold">5.89</td><td>114</td></tr>
     <tr><td>Mesi bull (&gt;+3%)</td><td>3.11</td><td>126</td><td>6.22</td><td>60</td></tr>
     <tr class="winner"><td>Mesi non-bull (&lt;+3%)</td><td class="val-green">4.01</td><td>102</td><td class="val-green">5.48</td><td>54</td></tr>
     <tr><td>Solo LONG</td><td>3.88</td><td>131</td><td class="val-gold">10.67</td><td>60</td></tr>
@@ -392,7 +392,7 @@
   <div class="table-wrap">
   <table>
     <tr><th>#</th><th>Tipo gate</th><th>PF raw</th><th>PF dm7d</th><th>N trade</th><th>Mesi neg.</th></tr>
-    <tr><td>1</td><td>Regime rolling</td><td>3.41</td><td>2.53</td><td>228</td><td>1/14</td></tr>
+    <tr><td>1</td><td>Regime rolling</td><td>3.71</td><td>2.53</td><td>189</td><td>1/14</td></tr>
     <tr><td>2</td><td>Per-news AI probability</td><td>2.78</td><td class="val-dim">&mdash;</td><td>163</td><td>0/14</td></tr>
     <tr class="winner"><td>3</td><td>Score asymmetry + tecnico</td><td class="val-gold">5.89</td><td class="val-green">3.62</td><td>114</td><td class="val-green">0/13</td></tr>
     <tr><td>4</td><td>Idem + trailing TP</td><td class="val-gold">6.33</td><td class="val-dim">&mdash;</td><td>114</td><td class="val-green">0/13</td></tr>
