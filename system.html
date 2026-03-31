@@ -62,7 +62,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 .d-text[data-lang].visible,.section-intro[data-lang].visible,.card-sub[data-lang].visible,.control-concept[data-lang].visible,.warn[data-lang].visible{display:block}
 span[data-lang]{display:none}span[data-lang].visible{display:inline}
 .hdr p[data-lang]{display:none}.hdr p[data-lang].visible{display:block}
-@media(max-width:700px){.cards{flex-direction:column}.perm-grid{font-size:8px}}
+@media(max-width:700px){.cards{flex-direction:column}.card{min-width:0}.perm-grid{font-size:8px}.lang-toggle{position:static;justify-content:center;margin-top:10px}}
+#map3d canvas{touch-action:none}
 </style>
 </head>
 <body>
@@ -107,7 +108,7 @@ span[data-lang]{display:none}span[data-lang].visible{display:inline}
 </div>
 
 <!-- ═══ 3D MAP ═══ -->
-<div id="map3d" style="width:100%;height:500px;border-radius:12px;border:1px solid var(--border);margin-bottom:24px;position:relative;overflow:hidden;background:linear-gradient(180deg,#06060e 0%,#0a0a18 100%)">
+<div id="map3d" style="width:100%;height:min(500px,60vh);border-radius:12px;border:1px solid var(--border);margin-bottom:24px;position:relative;overflow:hidden;background:linear-gradient(180deg,#06060e 0%,#0a0a18 100%)">
   <div id="tooltip3d" style="display:none;position:absolute;pointer-events:none;z-index:20;font-family:'Inter',sans-serif;background:rgba(8,8,18,.92);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 14px;max-width:280px;backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,0,0,.5)">
     <div id="tt-title" style="font-size:13px;font-weight:600;margin-bottom:4px"></div>
     <div id="tt-badge" style="font-family:'JetBrains Mono',monospace;font-size:9px;display:inline-block;padding:2px 8px;border-radius:3px;margin-bottom:6px"></div>
