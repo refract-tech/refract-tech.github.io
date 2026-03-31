@@ -386,8 +386,33 @@ span[data-lang]{display:none}span[data-lang].visible{display:inline}
   function upCam(){camera.position.set(pivot.x+dist*Math.sin(rY)*Math.cos(rX),pivot.y+dist*Math.sin(rX),pivot.z+dist*Math.cos(rY)*Math.cos(rX));camera.lookAt(pivot);}
   upCam();
 
-  renderer.domElement.addEventListener('pointerdown',e=>{isDrag=true;pX=e.clientX;pY=e.clientY;autoRot=false;});
-  window.addEventListener('pointerup',()=>isDrag=false);
+  let tapStartX=0,tapStartY=0;
+  renderer.domElement.addEventListener('pointerdown',e=>{isDrag=true;pX=e.clientX;pY=e.clientY;tapStartX=e.clientX;tapStartY=e.clientY;autoRot=false;});
+  window.addEventListener('pointerup',e=>{
+    isDrag=false;
+    // Tap detection: if pointer didn't move much, it's a tap (mobile tooltip)
+    const dx=Math.abs(e.clientX-tapStartX),dy=Math.abs(e.clientY-tapStartY);
+    if(dx<6&&dy<6){
+      const rect=renderer.domElement.getBoundingClientRect();
+      mouse.x=((e.clientX-rect.left)/rect.width)*2-1;
+      mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;
+      raycaster.setFromCamera(mouse,camera);
+      const hits=raycaster.intersectObjects(hitTargets);
+      const id=hits.length>0?hits[0].object.userData.nodeId:null;
+      if(id&&id!==hoveredNode){
+        hoveredNode=id;
+        hitTargets.forEach(m=>{if(m.userData.nodeId===id&&m.material){m.material.emissiveIntensity=0.6;}});
+        const info=NI[typeof currentLang!=='undefined'?currentLang:'it'][id]||NI.en[id];
+        if(info){ttTitle.textContent=info.title;ttTitle.style.color=info.badgeColor;ttBadge.textContent=info.badge;ttBadge.style.color=info.badgeColor;ttBadge.style.background=info.badgeBg;ttDesc.textContent=info.desc;tooltip.style.display='block';
+          tooltip.style.left=Math.min(e.clientX-rect.left+10,rect.width-290)+'px';
+          tooltip.style.top=Math.max(e.clientY-rect.top-80,10)+'px';}
+      } else {
+        // Tap on empty or same node = close
+        if(hoveredNode)hitTargets.forEach(m=>{if(m.userData.nodeId===hoveredNode&&m.material){m.material.emissiveIntensity=m.material._baseE||0.1;}});
+        hoveredNode=null;tooltip.style.display='none';
+      }
+    }
+  });
   renderer.domElement.addEventListener('pointermove',e=>{
     const rect=renderer.domElement.getBoundingClientRect();
     mouse.x=((e.clientX-rect.left)/rect.width)*2-1; mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;
