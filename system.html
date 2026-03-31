@@ -9,7 +9,7 @@
 :root{--bg:#0a0a12;--surface:#12121e;--surface2:#1a1a2e;--border:#252540;--gold:#d4a843;--gold-dim:rgba(212,168,67,.12);--grn:#00c48c;--grn-dim:rgba(0,196,140,.1);--red:#ff4757;--red-dim:rgba(255,71,87,.08);--blu:#4f8efe;--blu-dim:rgba(79,142,254,.1);--prp:#9b7ff0;--prp-dim:rgba(155,127,240,.1);--org:#ff9f43;--org-dim:rgba(255,159,67,.1);--cyan:#00bcd4;--cyan-dim:rgba(0,188,212,.1);--text:#d8d8e8;--dim:#8888a8;--muted:#555570}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
-.page{max-width:960px;margin:0 auto;padding:24px 20px 80px}
+.page{max-width:960px;margin:0 auto;padding:24px 20px 80px;overflow-x:hidden}
 .hdr{text-align:center;padding:20px 0 28px;border-bottom:1px solid var(--border);margin-bottom:32px;position:relative}
 .hdr h1{font-size:20px;font-weight:700;letter-spacing:4px;color:var(--gold);text-transform:uppercase}
 .hdr p{font-size:12px;color:var(--dim);margin-top:4px}
@@ -23,7 +23,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 .section-label{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:4px 12px;border-radius:4px;display:inline-block;margin-bottom:10px}
 .section-intro{font-size:13px;color:var(--dim);margin-bottom:14px;max-width:700px}
 .cards{display:flex;gap:10px;flex-wrap:wrap}
-.card{flex:1;min-width:260px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.card{flex:1;min-width:260px;max-width:100%;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
 .card:hover{background:var(--surface2);border-color:rgba(255,255,255,.06)}
 .card.open{background:var(--surface2)}
@@ -42,8 +42,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 .d-text{font-size:12px;color:var(--dim);line-height:1.7}
 .d-text strong{color:var(--text);font-weight:500}
 .d-text code{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cyan);background:rgba(0,188,212,.06);padding:1px 5px;border-radius:3px}
-.cmd{font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:5px;padding:8px 12px;margin-top:4px;color:var(--cyan);display:block;white-space:pre;overflow-x:auto;line-height:1.6}
-.control-wrap{background:linear-gradient(135deg,rgba(212,168,67,.04),rgba(212,168,67,.01));border:1px solid rgba(212,168,67,.15);border-radius:14px;padding:18px;margin-bottom:8px}
+.cmd{font-family:'JetBrains Mono',monospace;font-size:11px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:5px;padding:8px 12px;margin-top:4px;color:var(--cyan);display:block;white-space:pre-wrap;word-break:break-all;overflow-x:auto;line-height:1.6;max-width:100%}
+.control-wrap{background:linear-gradient(135deg,rgba(212,168,67,.04),rgba(212,168,67,.01));border:1px solid rgba(212,168,67,.15);border-radius:14px;padding:18px;margin-bottom:8px;overflow:hidden;max-width:100%}
 .control-wrap .section-label{color:var(--gold);background:var(--gold-dim)}
 .control-concept{font-size:12px;color:var(--dim);line-height:1.8;margin-bottom:14px;padding:10px 14px;background:rgba(212,168,67,.04);border-radius:8px;border-left:3px solid var(--gold)}
 .regime-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
@@ -584,7 +584,7 @@ span[data-lang]{display:none}span[data-lang].visible{display:inline}
   <div class="control-concept" data-lang="it">Il Control Layer <strong>non &egrave; uno step in una sequenza</strong>. &Egrave; un motore decisionale che legge segnali, regime, qualit&agrave; e dati SimEngine <strong>contemporaneamente</strong> e produce una decisione combinata: <em>questo trade si apre? con quale config? quali regole di uscita?</em><br><br>Quattro gate vengono eseguiti su ogni trade. TUTTI devono passare. Ciascuno pu&ograve; bloccare o modificare. Il SimEngine gira <strong>in parallelo</strong> come laboratorio, alimentando il Selector con i dati per le scelte di domani.</div>
 
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
-    <div style="flex:1;min-width:180px;padding:8px 12px;border-radius:6px;border:1px solid var(--border);background:var(--surface);font-size:11px;line-height:1.7">
+    <div style="flex:1;min-width:0;padding:8px 12px;border-radius:6px;border:1px solid var(--border);background:var(--surface);font-size:11px;line-height:1.7">
       <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:4px;text-transform:uppercase"><span data-lang="en" class="visible">Operating modes</span><span data-lang="it">Modalit&agrave; operative</span></div>
       <div class="d-text visible" data-lang="en">
         Every component in the Control Layer has a <strong>mode</strong> that controls how much it intervenes:<br><br>
