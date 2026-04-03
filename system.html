@@ -62,7 +62,9 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-
 .d-text[data-lang].visible,.section-intro[data-lang].visible,.card-sub[data-lang].visible,.control-concept[data-lang].visible,.warn[data-lang].visible{display:block}
 span[data-lang]{display:none}span[data-lang].visible{display:inline}
 .hdr p[data-lang]{display:none}.hdr p[data-lang].visible{display:block}
-@media(max-width:700px){.cards{flex-direction:column}.card{min-width:0}.perm-grid{font-size:8px}.lang-toggle{position:static;justify-content:center;margin-top:10px}}
+@media(max-width:700px){.cards{flex-direction:column}.card{min-width:0}.perm-grid{font-size:8px}.lang-toggle{position:static;justify-content:center;margin-top:10px}
+#tooltip3d{max-width:200px!important;padding:7px 10px!important;font-size:10px!important}
+#tt-title{font-size:11px!important}#tt-badge{font-size:8px!important}#tt-desc{font-size:9px!important;line-height:1.4!important}}
 #map3d canvas{touch-action:none}
 </style>
 </head>
@@ -90,7 +92,7 @@ span[data-lang]{display:none}span[data-lang].visible{display:inline}
       <br><br>
       <strong style="color:var(--text)">Il sistema ora lo rileva automaticamente.</strong> Ogni ora legge DXY, yield e posizione dell'oro e decide il regime: <strong style="color:var(--grn)">Normal</strong> (le news guidano), <strong style="color:var(--org)">Headwind</strong> (il selling meccanico domina), o <strong style="color:var(--red)">Crash</strong> (stress estremo). In base al regime cambia tutto: strategie attive, direzione preferita, exit, soglie di qualit&agrave;.
       <br><br>
-      Al centro c'&egrave; un <strong style="color:var(--gold)">Control Layer</strong> &mdash; il Playbook rileva il regime, il Selector sceglie le strategie migliori tra 1200+ testate in parallelo, l'Exit Router blocca le uscite incoerenti. In Normal compra seguendo le news. In Headwind shorta la divergenza e compra solo i rimbalzi migliori. Sceglie da solo cosa fare in base a cosa funziona <em>adesso</em>.
+      Al centro c'&egrave; un <strong style="color:var(--gold)">Control Layer</strong> &mdash; il Playbook rileva il regime, il Selector sceglie le strategie migliori tra 1370+ testate in parallelo, l'Exit Router blocca le uscite incoerenti. In Normal compra seguendo le news. In Headwind shorta la divergenza e compra solo i rimbalzi migliori. Sceglie da solo cosa fare in base a cosa funziona <em>adesso</em>.
     </div>
   </div>
   <div data-lang="en" class="visible">
@@ -102,7 +104,7 @@ span[data-lang]{display:none}span[data-lang].visible{display:inline}
       <br><br>
       <strong style="color:var(--text)">The system now detects this automatically.</strong> Every hour it reads DXY, yields and gold's position and determines the regime: <strong style="color:var(--grn)">Normal</strong> (news drives price), <strong style="color:var(--org)">Headwind</strong> (mechanical selling dominates), or <strong style="color:var(--red)">Crash</strong> (extreme stress). Based on the regime, everything changes: active strategies, preferred direction, exit rules, quality thresholds.
       <br><br>
-      At the center is a <strong style="color:var(--gold)">Control Layer</strong> &mdash; the Playbook detects the regime, the Selector picks the best strategies from 1200+ tested in parallel, the Exit Router blocks incoherent exits. In Normal, buy following news. In Headwind, short the divergence and only buy the best rebounds. It decides what to do based on what works <em>now</em>, not 3 months ago.
+      At the center is a <strong style="color:var(--gold)">Control Layer</strong> &mdash; the Playbook detects the regime, the Selector picks the best strategies from 1370+ tested in parallel, the Exit Router blocks incoherent exits. In Normal, buy following news. In Headwind, short the divergence and only buy the best rebounds. It decides what to do based on what works <em>now</em>, not 3 months ago.
     </div>
   </div>
 </div>
@@ -120,381 +122,8 @@ span[data-lang]{display:none}span[data-lang].visible{display:inline}
   </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-/* Refract 3D System Map v4 — distinct shapes per role */
-(function(){
-  const container = document.getElementById('map3d');
-  if(!container) return;
-  const tooltip = document.getElementById('tooltip3d');
-  const ttTitle = document.getElementById('tt-title');
-  const ttBadge = document.getElementById('tt-badge');
-  const ttDesc = document.getElementById('tt-desc');
-  const W = container.clientWidth, H = container.clientHeight;
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(42, W/H, 0.1, 200);
-  const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
-  renderer.setSize(W, H);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  container.appendChild(renderer.domElement);
-
-  // Lighting
-  scene.add(new THREE.AmbientLight(0x303050, 0.4));
-  const keyL = new THREE.DirectionalLight(0xffffff, 0.5); keyL.position.set(4,10,6); scene.add(keyL);
-  const gL = new THREE.PointLight(0xd4a843, 0.9, 22); gL.position.set(0,1,0); scene.add(gL);
-  const bL = new THREE.PointLight(0x4f8efe, 0.3, 18); bL.position.set(-6,-3,4); scene.add(bL);
-  const pL = new THREE.PointLight(0x9b7ff0, 0.3, 15); pL.position.set(2,0,5); scene.add(pL);
-
-  const COL = {cyan:0x00bcd4, grn:0x00c48c, gold:0xd4a843, blu:0x4f8efe, prp:0x9b7ff0};
-  const hitTargets = [];
-  const raycaster = new THREE.Raycaster();
-  const mouse = new THREE.Vector2(-9,-9);
-  let hoveredNode = null;
-
-  // Tooltip info
-  const NI = {en:{}, it:{}};
-  function ri(id,badge,bc,bb,en,it){NI.en[id]={title:id,badge,badgeColor:bc,badgeBg:bb,desc:en};NI.it[id]={title:id,badge,badgeColor:bc,badgeBg:bb,desc:it};}
-  ri('NEWS','LIVE','var(--grn)','var(--grn-dim)','15+ feeds. Gemini classifies: BULLISH/BEARISH + score + p_bullish.','15+ feed. Gemini classifica: BULLISH/BEARISH + score + p_bullish.');
-  ri('PRICE + MACRO','LIVE','var(--grn)','var(--grn-dim)','TwelveData M15 + DXY + US10Y yield. RSI, ATR, EMA, SMA100.','TwelveData M15 + DXY + rendimento US10Y. RSI, ATR, EMA, SMA100.');
-  ri('NLP SIGNALS','IC +0.25','var(--grn)','var(--grn-dim)','pb6, pb12, pb48, belief. News-derived. Best at 8-12h.','pb6, pb12, pb48, belief. Dalle news. Migliori a 8-12h.');
-  ri('TECHNICALS','IC +0.14','var(--grn)','var(--grn-dim)','RSI, Bollinger %B, SMA20. Price-derived. Best at 2-4h.','RSI, Bollinger %B, SMA20. Dal prezzo. Migliori a 2-4h.');
-  ri('MECH SCORE','SOFT','var(--gold)','var(--gold-dim)','0-13 composite. Crash detection. Casario +3 baseline.','Composito 0-13. Rileva crash. Baseline Casario +3.');
-  ri('PLAYBOOK','SOFT','var(--gold)','var(--gold-dim)','Gate 1: Regime detection. Permits/blocks archetypes.','Gate 1: Rileva regime. Permette/blocca archetipi.');
-  ri('SELECTOR','SHADOW','var(--org)','var(--org-dim)','Gate 2: Daily 21 UTC. Top 3 configs per archetype.','Gate 2: Giornaliero 21 UTC. Top 3 config per archetipo.');
-  ri('TQS','SOFT','var(--gold)','var(--gold-dim)','Gate 3: Quality 0-100. Min B in HEADWIND.','Gate 3: Qualit\u00e0 0-100. Min B in HEADWIND.');
-  ri('EXIT ROUTER','SHADOW','var(--org)','var(--org-dim)','Gate 4: Blocks incoherent exits in HEADWIND.','Gate 4: Blocca exit incoerenti in HEADWIND.');
-  ri('SIMENGINE','1264 cfg','var(--prp)','var(--prp-dim)','Parallel lab. Feeds Selector. T4: 69 SHORT.','Lab parallelo. Alimenta Selector. T4: 69 SHORT.');
-  ri('LIVE TRADES','LIVE','var(--grn)','var(--grn-dim)','5 strategies. REF_S1 (PF 1.88). Adaptive.','5 strategie. REF_S1 (PF 1.88). Adattive.');
-  ri('EXIT SYSTEM','14 groups','var(--blu)','var(--blu-dim)','A1-F5. F5 best SHORT (PF 6.70).','A1-F5. F5 migliore SHORT (PF 6.70).');
-  ri('EXIT ADVISOR','SHADOW','var(--org)','var(--org-dim)','Gemini LLM: HOLD / EXIT / TIGHTEN.','Gemini LLM: HOLD / EXIT / TIGHTEN.');
-
-  // ═══ HELPERS ═══
-  function mkLabel(text, width, yOff) {
-    const c=document.createElement('canvas'); c.width=512; c.height=80;
-    const x=c.getContext('2d'); x.fillStyle='#e8e8f0'; x.font='600 26px Inter,Arial,sans-serif'; x.textAlign='center'; x.textBaseline='middle'; x.fillText(text,256,42);
-    const t=new THREE.CanvasTexture(c); t.minFilter=THREE.LinearFilter;
-    const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false}));
-    s.scale.set(width*1.1, width*0.17, 1); s.position.y=yOff||0.8; return s;
-  }
-
-  // ═══ DATA: particle stream (data rain) ═══
-  const dataStreams = [];
-  function dataStream(id, color, x, y, z, count) {
-    count = count || 25;
-    const g = new THREE.Group(); g.userData = {id, origY:y};
-
-    // Invisible hit target (thin box for raycasting)
-    const hitGeo = new THREE.BoxGeometry(1.2, 2, 0.5);
-    const hitMat = new THREE.MeshBasicMaterial({visible:false});
-    const hitMesh = new THREE.Mesh(hitGeo, hitMat);
-    hitMesh.userData = {nodeId:id}; g.add(hitMesh); hitTargets.push(hitMesh);
-
-    // Particle rain
-    const particles = [];
-    for(let i=0; i<count; i++) {
-      const size = 0.03 + Math.random()*0.04;
-      const pg = new THREE.SphereGeometry(size, 6, 6);
-      const pm = new THREE.MeshBasicMaterial({color, transparent:true, opacity:0});
-      const p = new THREE.Mesh(pg, pm);
-      p.userData = {
-        offX: (Math.random()-0.5)*0.8,
-        offZ: (Math.random()-0.5)*0.4,
-        speed: 0.4 + Math.random()*0.6,
-        phase: Math.random(),
-        height: 2.0
-      };
-      g.add(p);
-      particles.push(p);
-    }
-
-    g.add(mkLabel(id, 2.8, 1.5));
-    g.position.set(x, y, z);
-    scene.add(g);
-    dataStreams.push({group:g, particles, color});
-    return g;
-  }
-
-  // ═══ SIGNALS: glowing icosahedrons ═══
-  function signalOrb(id, color, x, y, z, r) {
-    r=r||0.55;
-    const g=new THREE.Group(); g.userData={id, origY:y};
-    const geo=new THREE.IcosahedronGeometry(r, 1);
-    const mat=new THREE.MeshPhysicalMaterial({color, transparent:true, opacity:0.2, metalness:0.2, roughness:0.3, emissive:color, emissiveIntensity:0.15, clearcoat:0.8});
-    const mesh=new THREE.Mesh(geo, mat); mesh.userData={nodeId:id}; g.add(mesh); hitTargets.push(mesh);
-    g.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({color, transparent:true, opacity:0.5})));
-    g.add(new THREE.Mesh(new THREE.SphereGeometry(r*0.4,12,12), new THREE.MeshBasicMaterial({color, transparent:true, opacity:0.15})));
-    g.add(mkLabel(id, r*4.5, r+0.5));
-    g.position.set(x,y,z); scene.add(g); return g;
-  }
-
-  // ═══ CONTROL: hexagonal gates ═══
-  function hexGate(id, color, x, y, z, radius) {
-    radius=radius||1.0;
-    const g=new THREE.Group(); g.userData={id, origY:y};
-    const shape=new THREE.Shape();
-    for(let i=0;i<6;i++){const a=Math.PI/3*i-Math.PI/6; i===0?shape.moveTo(Math.cos(a)*radius,Math.sin(a)*radius):shape.lineTo(Math.cos(a)*radius,Math.sin(a)*radius);}
-    shape.closePath();
-    const extGeo=new THREE.ExtrudeGeometry(shape,{depth:0.25,bevelEnabled:true,bevelThickness:0.03,bevelSize:0.03,bevelSegments:2});
-    extGeo.rotateX(-Math.PI/2);
-    const mat=new THREE.MeshPhysicalMaterial({color, transparent:true, opacity:0.5, metalness:0.4, roughness:0.3, emissive:color, emissiveIntensity:0.22, clearcoat:0.6});
-    const mesh=new THREE.Mesh(extGeo, mat); mesh.userData={nodeId:id}; g.add(mesh); hitTargets.push(mesh);
-    const pts=[]; for(let i=0;i<=6;i++){const a=Math.PI/3*(i%6)-Math.PI/6; pts.push(new THREE.Vector3(Math.cos(a)*radius,0.26,Math.sin(a)*radius));}
-    g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({color, transparent:true, opacity:0.9})));
-    g.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts.map(p=>p.clone().setY(0))), new THREE.LineBasicMaterial({color, transparent:true, opacity:0.35})));
-    g.add(mkLabel(id, radius*2.2, radius*0.5+0.5));
-    g.position.set(x,y,z); scene.add(g); return g;
-  }
-
-  // ═══ SIMENGINE: torus (continuous loop) ═══
-  function torusNode(id, color, x, y, z) {
-    const g=new THREE.Group(); g.userData={id, origY:y};
-    const geo=new THREE.TorusGeometry(0.7, 0.2, 16, 32);
-    const mat=new THREE.MeshPhysicalMaterial({color, transparent:true, opacity:0.25, metalness:0.5, roughness:0.2, emissive:color, emissiveIntensity:0.2, clearcoat:1});
-    const mesh=new THREE.Mesh(geo, mat); mesh.userData={nodeId:id}; g.add(mesh); hitTargets.push(mesh);
-    g.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({color, transparent:true, opacity:0.4})));
-    g.add(new THREE.Mesh(new THREE.SphereGeometry(0.12,8,8), new THREE.MeshBasicMaterial({color, transparent:true, opacity:0.6})));
-    g.add(mkLabel(id, 3, 1.3));
-    g.position.set(x,y,z); scene.add(g); return g;
-  }
-
-  // ═══ EXECUTION: solid cubes ═══
-  function solidCube(id, color, x, y, z, s) {
-    s=s||0.7;
-    const g=new THREE.Group(); g.userData={id, origY:y};
-    const geo=new THREE.BoxGeometry(s*2, s*0.6, s);
-    const mat=new THREE.MeshPhysicalMaterial({color, transparent:true, opacity:0.4, metalness:0.3, roughness:0.5, emissive:color, emissiveIntensity:0.06});
-    const mesh=new THREE.Mesh(geo, mat); mesh.userData={nodeId:id}; g.add(mesh); hitTargets.push(mesh);
-    g.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({color, transparent:true, opacity:0.7})));
-    g.add(mkLabel(id, s*3, s*0.5+0.4));
-    g.position.set(x,y,z); scene.add(g); return g;
-  }
-
-  // ═══ CONNECTIONS ═══
-  function neonLine(from, to, color, dashed) {
-    const pts=[from.position.clone(), to.position.clone()];
-    const mat=dashed ? new THREE.LineDashedMaterial({color, dashSize:0.25, gapSize:0.12, transparent:true, opacity:0.5}) : new THREE.LineBasicMaterial({color, transparent:true, opacity:0.5});
-    const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), mat);
-    if(dashed) line.computeLineDistances(); scene.add(line);
-  }
-
-  const flowP=[];
-  function flowLine(from, to, color) {
-    const p1=from.position.clone(), p2=to.position.clone();
-    scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([p1,p2]), new THREE.LineBasicMaterial({color, transparent:true, opacity:0.25})));
-    const p=new THREE.Mesh(new THREE.SphereGeometry(0.07,8,8), new THREE.MeshBasicMaterial({color, transparent:true, opacity:0.9}));
-    p.userData={p1,p2, speed:0.2+Math.random()*0.15, phase:Math.random()};
-    scene.add(p); flowP.push(p);
-  }
-
-  // ═══ BUILD SCENE ═══
-
-  // DATA (particle streams — data rain)
-  const nNews = dataStream('NEWS', COL.cyan, -2.5, 4.2, 0, 30);
-  const nPrice = dataStream('PRICE + MACRO', COL.cyan, 3, 4.2, 0, 30);
-
-  // SIGNALS (glowing orbs)
-  const nNlp = signalOrb('NLP SIGNALS', COL.grn, -3.5, 2.2, 0, 0.6);
-  const nTech = signalOrb('TECHNICALS', COL.grn, 1.5, 2.2, 0, 0.55);
-  const nMech = signalOrb('MECH SCORE', COL.grn, 5.5, 2.2, 0, 0.55);
-
-  // CONTROL LAYER — dominant glowing platform centered at x=1.25
-  // Gates at -3, 0, 3, 6 → center = 1.5, span = 9 → platform width 12
-  const CL_CENTER = 1.5;
-  const platGeo=new THREE.BoxGeometry(12, 0.15, 4.5);
-  const platMat=new THREE.MeshPhysicalMaterial({color:0xd4a843, transparent:true, opacity:0.08, metalness:0.5, roughness:0.4, emissive:0xd4a843, emissiveIntensity:0.05});
-  const plat=new THREE.Mesh(platGeo, platMat);
-  plat.position.set(CL_CENTER,-0.2,0); scene.add(plat);
-  const pe=new THREE.LineSegments(new THREE.EdgesGeometry(platGeo), new THREE.LineBasicMaterial({color:0xd4a843, transparent:true, opacity:0.6}));
-  pe.position.copy(plat.position); scene.add(pe);
-  // (no glowPlane — was intersecting lower nodes)
-  const glowMat = null;
-  const clC=document.createElement('canvas'); clC.width=512; clC.height=64;
-  const clx=clC.getContext('2d'); clx.fillStyle='#d4a843'; clx.font='bold 22px Inter,sans-serif'; clx.textAlign='center'; clx.fillText('CONTROL LAYER',256,38);
-  const cls=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(clC),transparent:true,depthTest:false}));
-  cls.scale.set(6,0.7,1); cls.position.set(CL_CENTER,1.0,-2.6); scene.add(cls);
-
-  // GATES (hexagons — equidistant, centered on platform)
-  // Positions: -3, 0, 3, 6 → equidistant 3 apart, centered at 1.5
-  const nPb = hexGate('PLAYBOOK', COL.gold, -3, 0, 0, 1.15);
-  const nSel = hexGate('SELECTOR', COL.gold, 0, 0, 0, 1.1);
-  const nTqs = hexGate('TQS', COL.gold, 3, 0, 0, 1.0);
-  const nRtr = hexGate('EXIT ROUTER', COL.gold, 6, 0, 0, 1.15);
-
-  // SIMENGINE (torus — left of center, behind at z=3 like before, between signals and CL)
-  const nSim = torusNode('SIMENGINE', COL.prp, -1, 1.8, 3);
-
-  // EXIT LAYER (intermediate — exit system + advisor, just below CL)
-  const nExit = solidCube('EXIT SYSTEM', COL.blu, 0, -2, 0, 0.8);
-  const nAdv = solidCube('EXIT ADVISOR', COL.blu, 4, -2, 0, 0.8);
-
-  // LIVE TRADES (final output — diamond/octahedron, the gem at the bottom)
-  const nLive = (function(){
-    const g=new THREE.Group(); g.userData={id:'LIVE TRADES', origY:-3.8};
-    const geo=new THREE.OctahedronGeometry(0.8);
-    const mat=new THREE.MeshPhysicalMaterial({color:COL.blu, transparent:true, opacity:0.35, metalness:0.5, roughness:0.2, emissive:COL.blu, emissiveIntensity:0.2, clearcoat:1.0});
-    const mesh=new THREE.Mesh(geo, mat);
-    mesh.userData={nodeId:'LIVE TRADES'}; g.add(mesh); hitTargets.push(mesh);
-    // Bright wireframe
-    g.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo), new THREE.LineBasicMaterial({color:COL.blu, transparent:true, opacity:0.8})));
-    g.add(mkLabel('LIVE TRADES', 3, 1.3));
-    g.position.set(1.5,-3.8,0); scene.add(g); return g;
-  })();
-
-  // ═══ CONNECTIONS — simplified main flow ═══
-  // Principle: Data → Signals → Control Layer → Execution. SimEngine loop on the side.
-  // No cross-links between individual nodes — the platform CONTAINS the gates.
-
-  // DATA → SIGNALS (1 line per pair)
-  flowLine(nNews, nNlp, COL.cyan);
-  flowLine(nPrice, nTech, COL.cyan);
-  flowLine(nPrice, nMech, COL.cyan);
-
-  // SIGNALS → CONTROL LAYER (each signal drops into the platform — one line each)
-  flowLine(nNlp, nPb, COL.grn);     // NLP → first gate (Playbook)
-  flowLine(nTech, nTqs, COL.grn);   // Tech → TQS
-  flowLine(nMech, nPb, COL.grn);    // Mech → Playbook
-
-  // INSIDE CONTROL LAYER: gate chain (bright gold)
-  neonLine(nPb, nSel, COL.gold);
-  neonLine(nSel, nTqs, COL.gold);
-  neonLine(nTqs, nRtr, COL.gold);
-
-  // SIMENGINE ↔ SELECTOR (dashed, feedback)
-  neonLine(nSim, nSel, COL.prp, true);
-
-  // CONTROL LAYER → EXIT LAYER
-  flowLine(nTqs, nExit, COL.gold);    // quality check → exit system
-  flowLine(nRtr, nAdv, COL.gold);     // exit policy → exit advisor
-
-  // EXIT LAYER → LIVE TRADES (final output)
-  flowLine(nExit, nLive, COL.blu);   // exits → actual trades
-
-  // Feedback loop: Execution → SimEngine
-  const fbCurve=new THREE.CatmullRomCurve3([
-    new THREE.Vector3(1.5,-3.8,0), new THREE.Vector3(4,-2,1),
-    new THREE.Vector3(-1,0.5,2), new THREE.Vector3(-1,1.8,3)
-  ]);
-  const fbLine=new THREE.Line(new THREE.BufferGeometry().setFromPoints(fbCurve.getPoints(40)),
-    new THREE.LineDashedMaterial({color:COL.prp, dashSize:0.2, gapSize:0.1, transparent:true, opacity:0.35}));
-  fbLine.computeLineDistances(); scene.add(fbLine);
-  const fbP=new THREE.Mesh(new THREE.SphereGeometry(0.09,8,8), new THREE.MeshBasicMaterial({color:COL.prp, transparent:true}));
-  scene.add(fbP);
-
-  // ═══ CAMERA ═══
-  let isDrag=false, pX=0, pY=0, rY=-0.1, rX=0.3, dist=18;
-  const pivot=new THREE.Vector3(1.5,0.5,0.5);
-  function upCam(){camera.position.set(pivot.x+dist*Math.sin(rY)*Math.cos(rX),pivot.y+dist*Math.sin(rX),pivot.z+dist*Math.cos(rY)*Math.cos(rX));camera.lookAt(pivot);}
-  upCam();
-
-  let tapStartX=0,tapStartY=0;
-  renderer.domElement.addEventListener('pointerdown',e=>{isDrag=true;pX=e.clientX;pY=e.clientY;tapStartX=e.clientX;tapStartY=e.clientY;autoRot=false;});
-  window.addEventListener('pointerup',e=>{
-    isDrag=false;
-    // Tap detection: if pointer didn't move much, it's a tap (mobile tooltip)
-    const dx=Math.abs(e.clientX-tapStartX),dy=Math.abs(e.clientY-tapStartY);
-    if(dx<6&&dy<6){
-      const rect=renderer.domElement.getBoundingClientRect();
-      mouse.x=((e.clientX-rect.left)/rect.width)*2-1;
-      mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;
-      raycaster.setFromCamera(mouse,camera);
-      const hits=raycaster.intersectObjects(hitTargets);
-      const id=hits.length>0?hits[0].object.userData.nodeId:null;
-      if(id&&id!==hoveredNode){
-        hoveredNode=id;
-        hitTargets.forEach(m=>{if(m.userData.nodeId===id&&m.material){m.material.emissiveIntensity=0.6;}});
-        const info=NI[typeof currentLang!=='undefined'?currentLang:'it'][id]||NI.en[id];
-        if(info){ttTitle.textContent=info.title;ttTitle.style.color=info.badgeColor;ttBadge.textContent=info.badge;ttBadge.style.color=info.badgeColor;ttBadge.style.background=info.badgeBg;ttDesc.textContent=info.desc;tooltip.style.display='block';
-          tooltip.style.left=Math.min(e.clientX-rect.left+10,rect.width-290)+'px';
-          tooltip.style.top=Math.max(e.clientY-rect.top-80,10)+'px';}
-      } else {
-        // Tap on empty or same node = close
-        if(hoveredNode)hitTargets.forEach(m=>{if(m.userData.nodeId===hoveredNode&&m.material){m.material.emissiveIntensity=m.material._baseE||0.1;}});
-        hoveredNode=null;tooltip.style.display='none';
-      }
-    }
-  });
-  renderer.domElement.addEventListener('pointermove',e=>{
-    const rect=renderer.domElement.getBoundingClientRect();
-    mouse.x=((e.clientX-rect.left)/rect.width)*2-1; mouse.y=-((e.clientY-rect.top)/rect.height)*2+1;
-    if(isDrag){rY+=(e.clientX-pX)*0.008;rX+=(e.clientY-pY)*0.005;rX=Math.max(-0.6,Math.min(1.2,rX));pX=e.clientX;pY=e.clientY;upCam();}
-  });
-  renderer.domElement.addEventListener('wheel',e=>{dist+=e.deltaY*0.01;dist=Math.max(8,Math.min(28,dist));upCam();e.preventDefault();},{passive:false});
-  let autoRot=true;
-
-  // ═══ ANIMATE ═══
-  const clock=new THREE.Clock();
-  function animate(){
-    requestAnimationFrame(animate);
-    const t=clock.getElapsedTime();
-    if(autoRot){rY+=0.0008;upCam();}
-
-    // Torus rotation
-    if(nSim.children[0]){nSim.children[0].rotation.x=t*0.4;nSim.children[0].rotation.z=t*0.2;}
-    if(nSim.children[1]){nSim.children[1].rotation.x=t*0.4;nSim.children[1].rotation.z=t*0.2;}
-    nSim.position.y=nSim.userData.origY+Math.sin(t*0.6)*0.12;
-
-    // Signal orbs rotate + pulse
-    [nNlp,nTech,nMech].forEach((n,i)=>{
-      if(n.children[0])n.children[0].rotation.y=t*0.3+i;
-      if(n.children[1])n.children[1].rotation.y=-t*0.2+i;
-      if(n.children[0]&&n.children[0].material)n.children[0].material.emissiveIntensity=0.12+0.06*Math.sin(t*2+i);
-    });
-
-    // Data stream particles (rain effect)
-    dataStreams.forEach(ds=>{
-      ds.particles.forEach(p=>{
-        const d=p.userData;
-        const prog=((t*d.speed+d.phase)%1);
-        p.position.set(d.offX, d.height*(1-prog)-d.height*0.5, d.offZ);
-        p.material.opacity = Math.sin(prog*Math.PI)*0.7;
-      });
-    });
-
-    // Hex gate pulse
-    [nPb,nSel,nTqs,nRtr].forEach((n,i)=>{if(n.children[0]&&n.children[0].material)n.children[0].material.emissiveIntensity=0.1+0.05*Math.sin(t*1.5+i*1.2);});
-
-    // Live Trades diamond rotation + pulse
-    if(nLive.children[0]){nLive.children[0].rotation.y=t*0.2;}
-    if(nLive.children[1]){nLive.children[1].rotation.y=t*0.2;}
-    if(nLive.children[0]&&nLive.children[0].material) nLive.children[0].material.emissiveIntensity=0.15+0.08*Math.sin(t*1.2);
-
-    // Platform glow pulse
-    if(platMat) platMat.emissiveIntensity=0.04+0.02*Math.sin(t*0.8);
-
-    // Flow particles
-    flowP.forEach(p=>{const d=p.userData,prog=((t*d.speed+d.phase)%1);p.position.lerpVectors(d.p1,d.p2,prog);p.material.opacity=0.3+0.7*Math.sin(prog*Math.PI);});
-
-    // Feedback particle
-    const ft=(t*0.1)%1;fbP.position.copy(fbCurve.getPoint(ft));fbP.material.opacity=0.4+0.5*Math.sin(ft*Math.PI);
-
-    // Raycasting
-    raycaster.setFromCamera(mouse,camera);
-    const hits=raycaster.intersectObjects(hitTargets);
-    let nh=hits.length>0?hits[0].object.userData.nodeId:null;
-    if(nh!==hoveredNode){
-      if(hoveredNode)hitTargets.forEach(m=>{if(m.userData.nodeId===hoveredNode&&m.material){m.material.emissiveIntensity=m.material._baseE||0.1;}});
-      hoveredNode=nh;
-      if(hoveredNode){
-        hitTargets.forEach(m=>{if(m.userData.nodeId===hoveredNode&&m.material){if(!m.material._baseE)m.material._baseE=m.material.emissiveIntensity;m.material.emissiveIntensity=0.6;}});
-        const info=NI[typeof currentLang!=='undefined'?currentLang:'it'][hoveredNode]||NI.en[hoveredNode];
-        if(info){ttTitle.textContent=info.title;ttTitle.style.color=info.badgeColor;ttBadge.textContent=info.badge;ttBadge.style.color=info.badgeColor;ttBadge.style.background=info.badgeBg;ttDesc.textContent=info.desc;tooltip.style.display='block';}
-        renderer.domElement.style.cursor='pointer';
-      } else {tooltip.style.display='none';renderer.domElement.style.cursor='grab';}
-    }
-    if(hoveredNode&&tooltip.style.display==='block'){
-      const r=container.getBoundingClientRect();
-      let tx=((mouse.x+1)/2)*r.width+16,ty=((1-mouse.y)/2)*r.height-10;
-      if(tx+290>r.width)tx-=306;if(ty+100>r.height)ty-=110;if(ty<0)ty=10;
-      tooltip.style.left=tx+'px';tooltip.style.top=ty+'px';
-    }
-    renderer.render(scene,camera);
-  }
-  animate();
-
-  window.addEventListener('resize',()=>{const w=container.clientWidth,h=container.clientHeight;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);});
-})();
-
-</script>
+<script src="system_map_3d.js"></script>
+<script>/* 3D loaded from system_map_3d.js */</script>
 
 <!-- ═══ DATA IN ═══ -->
 <div class="section">
@@ -638,9 +267,9 @@ span[data-lang]{display:none}span[data-lang].visible{display:inline}
       <div class="card-sub" data-lang="it">Gate 1: Rileva il regime di mercato. Decide quali tipi di trade sono permessi.</div>
       <div class="card-detail">
         <div class="d-block"><div class="d-label"><span data-lang="en" class="visible">Regimes</span><span data-lang="it">Regimi</span></div>
-          <div class="d-text visible" data-lang="en">Every hour, reads DXY, yield, gold price, SMA100:<br><br><strong>NORMAL</strong> &mdash; macro neutral. All trade types allowed.<br><strong>HEADWIND_SOFT</strong> &mdash; DXY&gt;100 AND yield&gt;4.25%. Macro hostile to gold. LONGs restricted, SHORTs allowed.<br><strong>HEADWIND_STRONG</strong> &mdash; SOFT + gold below SMA100 (100-day avg). Worst for LONG. No new LONG after 13 UTC.</div>
-          <div class="d-text" data-lang="it">Ogni ora legge DXY, yield, prezzo oro, SMA100:<br><br><strong>NORMAL</strong> &mdash; macro neutro. Tutti i tipi di trade permessi.<br><strong>HEADWIND_SOFT</strong> &mdash; DXY&gt;100 E yield&gt;4.25%. Macro ostile all'oro. LONG limitati, SHORT permessi.<br><strong>HEADWIND_STRONG</strong> &mdash; SOFT + oro sotto SMA100 (media 100 giorni). Peggiore per LONG. Nessun LONG dopo le 13 UTC.</div>
-          <div class="regime-row"><span class="regime-chip rc-normal">NORMAL</span><span class="regime-chip rc-soft">HEADWIND SOFT</span><span class="regime-chip rc-strong" style="font-weight:600;box-shadow:0 0 8px rgba(255,71,87,.3)">&#x25B6; HEADWIND STRONG</span></div>
+          <div class="d-text visible" data-lang="en">Every hour, reads DXY, yield, gold price, SMA100:<br><br><strong>NORMAL</strong> &mdash; macro neutral. All trade types allowed.<br><strong>HEADWIND_SOFT</strong> &mdash; DXY&gt;100 AND yield&gt;4.25%. Macro hostile to gold. LONGs restricted, SHORTs allowed.<br><strong>HEADWIND_STRONG</strong> &mdash; SOFT + gold below SMA100 (100-day avg). Worst for LONG. No new LONG after 13 UTC.<br><br><strong>Hysteresis:</strong> Entry requires <strong>3 consecutive H1 candles</strong> above threshold (filters DXY noise at 100.0). Exit requires <strong>8 H1 candles</strong> below threshold. Both configurable in YAML.<br><strong>SMA100:</strong> auto-backfilled from TwelveData at boot (200 daily bars) if insufficient data.</div>
+          <div class="d-text" data-lang="it">Ogni ora legge DXY, yield, prezzo oro, SMA100:<br><br><strong>NORMAL</strong> &mdash; macro neutro. Tutti i tipi di trade permessi.<br><strong>HEADWIND_SOFT</strong> &mdash; DXY&gt;100 E yield&gt;4.25%. Macro ostile all'oro. LONG limitati, SHORT permessi.<br><strong>HEADWIND_STRONG</strong> &mdash; SOFT + oro sotto SMA100 (media 100 giorni). Peggiore per LONG. Nessun LONG dopo le 13 UTC.<br><br><strong>Isteresi:</strong> L'ingresso richiede <strong>3 candele H1 consecutive</strong> sopra soglia (filtra il rumore DXY a 100.0). L'uscita richiede <strong>8 candele H1</strong> sotto soglia. Entrambi configurabili da YAML.<br><strong>SMA100:</strong> auto-backfillato da TwelveData al boot (200 barre giornaliere) se i dati sono insufficienti.</div>
+          <div class="regime-row"><span class="regime-chip rc-normal" style="font-weight:600;box-shadow:0 0 8px rgba(0,196,140,.3)">&#x25B6; NORMAL</span><span class="regime-chip rc-soft">HEADWIND SOFT</span><span class="regime-chip rc-strong">HEADWIND STRONG</span></div>
         </div>
         <div class="d-block"><div class="d-label"><span data-lang="en" class="visible">Trade types (archetypes)</span><span data-lang="it">Tipi di trade (archetipi)</span></div>
           <div class="d-text visible" data-lang="en"><strong>normal_long</strong> &mdash; buy gold because news is bullish (the standard trade)<br><strong>rebound_long</strong> &mdash; buy gold after a crash (rubber band bounce)<br><strong>divergence_short</strong> &mdash; sell gold because price falls despite bullish news (mechanical selling)<br><strong>crash_short</strong> &mdash; sell gold during a confirmed crash (mechanical score &ge;7)</div>
@@ -658,8 +287,8 @@ span[data-lang]{display:none}span[data-lang].visible{display:inline}
           <div class="d-text" data-lang="it" style="font-size:10px;margin-top:6px"><strong>FULL</strong> = nessuna restrizione. <strong>REDUCED</strong> = qualit&agrave; minima TQS B. <strong>SESSION</strong> = bloccato dopo 13 UTC. <strong>SHADOW</strong> = solo log. <strong>BLOCKED</strong> = serve mechanical &ge;7.</div>
         </div>
         <div class="d-block"><div class="d-label"><span data-lang="en" class="visible">Momentum overlay</span><span data-lang="it">Overlay momentum</span></div>
-          <div class="d-text visible" data-lang="en">The matrix above is static. But in HEADWIND, if gold is <strong>rising</strong> (price up &gt;0.5% in 4h AND still rising in 2h), blocking LONGs is wrong &mdash; the market is rallying despite hostile macro.<br><br>The <strong>momentum overlay</strong> upgrades LONG permissions in HEADWIND when price is RISING: BLOCKED/SESSION &rarr; REDUCED (allowed with TQS B+). <strong>Asymmetric</strong>: never touches SHORT &mdash; SHORT timing is different and blocking them in RISING destroys profitable trades.<br><br>Validated on 13-month WF: RISING at 0.5% has 57% continuation at 8h. Backtested on live SimEngine: +0.90% net on unique events with zero downgrade damage.</div>
-          <div class="d-text" data-lang="it">La matrice sopra &egrave; statica. Ma in HEADWIND, se l'oro sta <strong>salendo</strong> (prezzo +0.5% in 4h E ancora in salita nelle 2h), bloccare i LONG &egrave; sbagliato &mdash; il mercato sta salendo nonostante il macro ostile.<br><br>L'<strong>overlay momentum</strong> upgrada i permessi LONG in HEADWIND quando il prezzo sale: BLOCKED/SESSION &rarr; REDUCED (permesso con TQS B+). <strong>Asimmetrico</strong>: non tocca mai gli SHORT &mdash; il timing SHORT &egrave; diverso e bloccarli in RISING distrugge trade profittevoli.<br><br>Validato su WF 13 mesi: RISING a 0.5% ha 57% di continuazione a 8h. Backtestato su SimEngine live: +0.90% netto su trade unici con zero danni da downgrade.</div>
+          <div class="d-text visible" data-lang="en">The matrix above is static. The <strong>momentum overlay</strong> makes it dynamic with two symmetric rules based on price action (pc4h &gt; 0.5% AND pc2h &gt; 0 = RISING):<br><br><strong>1. HEADWIND + RISING &rarr; LONG upgraded.</strong> BLOCKED/SESSION &rarr; REDUCED (TQS B+). Don't block buyers in a rally despite hostile macro.<br><strong>2. ANY state + RISING &rarr; SHORT downgraded.</strong> FULL/REDUCED &rarr; SHADOW_ONLY. Don't short a strong rally &mdash; WF data shows pb6&lt;0.20 in +5% rally weeks has only 29% SHORT win rate.<br><br>Same threshold for both. In FLAT/FALLING conditions, both directions trade normally (SHORT WR 69% in WF FLAT).</div>
+          <div class="d-text" data-lang="it">La matrice sopra &egrave; statica. L'<strong>overlay momentum</strong> la rende dinamica con due regole simmetriche basate sul price action (pc4h &gt; 0.5% E pc2h &gt; 0 = RISING):<br><br><strong>1. HEADWIND + RISING &rarr; LONG upgradati.</strong> BLOCKED/SESSION &rarr; REDUCED (TQS B+). Non bloccare i compratori in un rally nonostante macro ostile.<br><strong>2. QUALSIASI stato + RISING &rarr; SHORT declassati.</strong> FULL/REDUCED &rarr; SHADOW_ONLY. Non shortare un rally forte &mdash; i dati WF mostrano che pb6&lt;0.20 in settimane con rally +5% ha solo 29% di win rate SHORT.<br><br>Stessa soglia per entrambi. In condizioni FLAT/FALLING, entrambe le direzioni tradano normalmente (SHORT WR 69% in WF FLAT).</div>
         </div>
         <div class="d-block"><div class="d-label"><span data-lang="en" class="visible">How to verify</span><span data-lang="it">Come verificare</span></div><code class="cmd">python tools/shadow_report.py --days 1
 # "Playbook Engine" section</code></div>
@@ -673,8 +302,8 @@ span[data-lang]{display:none}span[data-lang].visible{display:inline}
       <div class="card-sub" data-lang="it">Gate 2: Sceglie le top 3 config per archetipo dai dati SimEngine. Giornaliero alle 21:00 UTC.</div>
       <div class="card-detail">
         <div class="d-block"><div class="d-label"><span data-lang="en" class="visible">What it does</span><span data-lang="it">Cosa fa</span></div>
-          <div class="d-text visible" data-lang="en">SimEngine tests 1200+ configs in parallel. Every day at market close, the Selector reads results for the <strong>current regime</strong> and ranks by <strong>robustness</strong>:<br><br><strong>score = PF &times; log(N) &times; recency &times; dispersion &times; consistency &times; risk</strong><br><br>Not just profit. A config that won 5 trades in the same hour scores LOW (clustered). One with moderate PF across multiple days and sessions scores HIGH (robust).</div>
-          <div class="d-text" data-lang="it">Il SimEngine testa 1200+ config in parallelo. Ogni giorno alla chiusura, il Selector legge i risultati per il <strong>regime corrente</strong> e classifica per <strong>robustezza</strong>:<br><br><strong>score = PF &times; log(N) &times; recency &times; dispersione &times; consistenza &times; rischio</strong><br><br>Non solo profitto. Una config che vince 5 trade nella stessa ora ha score BASSO (concentrata). Una con PF moderato su pi&ugrave; giorni e sessioni ha score ALTO (robusta).</div>
+          <div class="d-text visible" data-lang="en">SimEngine tests 1370+ configs in parallel. Every day at market close, the Selector reads results for the <strong>current regime</strong> and ranks by <strong>robustness</strong>:<br><br><strong>score = PF &times; log(N) &times; recency &times; dispersion &times; consistency &times; risk</strong><br><br>Not just profit. A config that won 5 trades in the same hour scores LOW (clustered). One with moderate PF across multiple days and sessions scores HIGH (robust).</div>
+          <div class="d-text" data-lang="it">Il SimEngine testa 1370+ config in parallelo. Ogni giorno alla chiusura, il Selector legge i risultati per il <strong>regime corrente</strong> e classifica per <strong>robustezza</strong>:<br><br><strong>score = PF &times; log(N) &times; recency &times; dispersione &times; consistenza &times; rischio</strong><br><br>Non solo profitto. Una config che vince 5 trade nella stessa ora ha score BASSO (concentrata). Una con PF moderato su pi&ugrave; giorni e sessioni ha score ALTO (robusta).</div>
         </div>
         <div class="d-block"><div class="d-label"><span data-lang="en" class="visible">Key rule</span><span data-lang="it">Regola chiave</span></div>
           <div class="d-text visible" data-lang="en"><strong>No config passes threshold = zero trades</strong> for that archetype. No trade &gt; bad trade.</div>
@@ -709,17 +338,21 @@ python tools/apply_selector.py --approve  # apply (semi)</code></div>
 
     <!-- Exit Router -->
     <div class="card c-gold" onclick="toggleCard(this)">
-      <div class="card-head"><span class="card-icon">&#x1F6AA;</span><span class="card-title">Exit Policy Router</span><span class="card-badge b-shadow">SHADOW</span></div>
-      <div class="card-sub visible" data-lang="en">Gate 4: Blocks exit reasons that don't fit the regime. Never assigns exits &mdash; only prevents bad ones.</div>
-      <div class="card-sub" data-lang="it">Gate 4: Blocca motivi di uscita incoerenti col regime. Non assegna mai exit &mdash; previene solo quelli sbagliati.</div>
+      <div class="card-head"><span class="card-icon">&#x1F6AA;</span><span class="card-title">Exit Policy Router v2</span><span class="card-badge b-shadow">SHADOW</span></div>
+      <div class="card-sub visible" data-lang="en">Gate 4: Assigns the optimal exit policy at trade entry based on regime, volatility, and context.</div>
+      <div class="card-sub" data-lang="it">Gate 4: Assegna la exit policy ottimale all'apertura del trade in base a regime, volatilit&agrave; e contesto.</div>
       <div class="card-detail">
-        <div class="d-block"><div class="d-label"><span data-lang="en" class="visible">The problem</span><span data-lang="it">Il problema</span></div>
-          <div class="d-text visible" data-lang="en">A SHORT trade profits when gold drops. But <code>belief_flip</code> closes the trade when news sentiment flips bullish. In HEADWIND, bullish news appears but the price keeps dropping (mechanical selling). The trade closes at +0.4% instead of +1.4%.<br><br><strong>The router blocks belief_flip AND tighten_to_BE on SHORT in HEADWIND.</strong> Both are sentiment-driven: belief_flip reacts to news, tighten_to_BE moves stop to breakeven which gets triggered by micro-rebounds during a selloff. The trade runs to its technical exit (timeout, trailing) instead.<br><br><strong>Allowed SHORT exits in HEADWIND:</strong> timeout, trailing ATR, target profit.<br><strong>Blocked:</strong> belief_flip, tighten_to_BE.</div>
-          <div class="d-text" data-lang="it">Un trade SHORT guadagna quando l'oro scende. Ma <code>belief_flip</code> chiude il trade quando il sentiment delle news gira bullish. In HEADWIND, compaiono news bullish ma il prezzo continua a scendere (vendita meccanica). Il trade chiude a +0.4% invece di +1.4%.<br><br><strong>Il router blocca belief_flip E tighten_to_BE sugli SHORT in HEADWIND.</strong> Entrambi sono guidati dal sentiment: belief_flip reagisce alle news, tighten_to_BE sposta lo stop a breakeven che viene triggerato dai micro-rimbalzi durante un selloff. Il trade corre fino alla sua exit tecnica (timeout, trailing).<br><br><strong>Exit SHORT permessi in HEADWIND:</strong> timeout, trailing ATR, target profit.<br><strong>Bloccati:</strong> belief_flip, tighten_to_BE.</div>
+        <div class="d-block"><div class="d-label"><span data-lang="en" class="visible">What changed (v1 &rarr; v2)</span><span data-lang="it">Cosa &egrave; cambiato (v1 &rarr; v2)</span></div>
+          <div class="d-text visible" data-lang="en"><strong>v1</strong> only blocked incoherent exits (e.g. belief_flip on SHORT in HEADWIND).<br><strong>v2</strong> is a <strong>policy dispatcher</strong>: at entry, it looks up the optimal exit strategy based on 4 context states and assigns it to the trade for its entire lifetime.<br><br><strong>Policy assigned at ENTRY, immutable.</strong> Mid-trade regime changes do NOT change the policy. The Router can only tighten or block, never loosen.</div>
+          <div class="d-text" data-lang="it"><strong>v1</strong> bloccava solo le exit incoerenti (es. belief_flip su SHORT in HEADWIND).<br><strong>v2</strong> &egrave; un <strong>policy dispatcher</strong>: all'apertura, cerca la strategia di uscita ottimale in base a 4 stati di contesto e la assegna al trade per tutta la sua durata.<br><br><strong>Policy assegnata all'ENTRY, immutabile.</strong> Cambi di regime a trade aperto NON cambiano la policy. Il Router pu&ograve; solo stringere o bloccare, mai allentare.</div>
         </div>
-        <div class="d-block"><div class="d-label"><span data-lang="en" class="visible">Modes</span><span data-lang="it">Modalit&agrave;</span></div>
-          <div class="d-text visible" data-lang="en"><strong>shadow</strong>: logs "would block". <strong>soft</strong>: blocks belief_flip on SHORT in HEADWIND. <strong>hard</strong>: full matrix.</div>
-          <div class="d-text" data-lang="it"><strong>shadow</strong>: logga "avrebbe bloccato". <strong>soft</strong>: blocca belief_flip su SHORT in HEADWIND. <strong>hard</strong>: matrice completa.</div>
+        <div class="d-block"><div class="d-label"><span data-lang="en" class="visible">Context states</span><span data-lang="it">Stati di contesto</span></div>
+          <div class="d-text visible" data-lang="en"><strong>NORMAL_LOWVOL</strong> &mdash; calm market, ATR &le; 40. News-driven exits work best.<br><strong>NORMAL_HIGHVOL</strong> &mdash; volatile but no headwind. Trailing stops preferred.<br><strong>HEADWIND_RISING</strong> &mdash; hostile macro + counter-trend rally. Tightest exits.<br><strong>HEADWIND_OTHER</strong> &mdash; hostile macro, trend-aligned. Technical exits only.</div>
+          <div class="d-text" data-lang="it"><strong>NORMAL_LOWVOL</strong> &mdash; mercato calmo, ATR &le; 40. Le exit basate sulle news funzionano meglio.<br><strong>NORMAL_HIGHVOL</strong> &mdash; volatile ma senza headwind. Trailing stop preferiti.<br><strong>HEADWIND_RISING</strong> &mdash; macro ostile + rally controtendenza. Exit pi&ugrave; stretti.<br><strong>HEADWIND_OTHER</strong> &mdash; macro ostile, allineato al trend. Solo exit tecnici.</div>
+        </div>
+        <div class="d-block"><div class="d-label"><span data-lang="en" class="visible">Relationship with T5</span><span data-lang="it">Relazione con T5</span></div>
+          <div class="d-text visible" data-lang="en"><strong>T5 answers: "which exit works?"</strong> &mdash; tests 4 exit families in isolation on live data.<br><strong>Router answers: "when to use each?"</strong> &mdash; assigns the right family per context.<br>After 10 days of T5 data, the Router's policy table will be populated with evidence.</div>
+          <div class="d-text" data-lang="it"><strong>T5 risponde: "quale exit funziona?"</strong> &mdash; testa 4 famiglie exit in isolamento su dati live.<br><strong>Il Router risponde: "quando usare ciascuna?"</strong> &mdash; assegna la famiglia giusta per contesto.<br>Dopo 10 giorni di dati T5, la tabella policy del Router sar&agrave; popolata con evidenza.</div>
         </div>
       </div>
     </div>
@@ -729,16 +362,20 @@ python tools/apply_selector.py --approve  # apply (semi)</code></div>
   <div style="margin-top:14px"><div class="cards">
     <div class="card c-prp" onclick="toggleCard(this)">
       <div class="card-head"><span class="card-icon">&#x1F9EA;</span><span class="card-title"><span data-lang="en" class="visible">SimEngine (parallel lab)</span><span data-lang="it">SimEngine (laboratorio parallelo)</span></span><span class="card-badge b-live">LIVE</span></div>
-      <div class="card-sub visible" data-lang="en">1264 configs trading on paper in parallel. Same data, zero risk. Feeds the Selector.</div>
-      <div class="card-sub" data-lang="it">1264 config che tradano su carta in parallelo. Stessi dati, zero rischio. Alimenta il Selector.</div>
+      <div class="card-sub visible" data-lang="en">1370 configs trading on paper in parallel. Same data, zero risk. Feeds the Selector.</div>
+      <div class="card-sub" data-lang="it">1370 config che tradano su carta in parallelo. Stessi dati, zero rischio. Alimenta il Selector.</div>
       <div class="card-detail">
         <div class="d-block"><div class="d-label"><span data-lang="en" class="visible">How it works</span><span data-lang="it">Come funziona</span></div>
-          <div class="d-text visible" data-lang="en">Every news and every candle is processed by <strong>1264 configs</strong> simultaneously. Each has different signals, thresholds, exits. All paper trades &mdash; no money, no interference. Every trade logged with regime, TQS, playbook state.<br><br>The SimEngine is the system's <strong>memory</strong>. It knows which configs work in which regime. The Selector reads this daily and promotes winners.</div>
-          <div class="d-text" data-lang="it">Ogni news e ogni candela viene processata da <strong>1264 config</strong> simultaneamente. Ognuna ha segnali, soglie ed exit diversi. Tutti paper trade &mdash; zero soldi, zero interferenze. Ogni trade loggato con regime, TQS, stato playbook.<br><br>Il SimEngine &egrave; la <strong>memoria</strong> del sistema. Sa quali config funzionano in quale regime. Il Selector legge questi dati giornalmente e promuove i vincitori.</div>
+          <div class="d-text visible" data-lang="en">Every news and every candle is processed by <strong>1370 configs</strong> simultaneously. Each has different signals, thresholds, exits. All paper trades &mdash; no money, no interference. Every trade logged with regime, TQS, playbook state.<br><br>The SimEngine is the system's <strong>memory</strong>. It knows which configs work in which regime. The Selector reads this daily and promotes winners.</div>
+          <div class="d-text" data-lang="it">Ogni news e ogni candela viene processata da <strong>1370 config</strong> simultaneamente. Ognuna ha segnali, soglie ed exit diversi. Tutti paper trade &mdash; zero soldi, zero interferenze. Ogni trade loggato con regime, TQS, stato playbook.<br><br>Il SimEngine &egrave; la <strong>memoria</strong> del sistema. Sa quali config funzionano in quale regime. Il Selector legge questi dati giornalmente e promuove i vincitori.</div>
         </div>
         <div class="d-block"><div class="d-label">Tiers</div>
-          <div class="d-text visible" data-lang="en"><strong>T1</strong> (366) &mdash; walk-forward validated originals<br><strong>T2</strong> (456) &mdash; threshold/window variants<br><strong>T3</strong> (372) &mdash; experimental (crash short, rubber band, multi-timeframe)<br><strong>T4</strong> (69) &mdash; <strong>NEW</strong> SHORT strategies for HEADWIND:<br>&bull; T4_A (8) &mdash; NLP divergence: bullish news + price dropping. Exit 4h max.<br>&bull; T4_B (27) &mdash; Failed rebound: RSI overbought + price rolling. Strongest.<br>&bull; T4_C (6) &mdash; Structural: HEADWIND_STRONG + below SMA100.<br>&bull; T4_D (12) &mdash; Bollinger: upper band + dropping.<br>&bull; T4_E (16) &mdash; Combo NLP + RSI. Best at 8h.</div>
-          <div class="d-text" data-lang="it"><strong>T1</strong> (366) &mdash; originali validati walk-forward<br><strong>T2</strong> (456) &mdash; varianti di soglie/finestre<br><strong>T3</strong> (372) &mdash; sperimentali (crash short, rubber band, multi-timeframe)<br><strong>T4</strong> (69) &mdash; <strong>NUOVE</strong> strategie SHORT per HEADWIND:<br>&bull; T4_A (8) &mdash; Divergenza NLP: news bullish + prezzo che scende. Exit 4h max.<br>&bull; T4_B (27) &mdash; Rimbalzo fallito: RSI ipercomprato + prezzo che gira. Il pi&ugrave; forte.<br>&bull; T4_C (6) &mdash; Strutturale: HEADWIND_STRONG + sotto SMA100.<br>&bull; T4_D (12) &mdash; Bollinger: banda superiore + discesa.<br>&bull; T4_E (16) &mdash; Combo NLP + RSI. Migliore a 8h.</div>
+          <div class="d-text visible" data-lang="en"><strong>T1</strong> (366) &mdash; walk-forward validated originals<br><strong>T2</strong> (456) &mdash; threshold/window variants<br><strong>T3</strong> (372) &mdash; experimental (crash short, rubber band, multi-timeframe)<br><strong>T4</strong> (69) &mdash; SHORT strategies for HEADWIND (NLP divergence, failed rebound, structural, Bollinger, combo)<br><strong>T5</strong> (53) &mdash; <strong>NEW</strong> exit family testing. LONG only. 4 exit families &times; 7 signals + entry filters + flow experimental:<br>&bull; <strong>Step-Lock</strong> &mdash; progressive stop upgrade (+0.50% &rarr; BE, +0.75% &rarr; +0.25%, +1.00% &rarr; +0.50%)<br>&bull; <strong>Scale-Out</strong> &mdash; 50% TP at +0.50%, runner with trailing 1.5x ATR<br>&bull; <strong>Hybrid</strong> &mdash; TP +0.75% in first 3h, then trailing stop<br>&bull; <strong>MFE Protection</strong> &mdash; close when drawdown from peak &gt; 50% of MFE (min 0.40%)</div>
+          <div class="d-text" data-lang="it"><strong>T1</strong> (366) &mdash; originali validati walk-forward<br><strong>T2</strong> (456) &mdash; varianti di soglie/finestre<br><strong>T3</strong> (372) &mdash; sperimentali (crash short, rubber band, multi-timeframe)<br><strong>T4</strong> (69) &mdash; strategie SHORT per HEADWIND (divergenza NLP, rimbalzo fallito, strutturale, Bollinger, combo)<br><strong>T5</strong> (53) &mdash; <strong>NUOVO</strong> test famiglie exit. Solo LONG. 4 famiglie exit &times; 7 segnali + filtri entry + flow sperimentali:<br>&bull; <strong>Step-Lock</strong> &mdash; upgrade progressivo dello stop (+0.50% &rarr; BE, +0.75% &rarr; +0.25%, +1.00% &rarr; +0.50%)<br>&bull; <strong>Scale-Out</strong> &mdash; 50% TP a +0.50%, runner con trailing 1.5x ATR<br>&bull; <strong>Hybrid</strong> &mdash; TP +0.75% nelle prime 3h, poi trailing stop<br>&bull; <strong>MFE Protection</strong> &mdash; chiude quando il drawdown dal picco &gt; 50% del MFE (min 0.40%)</div>
+        </div>
+        <div class="d-block"><div class="d-label"><span data-lang="en" class="visible">Combined replay (regime policy + MFE protection)</span><span data-lang="it">Combined replay (regime policy + MFE protection)</span></div>
+          <div class="d-text visible" data-lang="en">Retroactive backtest on 325 unique SimEngine trades (4 days). Applies momentum policy (block SHORT in RISING, allow in FALLING) + MFE Protection (close when drawdown &gt; 50% of peak). Results per tier:<br><br><strong>T3: PF 4.43, WR 85%, 5 stops on 85 trades</strong> &bull; <strong>T2: PF 3.69, WR 82%, 7 stops on 83 trades</strong> &bull; T1: PF 2.28, WR 77%</div>
+          <div class="d-text" data-lang="it">Backtest retroattivo su 325 trade unici SimEngine (4 giorni). Applica momentum policy (blocca SHORT in RISING, permetti in FALLING) + MFE Protection (chiudi quando drawdown &gt; 50% del picco). Risultati per tier:<br><br><strong>T3: PF 4.43, WR 85%, 5 stop su 85 trade</strong> &bull; <strong>T2: PF 3.69, WR 82%, 7 stop su 83 trade</strong> &bull; T1: PF 2.28, WR 77%</div>
         </div>
         <div class="d-block"><div class="d-label"><span data-lang="en" class="visible">The feedback loop</span><span data-lang="it">Il loop di feedback</span></div>
           <div class="d-text visible" data-lang="en">SimEngine trades &rarr; logged with regime &rarr; Selector reads &rarr; picks top 3 per archetype &rarr; those go live. This is how the system <strong>adapts</strong>: tries everything in simulation, measures results, promotes winners. Daily.</div>
@@ -882,17 +519,21 @@ python tools/diagnostics.py full --output report.md
 python tools/simengine_analysis.py --by-playbook
 python tools/simengine_analysis.py --unique</code></div>
 
-        <div class="d-block"><div class="d-label"><span data-lang="en" class="visible">Deploy to VM</span><span data-lang="it">Deploy sulla VM</span></div><code class="cmd">git push
+        <div class="d-block"><div class="d-label"><span data-lang="en" class="visible">Deploy to VM (ALWAYS restart both bots)</span><span data-lang="it">Deploy sulla VM (SEMPRE riavviare entrambi i bot)</span></div><code class="cmd">git push
 ssh -i ~/.ssh/google_compute_engine Edo@34.65.169.185 \
   "sudo -u edo_luca88 bash -c 'cd /home/edo_luca88/gold-macro-bot && git pull' \
-  && sudo systemctl restart refract-gold"</code></div>
+  && sudo systemctl restart refract-gold \
+  && sudo systemctl restart refract-fx"</code>
+          <div class="warn visible" data-lang="en">ALWAYS restart BOTH bots. On 1 Apr, the FX bot ran 9 days on old code without asset filter, contaminating 2,718 gold price fields with EUR/USD prices.</div>
+          <div class="warn" data-lang="it">SEMPRE riavviare ENTRAMBI i bot. Il 1 apr, il bot FX ha girato 9 giorni su codice vecchio senza filtro asset, contaminando 2.718 campi prezzo gold con prezzi EUR/USD.</div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <div style="text-align:center;padding:32px 0 0;border-top:1px solid var(--border);margin-top:32px">
-  <div style="font-size:11px;color:var(--muted)">Refract v13.2 &mdash; 1 Apr 2026 &mdash; 1264 SimEngine configs &bull; 4 archetypes &bull; 3 regimes &bull; 4 control gates &bull; momentum overlay</div>
+  <div style="font-size:11px;color:var(--muted)">Refract v13.3.0 &mdash; 3 Apr 2026 &mdash; 1370 SimEngine configs (5 tiers) &bull; 4 archetypes &bull; 3 regimes &bull; 4 control gates &bull; Exit Router v2 &bull; T5 exit families &bull; momentum overlay &bull; DXY synthetic feed</div>
 </div>
 
 </div>
