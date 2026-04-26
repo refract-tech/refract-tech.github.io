@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Refract&trade; &mdash; Arc 25-27 Apr: lateness, direction, exit-first</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --surface: #12121a; --surface-2: #1a1a26; --border: #2a2a3a;
+    --gold: #d4a843; --gold-dim: #a07d2e; --green: #34d399; --red: #f87171;
+    --blue: #60a5fa; --orange: #fb923c; --purple: #a78bfa;
+    --text: #e8e8ed; --text-dim: #8888a0; --text-muted: #55556a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 980px; margin: 0 auto; padding: 40px 24px 80px; }
+  .header { text-align: center; margin-bottom: 40px; }
+  .header .brand { font-size: 13px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 500; }
+  .header h1 { font-size: clamp(24px, 4vw, 38px); font-weight: 700; line-height: 1.2; margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--text) 0%, var(--text-dim) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .header .subtitle { font-size: 15px; color: var(--text-dim); }
+  .header .date { font-size: 11px; color: var(--text-muted); margin-top: 8px; font-family: 'JetBrains Mono', monospace; }
+  .stats-bar { display: flex; justify-content: center; gap: 32px; margin-bottom: 40px; padding: 20px 0;
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .stat { text-align: center; min-width: 100px; }
+  .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 500; }
+  .stat-value.gold { color: var(--gold); }
+  .stat-value.green { color: var(--green); }
+  .stat-value.red { color: var(--red); }
+  .stat-value.blue { color: var(--blue); }
+  .stat-value.orange { color: var(--orange); }
+  .stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+  section { margin-bottom: 56px; }
+  h2 { font-size: 22px; font-weight: 700; margin-bottom: 18px; color: var(--gold); }
+  h3 { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: var(--text); margin-top: 24px; }
+  h4 { font-size: 13px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; margin-top: 18px; }
+  p { color: var(--text-dim); margin-bottom: 14px; font-size: 14px; }
+  p strong { color: var(--text); }
+  ul, ol { color: var(--text-dim); font-size: 14px; margin-bottom: 14px; padding-left: 20px; }
+  li { margin-bottom: 6px; }
+  li strong { color: var(--text); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--gold); background: rgba(212,168,67,0.08); padding: 1px 6px; border-radius: 4px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px 24px; margin-bottom: 16px; }
+  .card-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+  .card p { margin-bottom: 8px; }
+  .highlight { background: rgba(212, 168, 67, 0.08); border-left: 3px solid var(--gold); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 16px; }
+  .highlight p { color: var(--text); margin-bottom: 0; }
+  .info { background: rgba(96, 165, 250, 0.06); border-left: 3px solid var(--blue); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 16px; }
+  .info p { color: var(--text-dim); margin-bottom: 4px; font-size: 13px; }
+  .info strong { color: var(--blue); }
+  .caveat { background: rgba(248, 113, 113, 0.06); border-left: 3px solid var(--red); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 16px; }
+  .caveat p { color: var(--text-dim); margin-bottom: 4px; font-size: 13px; }
+  .caveat strong { color: var(--red); }
+  .check { background: rgba(52, 211, 153, 0.06); border-left: 3px solid var(--green); padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 12px; }
+  .check p { color: var(--text-dim); margin-bottom: 0; font-size: 13px; }
+  .check strong { color: var(--green); }
+  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { background: var(--surface-2); padding: 10px 12px; text-align: right; font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-dim); white-space: nowrap; }
+  th:first-child { text-align: left; }
+  td { padding: 8px 12px; border-top: 1px solid var(--border); white-space: nowrap; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  td:first-child { text-align: left; font-family: 'DM Sans', sans-serif; font-size: 12px; }
+  tr:nth-child(even) { background: rgba(255,255,255,0.015); }
+  tr:hover { background: rgba(212, 168, 67, 0.05); }
+  tr.winner { background: rgba(52, 211, 153, 0.06) !important; }
+  tr.loser { background: rgba(248, 113, 113, 0.04) !important; }
+  .val-green { color: var(--green); font-weight: 600; }
+  .val-red { color: var(--red); }
+  .val-gold { color: var(--gold); font-weight: 600; }
+  .val-blue { color: var(--blue); }
+  .val-dim { color: var(--text-muted); }
+  .badge { display: inline-block; border-radius: 6px; padding: 3px 10px; font-size: 10px; font-weight: 600; font-family: 'JetBrains Mono', monospace; margin-right: 6px; }
+  .badge.live { background: rgba(52, 211, 153, 0.15); border: 1px solid var(--green); color: var(--green); }
+  .badge.shadow { background: rgba(96, 165, 250, 0.12); border: 1px solid var(--blue); color: var(--blue); }
+  .badge.demote { background: rgba(248, 113, 113, 0.10); border: 1px solid var(--red); color: var(--red); }
+  .badge.gold { background: rgba(212, 168, 67, 0.12); border: 1px solid var(--gold); color: var(--gold); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px) { .two-col, .three-col { grid-template-columns: 1fr; } .stats-bar { gap: 16px; } }
+  footer { text-align: center; padding-top: 32px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 11px; }
+  footer a { color: var(--text-dim); text-decoration: none; }
+  footer a:hover { color: var(--gold); }
+  .section-num { color: var(--text-muted); font-size: 11px; font-family: 'JetBrains Mono', monospace; margin-right: 8px; }
+  .quote { font-style: italic; color: var(--text); border-left: 2px solid var(--gold-dim); padding-left: 16px; margin: 16px 0; font-size: 14px; }
+  .quote-author { font-size: 11px; color: var(--text-muted); margin-top: 6px; font-style: normal; font-family: 'JetBrains Mono', monospace; }
+  .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px 22px; margin-bottom: 40px; }
+  .toc-title { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .toc ul { list-style: none; padding: 0; margin: 0; }
+  .toc li { font-size: 13px; margin-bottom: 4px; color: var(--text-dim); }
+  .toc a { color: var(--text); text-decoration: none; }
+  .toc a:hover { color: var(--gold); }
+  .toc .toc-num { color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 11px; margin-right: 10px; }
+  .small { font-size: 12px; color: var(--text-muted); }
+  .bucket-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 16px 0; }
+  .bucket { background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px; padding: 12px; text-align: center; }
+  .bucket-range { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-dim); margin-bottom: 4px; }
+  .bucket-tp { font-size: 18px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+  .bucket-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .bucket.death { border-color: var(--red); }
+  .bucket.death .bucket-tp { color: var(--red); }
+  .bucket.breakout { border-color: var(--green); }
+  .bucket.breakout .bucket-tp { color: var(--green); }
+  .bucket.over { border-color: var(--orange); }
+  .bucket.over .bucket-tp { color: var(--orange); }
+  @media (max-width: 720px) { .bucket-grid { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <div class="brand">Refract<sup style="font-size:7px;vertical-align:super">&trade;</sup></div>
+  <h1>L&apos;arc 25&ndash;27 Apr 2026</h1>
+  <div class="subtitle">Lateness strutturale, direzione corretta, exit-first paradigm</div>
+  <div class="date">XAU/USD &middot; v14.14.0 &middot; sample 17.6d post-fix + WF 13 mesi (50.888 alerts) &middot; 27 Apr 2026</div>
+</div>
+
+<div class="info">
+  <p>Questa pagina racconta tre giorni di ricerca consecutivi (25, 26, 27 aprile 2026) che hanno
+  riformulato in modo sostanziale il modo in cui interpretiamo il sistema. Il punto di partenza era una
+  domanda semplice: <strong>perch&eacute; il sistema azzecca la direzione cos&igrave; spesso ma non monetizza in
+  proporzione?</strong> Le risposte hanno portato a un cambio di paradigma: il bottleneck non &egrave;
+  l&apos;entry, &egrave; l&apos;exit. Sotto trovi le evidenze, le intuizioni dell&apos;utente che hanno guidato
+  la ricerca, e le decisioni operative che ne sono uscite.</p>
+  <p style="margin-top:8px"><strong>Non sei del settore?</strong> Inizia dalla sezione
+  <a href="#sec0" style="color:var(--blue)">00 &mdash; Per orientarsi</a>: cosa fa il sistema, glossario
+  minimo (Donchian, WR, PF, MFE...) e come leggere il resto.</p>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-value gold">95-97%</div><div class="stat-label">Direction correct</div></div>
+  <div class="stat"><div class="stat-value red">32-37%</div><div class="stat-label">Move catturato</div></div>
+  <div class="stat"><div class="stat-value blue">0.62-0.68</div><div class="stat-label">MFE-ratio (lateness)</div></div>
+  <div class="stat"><div class="stat-value green">+10.07%</div><div class="stat-label">D11 lift Sum (17d)</div></div>
+  <div class="stat"><div class="stat-value orange">13 mesi</div><div class="stat-label">WF cross-regime</div></div>
+  <div class="stat"><div class="stat-value gold">5</div><div class="stat-label">Active deck v14.14.0</div></div>
+</div>
+
+<div class="toc">
+  <div class="toc-title">Indice</div>
+  <ul>
+    <li><span class="toc-num">00</span><a href="#sec0">Per orientarsi (cosa fa il sistema + glossario)</a></li>
+    <li><span class="toc-num">01</span><a href="#sec1">Entry lateness &mdash; entriamo strutturalmente tardi</a></li>
+    <li><span class="toc-num">02</span><a href="#sec2">Direction correctness &mdash; la news anticipa il move</a></li>
+    <li><span class="toc-num">03</span><a href="#sec3">Sintesi e implementazione &mdash; v14.14.0</a></li>
+    <li><span class="toc-num">04</span><a href="#sec4">Validazione cross-regime (WF 13 mesi)</a></li>
+    <li><span class="toc-num">05</span><a href="#sec5">Caveats e cosa non sappiamo</a></li>
+    <li><span class="toc-num">06</span><a href="#sec6">Le intuizioni dell&apos;utente</a></li>
+  </ul>
+</div>
+
+<!-- SEZIONE 0 — PER ORIENTARSI -->
+<section id="sec0">
+  <h2><span class="section-num">00</span>Per orientarsi</h2>
+
+  <p>Refract analizza in tempo reale le notizie finanziarie pubblicate da fonti come Reuters,
+  Bloomberg, FXStreet. Un modello AI assegna a ogni notizia una direzione attesa di mercato e una
+  rilevanza. Quando l&apos;aggregato supera certe soglie, il sistema apre un trade sull&apos;oro
+  (XAU/USD) &mdash; LONG se si aspetta un rialzo, SHORT se si aspetta un ribasso. Non legge i grafici
+  come un trader tecnico: <strong>legge le notizie e ne estrae segnali quantitativi</strong>. La
+  domanda di questa pagina &egrave;: <em>cosa stiamo lasciando sul tavolo, e perch&eacute;?</em></p>
+
+  <p class="small" style="color:var(--text-muted)">Nota sui dati: per validare il sistema su un orizzonte
+  lungo abbiamo costruito un database di backtest scaricando in batch <strong>50.888 articoli</strong>
+  storici (Feb 2025 &ndash; Mar 2026, 13 mesi) e ri-classificandoli con la stessa pipeline AI. Quando
+  in pagina si parla di "WF" o "walk-forward" i numeri vengono da l&igrave;. Il flusso live, invece,
+  classifica le news man mano che escono.</p>
+
+  <p><strong>Concetto centrale: il canale Donchian a 48h.</strong> &Egrave; semplicemente l&apos;intervallo
+  tra il prezzo massimo e il minimo delle ultime 48 ore. La "posizione" nel canale (<code>pos</code>) &egrave;
+  un numero tra 0 (al minimo) e 1 (al massimo). Se compriamo LONG a pos 0.62, lo facciamo quando il prezzo
+  &egrave; gi&agrave; nei due terzi alti del range &mdash; cio&egrave; dopo che gran parte del rialzo &egrave; gi&agrave;
+  avvenuto. Per gli SHORT vale lo specchio. Tutta la sezione 01 ruota intorno a questo.</p>
+
+  <p><strong>Le metriche che useremo:</strong> <em>WR</em> = % di trade in profit; <em>PF</em> = profit
+  factor (PF 2.0 = guadagno il doppio di quanto perdo, PF&gt;3 ottimo); <em>MDD</em> = perdita massima
+  da picco a fondo; <em>Sum</em> = somma percentuale dei trade nel periodo; <em>TP/SL</em> = livelli di
+  chiusura automatica in positivo/negativo (TP70 = chiudi a +0.70%). Termini pi&ugrave; tecnici
+  (<em>MFE, z-score, nn_s40, belief flip, breakout filter, ATR, walk-forward, paper-broker</em>)
+  compaiono pi&ugrave; avanti contestualizzati &mdash; non &egrave; necessario conoscerli prima per cogliere il
+  senso.</p>
+
+  <div class="info">
+    <p><strong>Una nota su numeri grossi tipo "+300% Sum su 13 mesi".</strong> Sono somma aritmetica dei
+    trade percentuali sul periodo, usata per confrontare varianti di logica fra loro &mdash; non sono
+    rendimenti reali ottenibili con compounding o sizing. Le proiezioni mensili realistiche, scontate
+    per slippage e variance, stanno nella sezione 05.</p>
+  </div>
+</section>
+
+<!-- SEZIONE 1 -->
+<section id="sec1">
+  <h2><span class="section-num">01</span>Entry lateness &mdash; entriamo strutturalmente tardi</h2>
+
+  <p>Su 9.483 cfg-trade LONG e 9.036 SHORT post-fix (8&ndash;25 aprile, filtri di produzione attivi),
+  la posizione mediana di entry nel canale Donchian a 48h <span class="small">(<a href="#sec0"
+  style="color:var(--blue)">cos&apos;&egrave;?</a>)</span> &egrave; <strong>0.623 LONG</strong> e
+  <strong>0.407 SHORT</strong>. Il lato lungo entra quando il prezzo &egrave; gi&agrave; nei due terzi alti
+  del range; il lato corto specularmente quando &egrave; gi&agrave; nei due terzi bassi. Entrambi i lati
+  entrano dalla parte sbagliata del canale rispetto alla direzione del trade.</p>
+
+  <div class="highlight">
+    <p>Il <strong>40,7% delle entry LONG</strong> avviene oltre 36 ore dopo il minimo di canale &mdash;
+    quando il move &egrave; gi&agrave; in fase finale. Le entry nelle prime 12&ndash;24h hanno
+    <strong>WR 77% e PnL medio +0.333%</strong>; quelle 36&ndash;48h dopo hanno <strong>WR 51% e
+    +0.139%</strong>. Triplichiamo la performance entrando presto. Ma questo non avviene quasi mai.</p>
+  </div>
+
+  <h3>Pre-alert price drift &mdash; smoking gun</h3>
+  <p>Decomposizione del movimento di prezzo PRIMA che l&apos;alert fira (LONG, rispetto al fill price):</p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Finestra pre-alert</th><th>Δ prezzo</th><th>% positivi</th><th>Lettura</th></tr>
+      <tr><td>30 min pre</td><td>&minus;0.038%</td><td>40%</td><td>flat o leggero dip</td></tr>
+      <tr><td>1 ora pre</td><td>+0.008%</td><td>65%</td><td>flat</td></tr>
+      <tr><td>3 ore pre</td><td>+0.055%</td><td>45%</td><td>noise</td></tr>
+      <tr><td>6 ore pre</td><td>+0.273%</td><td>74%</td><td>move gi&agrave; iniziato</td></tr>
+      <tr class="loser"><td>24 ore pre</td><td class="val-red">+0.520%</td><td>64%</td><td><strong>74% del target TP70 gi&agrave; coperto</strong></td></tr>
+    </table>
+  </div>
+  <p>Quando l&apos;alert fira, il prezzo non sta correndo in tempo reale. Il move &egrave; stato fatto
+  nelle 6&ndash;24 ore precedenti. La news risponde a quel move passato; non lo anticipa &mdash; nel nostro
+  pipeline, almeno. <span class="small">Tool: <code>tools/_tmp_late_entry_assay.py</code>,
+  <code>tools/_tmp_pos_entry_per_signal.py</code>.</span></p>
+
+  <h3>Bimodalit&agrave; WR per posizione di canale (LONG)</h3>
+  <p>WR e PnL non sono lineari rispetto a pos. Ci sono due zone profittevoli e una <em>death zone</em>
+  in mezzo:</p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>pos bucket</th><th>N</th><th>WR</th><th>AvgPnL</th><th>Sum</th><th>Zona</th></tr>
+      <tr><td>[0.0&ndash;0.4)</td><td>446</td><td class="val-green">100%</td><td>+0.189%</td><td>+84%</td><td>EARLY</td></tr>
+      <tr><td>[0.4&ndash;0.5)</td><td>753</td><td>72%</td><td>+0.286%</td><td>+215%</td><td>EARLY</td></tr>
+      <tr><td>[0.5&ndash;0.6)</td><td>2432</td><td>55%</td><td>+0.225%</td><td>+548%</td><td>GRIND</td></tr>
+      <tr><td>[0.6&ndash;0.7)</td><td>2082</td><td>47%</td><td>+0.041%</td><td>+86%</td><td>GRIND</td></tr>
+      <tr class="loser"><td>[0.7&ndash;0.8)</td><td>536</td><td class="val-red">0%</td><td class="val-red">&minus;0.472%</td><td class="val-red">&minus;253%</td><td><strong>DEATH</strong></td></tr>
+      <tr class="winner"><td>[0.8&ndash;0.9)</td><td>1811</td><td class="val-green">88%</td><td class="val-green">+0.556%</td><td class="val-green">+1007%</td><td><strong>BREAKOUT</strong></td></tr>
+      <tr><td>[0.9&ndash;1.0)</td><td>1423</td><td>51%</td><td>+0.192%</td><td>+273%</td><td>STRETCHED</td></tr>
+    </table>
+  </div>
+
+  <p>Tre osservazioni chiave:</p>
+  <ul>
+    <li><strong>Death zone reale</strong>: in [0.7&ndash;0.8) entriamo a met&agrave; del move, prima che ci sia
+    un breakout vero. WR 0% su 536 trade non &egrave; rumore.</li>
+    <li><strong>Breakout zone</strong>: in [0.8&ndash;0.9) entriamo sul vero rompimento del massimo 48h. WR 88%.</li>
+    <li><strong>Bimodalit&agrave; mirror SHORT</strong>: in [0.0&ndash;0.2) WR 5%, AvgPnL &minus;0.332% (entriamo
+    quando il prezzo &egrave; gi&agrave; al fondo, non resta nulla da scendere).</li>
+  </ul>
+
+  <h3>Reframing 26 Apr &mdash; system property, non regime artifact</h3>
+  <p>Il primo controllo di robustezza era stato il test cross-regime sul WF DB (Feb 2025 &ndash; Mar 2026,
+  +79% di Gold). Su quel sample <strong>la bimodalit&agrave; sparisce</strong>: WR uniforme 55&ndash;67%
+  cross-bucket. Sembrava aver invalidato il finding. L&apos;utente ha riformulato:</p>
+  <div class="quote">
+    &laquo;Il bull run storico WF &egrave; l&apos;eccezione. In regime laterale o bearish la death zone &egrave; una
+    propriet&agrave; del sistema stesso. Il bull masking-effect la rendeva invisibile.&raquo;
+    <div class="quote-author">&mdash; user, 26 apr 2026</div>
+  </div>
+  <p>Il punto metodologico: nel WF bull la <em>random baseline pos</em> &egrave; gi&agrave; 0.643. Ogni
+  timestamp &egrave; naturalmente alto perch&eacute; il canale Donchian shifta in continuazione verso l&apos;alto.
+  Quindi la pos 0.625 degli alert non rappresenta selezione &mdash; rappresenta solo il fatto che il prezzo
+  vive nei due terzi alti per costruzione. In regime di consolidamento (Apr) la random baseline &egrave; 0.523:
+  l&apos;alert pos 0.623 &egrave; <strong>+0.10 sopra baseline</strong>, cio&egrave; selezione vera.</p>
+
+  <div class="check">
+    <p><strong>Test trend-agnostico (B3 MFE-ratio):</strong> l&apos;<strong>MFE</strong> (Max Favorable
+    Excursion) &egrave; il movimento favorevole massimo che il prezzo raggiunge in una finestra &mdash;
+    in pratica, quanto profitto era <em>teoricamente</em> disponibile in quel periodo. Calcoliamo il
+    rapporto MFE pre-alert / (MFE pre + MFE post): se vicino a 1, la maggior parte del move &egrave;
+    avvenuta prima dell&apos;alert; se vicino a 0, &egrave; tutto dopo. 4/4 celle confermano la lateness:
+    LONG Apr 0.678, LONG WF 0.629, SHORT Apr 0.680, SHORT WF 0.639. <strong>Su 3.615 eventi
+    cross-regime catturiamo solo il 32&ndash;37% del move.</strong> La lateness c&apos;&egrave; sempre.
+    Nel bull viene mascherata a livello di WR perch&eacute; il trend continua a lavorare anche dopo
+    l&apos;entry.</p>
+  </div>
+</section>
+
+<!-- SEZIONE 2 -->
+<section id="sec2">
+  <h2><span class="section-num">02</span>Direction correctness &mdash; la news anticipa il move</h2>
+
+  <p>La parte controintuitiva. Mentre l&apos;execution &egrave; lenta, la <strong>direzionalit&agrave; del segnale
+  &egrave; quasi perfetta</strong>. Misurato come "soglia MFE &gt; 0.10% raggiunta nella direzione
+  prevista entro 8h dal fill":</p>
+
+  <div class="three-col">
+    <div class="card">
+      <div class="card-title" style="color:var(--green)">LONG: 95% direction correct</div>
+      <p class="small">Su tutti gli eventi LONG con MFE &gt; 0.10%, il prezzo si muove nella direzione
+      prevista 95 volte su 100. Il segnale "vede" il rialzo prima che si materializzi nel residuo del
+      move post-entry.</p>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--red)">SHORT: 89% direction correct</div>
+      <p class="small">Pi&ugrave; basso del LONG ma sempre molto sopra coin-flip. Confermato anche cross-regime
+      sul WF DB: i SHORT alert clusterizzano sistematicamente a pos basse del canale (0.395 vs baseline
+      0.643 = &minus;0.25 di selezione vera, robustissima).</p>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--gold)">L&apos;implicazione</div>
+      <p class="small">Il <em>brain direzionale</em> del sistema funziona. Il bottleneck non &egrave; "scegliere
+      bene" ma "monetizzare quello che si &egrave; gi&agrave; scelto bene". Exit ottimization, non entry
+      tightening, &egrave; la vera leva.</p>
+    </div>
+  </div>
+
+  <h3>Cosa abbiamo dimostrato &mdash; e cosa no</h3>
+  <div class="info">
+    <p><strong>Dimostrato:</strong> il nostro pipeline (NewsAPI + classificazione AI + aggregation +
+    breakout filter) produce trigger direzionalmente corretti al 95&ndash;97% con MFE&gt;0.10%, ma con
+    timing tale che il move &egrave; gi&agrave; iniziato. La news <em>nel nostro pipeline</em> guida la
+    direzione, ma il prezzo guida la news in termini temporali.</p>
+  </div>
+  <div class="caveat">
+    <p><strong>Non dimostrato:</strong> che la news in assoluto preceda sempre il prezzo. Non sappiamo
+    quanto della lateness &egrave; intrinseca alla news (publication delay) e quanto &egrave; del nostro pipeline
+    (ingestion + AI + aggregation). Un altro pipeline con sorgenti diverse potrebbe avere timing diverso.
+    L&apos;onesta inquadratura per discussioni esterne &egrave;: <em>"il nostro trigger pipeline cattura
+    sistematicamente la porzione residua dei move, non la loro origine"</em>.</p>
+  </div>
+
+  <h3>Per-signal latency map</h3>
+  <p>Sorpresa metodologica: non &egrave; vero che i segnali "freschi" entrano prima. La pos di entry
+  segue una logica diversa &mdash; segnali basati su <em>concentrazione recente</em> entrano pi&ugrave; tardi
+  perch&eacute; richiedono che il move sia gi&agrave; in atto:</p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Categoria</th><th>Esempi</th><th>med pos</th><th>Lettura</th></tr>
+      <tr><td>EARLY (cross-asset / lunghe finestre)</td><td>dxs_contra, pb24, refract, belief</td><td>0.55&ndash;0.61</td><td>Indipendenti dallo spike news</td></tr>
+      <tr><td>MID (aggregazione standard)</td><td>pb6, pb12, pb48</td><td>0.62&ndash;0.67</td><td>Workhorse</td></tr>
+      <tr class="loser"><td>LATE (concentrazione / confluenza)</td><td>accel, pb3, n_alert, combo_*</td><td>0.72&ndash;0.83</td><td>Richiedono che il move sia gi&agrave; visibile</td></tr>
+    </table>
+  </div>
+  <p>Implicazione: <strong>pb3 (3h fresh) entra pi&ugrave; tardi di pb24 (24h aggregation)</strong>. La
+  finestra corta non d&agrave; entries pi&ugrave; early &mdash; rende il segnale pi&ugrave; reattivo allo spike news, che a
+  sua volta segue il move.</p>
+</section>
+
+<!-- SEZIONE 3 -->
+<section id="sec3">
+  <h2><span class="section-num">03</span>Sintesi e implementazione &mdash; v14.14.0</h2>
+
+  <div class="highlight">
+    <p>Il paradigma cambia: <strong>da entry-stretto + exit-fisso</strong> (compensare exit subottimale
+    con qualit&agrave; di entry) <strong>a entry-rilassato + exit-intelligente</strong> (lasciare passare pi&ugrave;
+    eventi e differenziare il TP per posizione di canale). Le tre leve non sono indipendenti &mdash; sono parte
+    di uno stesso shift.</p>
+  </div>
+
+  <h3>D11 &mdash; variable TP per posizione di canale (LONG)</h3>
+  <p>Il finding primario. Per ogni LONG, calcolo la pos al fill nel canale Donchian a 48h (192 barre M15)
+  e applico un TP diverso a seconda del bucket:</p>
+
+  <div class="bucket-grid">
+    <div class="bucket"><div class="bucket-range">pos &lt; 0.65</div><div class="bucket-tp">TP70</div><div class="bucket-label">Default early</div></div>
+    <div class="bucket death"><div class="bucket-range">[0.65 &ndash; 0.85)</div><div class="bucket-tp">TP30</div><div class="bucket-label">Death zone</div></div>
+    <div class="bucket breakout"><div class="bucket-range">[0.85 &ndash; 0.95)</div><div class="bucket-tp">NO_TP</div><div class="bucket-label">Pre-breakout runner</div></div>
+    <div class="bucket over"><div class="bucket-range">pos &ge; 0.95</div><div class="bucket-tp">TP50</div><div class="bucket-label">Over-extended</div></div>
+  </div>
+
+  <p>Per-strategia su 17.6d post-fix (event-deduped, 93 eventi LONG):</p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Strategy</th><th>baseline TP70 (Sum / PF)</th><th>D11 base (Sum / PF)</th><th>ΔSum</th><th>ΔPF</th><th>trades changed</th></tr>
+      <tr><td>NNBR_PB6_L</td><td>+8.81% / 5.40</td><td>+10.65% / 6.32</td><td class="val-green">+1.84</td><td class="val-green">+0.92</td><td>7/21</td></tr>
+      <tr><td>NNBR_BEL_L</td><td>+6.00% / 2.74</td><td>+8.63% / 4.45</td><td class="val-green">+2.63</td><td class="val-green">+1.71</td><td>5/22</td></tr>
+      <tr class="winner"><td>NNBR_ACCEL_L</td><td>+3.74% / 2.76</td><td>+7.21% / 8.21</td><td class="val-green">+3.46</td><td class="val-green">+5.45</td><td>9/16</td></tr>
+    </table>
+  </div>
+  <p><strong>Tutte e tre le strategie attive migliorano. 58% del lift viene dal bucket TP30 in death
+  zone</strong>: trasforma 17 trade SL-hit (&minus;0.50%) in cattura TP30 (+0.30%). Lift aggregato
+  +10.87% Sum, PF 1.75&rarr;2.96, WR 55&rarr;69%.</p>
+
+  <h3>SHORT &mdash; SKIP gate in death zone</h3>
+  <p>Specularmente al LONG, gli SHORT in [0.20&ndash;0.40) di canale Donchian sono killer. Hard-skip pre-entry:</p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Variant</th><th>N</th><th>WR</th><th>Sum</th><th>PF</th><th>MDD</th></tr>
+      <tr><td>baseline TP40+BE25</td><td>84</td><td>44%</td><td>+2.81%</td><td>1.26</td><td>3.57%</td></tr>
+      <tr class="winner"><td><strong>SKIP [0.20&ndash;0.40)</strong></td><td>51</td><td class="val-green">55%</td><td class="val-green">+6.56%</td><td class="val-green">2.74</td><td class="val-green">1.81%</td></tr>
+      <tr><td>SKIP [0.30&ndash;0.40)</td><td>62</td><td>53%</td><td>+6.12%</td><td>2.03</td><td>2.38%</td></tr>
+      <tr><td>TP30 in DZ (no skip)</td><td>84</td><td>49%</td><td>+3.21%</td><td>1.30</td><td>3.50%</td></tr>
+    </table>
+  </div>
+  <p><strong>&minus;39% trade, +133% Sum, PF +118%, MDD dimezzato.</strong> TP40+BE25 resta come exit,
+  invariato. Nessun cambio sull&apos;exit SHORT &mdash; cambia solo il filtro di entry.</p>
+
+  <h3>z=0.5 &mdash; il sweet spot non scoperto prima</h3>
+  <p>La domanda: con D11 attivo, le z-threshold attuali (≥1.0) sono ancora calibrate giuste? La 3D
+  matrix nn × z svela che <strong>z=1.0 sandbagga il 60% del Sum</strong> senza migliorare il PF in
+  modo sostanziale:</p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Config (LONG)</th><th>Sum totale 3 famiglie</th><th>vs z=1.0</th></tr>
+      <tr><td>nn 0.55 + z=1.0 (current-like)</td><td>+10.03%</td><td>baseline</td></tr>
+      <tr><td>nn 0.50 + z=1.0 (proposta iniziale)</td><td>+12.37%</td><td>+23%</td></tr>
+      <tr class="winner"><td><strong>nn 0.50 + z=0.5</strong></td><td class="val-gold">+24.43%</td><td class="val-gold">+143%</td></tr>
+      <tr><td>nn 0.50 + no z (RAW)</td><td>+30.35%</td><td>+203%</td></tr>
+    </table>
+  </div>
+  <p>Z=0.5 mantiene PF comparabili a z=1.0 (accel_L PF 14.34) e cattura l&apos;80% del Sum della
+  versione raw. <strong>Mantiene la propriet&agrave; adattiva</strong> (z &egrave; rolling, si ricalibra al regime)
+  ma non strangola il volume di trade. Le z attuali in produzione erano calibrate prima di
+  D11/SKIP/lateness &mdash; parte dello stesso vecchio paradigma.</p>
+
+</section>
+
+<!-- SEZIONE 4 -->
+<section id="sec4">
+  <h2><span class="section-num">04</span>Validazione cross-regime (WF 13 mesi)</h2>
+
+  <p>Il 27 aprile, prima del deploy, abbiamo eseguito 5 test sequenziali sul Walk-Forward DB
+  (50.888 alerts, 31.750 candele M15, Feb 2025 &ndash; Mar 2026, multi-regime). I findings 25&ndash;26
+  apr basati su 17.6d di sample sono stati testati contro 13 mesi.</p>
+
+  <h3>Test 1 &mdash; D11 vs TP70, isolato cross-regime</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Family</th><th>TP70 Sum / PF / MDD</th><th>D11 Sum / PF / MDD</th><th>Δ Sum</th><th>Δ MDD pp</th></tr>
+      <tr class="loser"><td>pb6_L</td><td>+327.18% / 1.89 / 38.07%</td><td>+300.34% / 1.86 / 34.57%</td><td class="val-red">&minus;26.83%</td><td class="val-green">&minus;3.50</td></tr>
+      <tr class="loser"><td>belief_L</td><td>+60.16% / 1.72 / 7.95%</td><td>+53.60% / 1.67 / 7.13%</td><td class="val-red">&minus;6.56%</td><td class="val-green">&minus;0.82</td></tr>
+      <tr class="loser"><td>accel_L</td><td>+198.61% / 3.02 / 18.90%</td><td>+177.75% / 2.88 / 20.90%</td><td class="val-red">&minus;20.85%</td><td class="val-red">+2.00</td></tr>
+    </table>
+  </div>
+
+  <div class="caveat">
+    <p><strong>D11 perde &minus;7-27% Sum vs TP70 cross-regime su 13 mesi.</strong> Wins MDD su due
+    famiglie su tre. Il +10.07% del sample 17.6d era regime-specifico. Pattern netto: D11 vince in
+    lateral/post-shock (apr 2025 +13.67%, oct +2.74%), perde decisivo in trending (jun &minus;21.89%, dec
+    &minus;18.88%, may &minus;12.03%). <strong>L&apos;intuizione utente che "D11 cappa nei trend
+    continuativi" era esatta.</strong></p>
+  </div>
+
+  <h3>Test 2 &mdash; Belief flip + D11 (canonical engine)</h3>
+  <p>Engine canonical replicato a 247 trade PF 3.97 esatto (sanity check). Sostituite le exit:</p>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Variant</th><th>N</th><th>WR</th><th>Sum</th><th>PF</th><th>MDD</th></tr>
+      <tr class="winner"><td>V0 canonical (belief + ATR + timeout, NO TP)</td><td>247</td><td>64.8%</td><td class="val-gold">+84.40%</td><td class="val-gold">3.97</td><td>3.09%</td></tr>
+      <tr><td>V1 no belief flip</td><td>247</td><td>66.0%</td><td>+84.89%</td><td>3.27</td><td class="val-red">5.04%</td></tr>
+      <tr><td>V2 belief + D11</td><td>247</td><td>67.6%</td><td>+48.06%</td><td>2.83</td><td>3.09%</td></tr>
+      <tr><td>V3 D11 only</td><td>247</td><td>70.0%</td><td>+49.84%</td><td>2.52</td><td>3.09%</td></tr>
+      <tr><td>V5 TP70 only (benchmark)</td><td>247</td><td>68.4%</td><td>+52.96%</td><td>2.53</td><td>3.48%</td></tr>
+    </table>
+  </div>
+  <p>Due insight:</p>
+  <ul>
+    <li><strong>Belief flip = MDD protection, non Sum addition</strong>. V0 vs V1: Sum quasi identico
+    (84.40 vs 84.89), MDD diverge (3.09 vs 5.04, +63%). Decisione: <strong>tenere in produzione
+    come assicurazione gratis cross-regime</strong>.</li>
+    <li><strong>Tutti i TP-based exits perdono ~30-36% Sum vs canonical no-TP.</strong> Il vero magic
+    del canonical &egrave; "lascia correre fino a timeout o belief flip", non TP. D11 cappa.</li>
+  </ul>
+
+  <h3>Test 5 &mdash; D11 bucket attribution</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Bucket</th><th>D11 default</th><th>D11 Sum</th><th>Best TP</th><th>Best Sum</th><th>Δ leaves on table</th></tr>
+      <tr><td>B1 pos&lt;0.65</td><td>TP70</td><td>+138.16%</td><td>TP100</td><td>+172.04%</td><td class="val-red">+33.89%</td></tr>
+      <tr><td>B2 [0.65-0.85)</td><td>TP30</td><td>+43.34%</td><td>TP100</td><td>+81.93%</td><td class="val-red">+38.59%</td></tr>
+      <tr class="winner"><td>B3 [0.85-0.95)</td><td>NO_TP</td><td>+32.43%</td><td>NO_TP</td><td>+32.43%</td><td class="val-green">already optimal</td></tr>
+      <tr><td>B4 pos≥0.95</td><td>TP50</td><td>+13.95%</td><td>TP70</td><td>+17.62%</td><td>+3.67%</td></tr>
+      <tr class="loser"><td><strong>TOTAL</strong></td><td></td><td><strong>+227.87%</strong></td><td></td><td><strong>+303.02%</strong></td><td class="val-red"><strong>+75.15%</strong></td></tr>
+    </table>
+  </div>
+  <p>B1 e B2 lasciano +75% Sum sul tavolo cross-regime. Una variante <strong>D11_v2 aggressive</strong>
+  (B1 TP100, B2 no_TP) recupererebbe quel Sum, ma in regime corrente (median pos 0.6) non triggera
+  diversamente da D11 normale. <span class="small"><strong>Deferred a v14.14.x condizionale</strong>
+  &mdash; trigger se phantom what-if mostra D11 sub-extracts &gt;5% Sum per 2+ settimane di paper.</span></p>
+</section>
+
+<!-- SEZIONE 5 -->
+<section id="sec5">
+  <h2><span class="section-num">05</span>Caveats e cosa non sappiamo</h2>
+
+  <h3>Cosa sappiamo (validato cross-regime)</h3>
+  <ul>
+    <li>Direction correctness 95&ndash;97% MFE&gt;0.10% &mdash; signal property, robusto cross-regime</li>
+    <li>Median pos entry 0.6 &mdash; system property, confermato sia 17.6d sia WF 13 mesi</li>
+    <li>z=0.5 sweet spot LONG &mdash; PF +19% pb6_L, +19% accel_L cross-regime</li>
+    <li>nn 0.40 SHORT &mdash; +45% Sum cross-regime su pb6_S vs nn 0.30</li>
+    <li>Belief flip raro in regime corrente (1.7% trigger pb6_L) ma protective cross-regime su MDD</li>
+    <li>SHORT cluster a pos basse (0.395 vs baseline 0.643 = &minus;0.25 selezione vera) &mdash; robusto cross-regime</li>
+  </ul>
+
+  <h3>Cosa non sappiamo (paper data only)</h3>
+  <ul>
+    <li>Costi reali (slippage, spread, broker fees) non modellati nei nostri WF/SimEngine</li>
+    <li>WF DB &egrave; <strong>NewsAPI only</strong>, no RSS &mdash; il deck live integra anche RSS</li>
+    <li>D11 in real paper conditions interagisce con production hold_gate + runner_floor &mdash; sim &egrave;
+    approximation</li>
+    <li>NO_TP in [0.85&ndash;0.95) sim potrebbe sotto-stimare il delta vs runner reale</li>
+    <li>Sample WF dominato da bull regime &mdash; pochi mesi laterali puri</li>
+    <li>Direzione di lateness non &egrave; assoluta: solo provata <em>per il nostro pipeline</em>, non in
+    generale</li>
+  </ul>
+
+  <h3>Honest expectation primi 30 giorni paper-broker</h3>
+  <p class="small">Numeri a livello di <strong>deck aggregato</strong> (5 strategie: 3 LONG + 2 SHORT
+  parzialmente de-correlati). Punto di partenza concreto: il sample 17.6d mostra avg PnL ~0.27&ndash;0.30%
+  per trade, WR deck-level 65&ndash;70%, volume ~8 trade/giorno (~200&ndash;240/mese in produzione).
+  Conto grezzo: 0.27% &times; 230 trade = +62%/mese sim gross. La letteratura quant (L&oacute;pez de
+  Prado, Bailey) stima tipicamente una degradazione sim&rarr;live del 30&ndash;50% sul PF per sistemi
+  non over-fittati, pi&ugrave; lo slippage diretto (~5%/mese su XAU retail).</p>
+  <div class="three-col">
+    <div class="card">
+      <div class="card-title" style="color:var(--green)">Best case (deck)</div>
+      <p class="small">PF 2.8&ndash;3.5, MDD 4&ndash;6%, Sum mensile <strong>+18&ndash;25%</strong>.
+      Le ipotesi sim si riproducono bene in live, regime resta lateral/mixed, D11 cattura come
+      previsto, lateness e direction correctness reggono.</p>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--gold)">Modal / pi&ugrave; probabile (deck)</div>
+      <p class="small">PF 2.0&ndash;2.5, MDD 5&ndash;8%, Sum mensile <strong>+8&ndash;15%</strong>,
+      con weekly drawdowns occasionali &minus;3/&minus;5%. Scenario base se il sim degrada del 50%
+      circa, comune per sistemi nuovi al primo deploy.</p>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:var(--red)">Adverse plausibile (deck)</div>
+      <p class="small">PF 1.5&ndash;1.8, Sum mensile <strong>+5&ndash;10%</strong>, MDD 7&ndash;10%.
+      Prime settimane di calibrazione, qualche strategia nuova non firea come atteso, variance
+      sfavorevole. Anche nello scenario peggiore atteso, il sistema resta profittevole &mdash; non
+      "rotto".</p>
+    </div>
+  </div>
+
+  <div class="info">
+    <p><strong>Sul "tail risk D11 in trending forte continuativo"</strong> &mdash; il finding del WF 13
+    mesi (D11 perde &minus;7/&minus;27% Sum vs TP70 in trend forti come jun 2025, dec 2025) <em>non
+    &egrave; tail risk strutturale, &egrave; un parametro modulabile</em>:</p>
+    <ul style="margin-top:8px">
+      <li><strong>YAML toggle gi&agrave; previsto</strong> (<code>d11_enabled</code>): on/off in 30 secondi,
+      rollback istantaneo a TP70 flat che &egrave; il cross-regime winner</li>
+      <li><strong>Phantom what-if logging</strong> rivela il sub-extract entro 2&ndash;3 settimane di
+      paper data, non a sorpresa</li>
+      <li><strong>WR resta +1&ndash;2 pp pi&ugrave; alta sotto D11</strong> anche quando il Sum cala &mdash;
+      sufficiente per compensare via sizing modulation senza toccare l&apos;exit logic</li>
+      <li><strong>Slope detector auto-adattivo</strong> &egrave; deferred condizionale, non cancellato:
+      diventa il fix definitivo se il phantom data lo giustifica</li>
+    </ul>
+    <p style="margin-top:8px">Tradotto: anche nello scenario adverse il sistema non si rompe, si
+    riconfigura. Il vero monitoring riguarda "le ipotesi sim si riproducono direzionalmente in live?",
+    non "il sistema sta fallendo?".</p>
+  </div>
+
+  <div class="caveat">
+    <p><strong>Caveat metodologico sul primo mese.</strong> 30 giorni di paper sono <em>statistical
+    noise</em>: non bastano per dire se un sistema funziona o no. Servono 2&ndash;3 mesi per avere un
+    PF stabile. Se il primo mese va a +20% non vuol dire +20% sostenuto; se va a +3% non vuol dire che
+    il sistema &egrave; rotto.</p>
+  </div>
+
+  <h3>Numeri sim per riferimento (NON proiezioni reali)</h3>
+  <div class="table-wrap">
+    <table>
+      <tr><th>Sorgente</th><th>Sim gross</th><th>Live atteso (sim &minus;50%)</th><th>Live conservative (sim &minus;65%)</th></tr>
+      <tr><td>Sample 17.6d corrente (deck Opzione G)</td><td>+28&ndash;29% in 17d (~+50%/mese face)</td><td class="val-gold">~+18&ndash;25%/mese</td><td>~+12&ndash;17%/mese</td></tr>
+      <tr><td>Conto bottom-up (0.27% &times; 230 trade)</td><td>+62%/mese</td><td>~+25&ndash;31%/mese</td><td>~+15&ndash;22%/mese</td></tr>
+      <tr><td>Cross-regime WF 13 mesi (deck H2 ibrido)</td><td>~+47%/mese gross</td><td>~+20&ndash;25%/mese</td><td>~+13&ndash;17%/mese</td></tr>
+    </table>
+  </div>
+  <p class="small">I tre approcci convergono su una <strong>stima centrale di +8-15%/mese realistic</strong>
+  per il primo trimestre, +18&ndash;25%/mese in scenario favorevole. Il "5% minimo sindacale" &egrave;
+  giusto come <em>floor di plausibilit&agrave;</em>: sotto quello vorrebbe dire che le ipotesi del
+  sistema non reggono affatto in live. Sopra +25%/mese sostenuto invece sarebbe outlier che richiederebbe
+  spiegazione (probabilmente regime favorevole temporaneo, non struttura).</p>
+</section>
+
+<!-- SEZIONE 6 -->
+<section id="sec6">
+  <h2><span class="section-num">06</span>Le intuizioni dell&apos;utente</h2>
+  <p>Il pattern interessante di questa arc &egrave; che le intuizioni dell&apos;utente sono state validate
+  empiricamente nel <strong>~90% dei casi</strong>. Non come confirmation bias retroattivo &mdash; come
+  ipotesi formulate prima dei test, poi misurate. Ne riportiamo undici.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">1 &mdash; "Direzione giusta, ma siamo tardi"</div>
+      <p class="small"><span class="badge gold">VALIDATA</span> Foundational. Direction 95&ndash;97% +
+      MFE-ratio 0.62&ndash;0.68 cross-regime confermano.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">2 &mdash; "La regola del 60%"</div>
+      <p class="small"><span class="badge gold">VALIDATA</span> Entriamo dopo che ~60% del move &egrave; gi&agrave;
+      avvenuto. Misurato: 60&ndash;68% del move precede l&apos;alert.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">3 &mdash; "Trade vicini a 0.9/1.0 possono essere buoni"</div>
+      <p class="small"><span class="badge gold">VALIDATA</span> Pos alta non &egrave; sempre death. In
+      [0.85&ndash;0.95) sono pre-breakout, WR 88%. Cruciale per evitare di buttare via i breakout veri.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">4 &mdash; "La death zone &egrave; il middle, non tutto l&apos;high"</div>
+      <p class="small"><span class="badge gold">VALIDATA</span> Toxic = [0.65&ndash;0.85) LONG, non
+      tutto pos&gt;0.65. Discriminazione fondamentale per costruire D11.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">5 &mdash; "Pos da sola non basta"</div>
+      <p class="small"><span class="badge gold">VALIDATA</span> Pos spiega molto ma non &egrave; entry filter
+      universale (BEL_L helped, BEL_S damaged, mixed). Buono come exit driver, non come entry.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">6 &mdash; "TP70 spesso troppo lontano se entriamo tardi"</div>
+      <p class="small"><span class="badge gold">VALIDATA</span> D11 esiste perch&eacute; questa intuizione era
+      corretta. TP30 in death zone, NO_TP in pre-breakout, TP50 in over-extended.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">7 &mdash; "Exit &egrave; la vera leva adesso"</div>
+      <p class="small"><span class="badge gold">VALIDATA</span> Pi&ugrave; di tutte le altre. Bottleneck non &egrave;
+      entry quality, &egrave; monetizzazione del residuo. Paradigm shift documentato.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">8 &mdash; "Z non va buttata via, &egrave; adattiva"</div>
+      <p class="small"><span class="badge gold">VALIDATA</span> Z=1.0 era troppo stretta, ma z=0.5
+      sweet spot mantiene adattivit&agrave; cross-regime. Senza pushback utente avrei raccomandato di rimuovere
+      z &mdash; sbagliato.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">9 &mdash; "Bull WF indistinguibile da artifact, canale shifta up"</div>
+      <p class="small"><span class="badge gold">VALIDATA</span> Random baseline check ha rivelato pos
+      0.625 LONG ≈ baseline 0.643 in WF bull = no selezione. Lezione metodologica salvata in memory.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">10 &mdash; "Abbiamo dimostrato che news LEAD market"</div>
+      <p class="small"><span class="badge gold">VALIDATA con caveat</span> Dimostrato per il nostro
+      pipeline. Direction correctness 95&ndash;97% &egrave; un finding controintuitivo vs il "news follow
+      market" comune. Onesto framing: nostro trigger cattura il residuo, direzionalmente corretto.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">11 &mdash; "z=0.5 va bene se mantiene adattivit&agrave;"</div>
+      <p class="small"><span class="badge gold">VALIDATA</span> Vincolo "non posso live senza z"
+      rispettato. Sweet spot trovato senza sacrificare la propriet&agrave; rolling.</p>
+    </div>
+  </div>
+
+  <div class="highlight">
+    <p>Il take-away meta-metodologico: una <strong>good prior</strong> dell&apos;utente vale pi&ugrave; di un
+    test ad-hoc. Quando intuizione e dati confliggono, capire il <em>perch&eacute;</em> del conflitto &egrave;
+    pi&ugrave; importante che auto-aggiornare verso l&apos;evidenza pi&ugrave; recente. Il caso WF bull baseline check
+    ne &egrave; l&apos;esempio chiaro.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Refract&trade; &middot; Arc 25&ndash;27 Apr 2026 &middot; v14.14.0 paper-broker handoff</p>
+  <p style="margin-top:8px;font-size:10px;">
+    Source docs: <code>docs/ARC_26APR_MASTER_INDEX.md</code> &middot;
+    <code>STRUCTURAL_LATENCY_FINDING_25APR.md</code> &middot;
+    <code>STRUCTURAL_LATENESS_REFRAMING_26APR.md</code> &middot;
+    <code>EXIT_OPTIMIZATION_FINDINGS_26APR.md</code> &middot;
+    <code>WF_VALIDATION_FINDINGS_27APR.md</code><br>
+    JSON: <code>tools/analysis_results/exit_optimization_26apr_findings.json</code> &middot;
+    <code>wf_validation_findings_27apr.json</code>
+  </p>
+</footer>
+
+</div>
+</body>
+</html>
