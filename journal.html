@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Refract&trade; &mdash; Research Journal v2</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --surface: #12121a; --surface-2: #1a1a26; --border: #2a2a3a;
+    --gold: #d4a843; --green: #34d399; --red: #f87171; --blue: #60a5fa;
+    --orange: #fb923c; --purple: #a78bfa; --text: #e8e8ed;
+    --text-dim: #8888a0; --text-muted: #55556a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+  .header { text-align: center; margin-bottom: 44px; }
+  .header .brand { font-size: 13px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; font-weight: 500; }
+  .header h1 { font-size: clamp(24px, 4vw, 34px); font-weight: 700; margin-bottom: 10px; }
+  .header .subtitle { font-size: 15px; color: var(--text-dim); }
+  .header .date { font-size: 11px; color: var(--text-muted); margin-top: 8px; font-family: 'JetBrains Mono', monospace; }
+  .stats-bar { display: flex; justify-content: center; gap: 30px; margin-bottom: 40px; padding: 18px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .stat { text-align: center; min-width: 88px; }
+  .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 500; }
+  .gold { color: var(--gold); } .green { color: var(--green); } .blue { color: var(--blue); } .red { color: var(--red); }
+  .stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+  section { margin-bottom: 48px; }
+  h2 { font-size: 20px; font-weight: 700; margin-bottom: 14px; color: var(--gold); }
+  h3 { font-size: 15px; font-weight: 600; margin: 18px 0 10px; color: var(--text); }
+  p, li { color: var(--text-dim); font-size: 14px; }
+  p { margin-bottom: 12px; }
+  ul, ol { margin: 0 0 12px 20px; }
+  strong { color: var(--text); }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px; margin-bottom: 14px; }
+  .card-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+  .highlight { background: rgba(212,168,67,.08); border-left: 3px solid var(--gold); padding: 14px 18px; border-radius: 0 8px 8px 0; margin-bottom: 14px; }
+  .highlight p { color: var(--text); margin: 0; }
+  .caveat { background: rgba(248,113,113,.06); border-left: 3px solid var(--red); padding: 14px 18px; border-radius: 0 8px 8px 0; margin-bottom: 14px; }
+  .caveat p { margin-bottom: 4px; font-size: 13px; }
+  .caveat strong { color: var(--red); }
+  .check { background: rgba(52,211,153,.06); border-left: 3px solid var(--green); padding: 14px 18px; border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+  .check p { margin: 0; font-size: 13px; }
+  .check strong { color: var(--green); }
+  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { background: var(--surface-2); padding: 9px 12px; text-align: right; font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--text-dim); white-space: nowrap; }
+  th:first-child { text-align: left; }
+  td { padding: 7px 12px; border-top: 1px solid var(--border); white-space: nowrap; text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  td:first-child { text-align: left; font-family: 'DM Sans', sans-serif; font-size: 12px; white-space: normal; }
+  tr.winner { background: rgba(52,211,153,.06); }
+  .val-green { color: var(--green); font-weight: 600; } .val-gold { color: var(--gold); font-weight: 600; } .val-red { color: var(--red); }
+  footer { text-align: center; padding-top: 30px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 11px; }
+  .badge { display: inline-block; border-radius: 6px; padding: 3px 10px; font-size: 10px; font-weight: 600; font-family: 'JetBrains Mono', monospace; margin-bottom: 10px; border: 1px solid var(--purple); color: var(--purple); background: rgba(167,139,250,.12); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <div class="brand">Refract<sup style="font-size:7px;vertical-align:super">&trade;</sup></div>
+  <h1>Research Journal v2 &mdash; La rivalidazione e i nuovi segnali</h1>
+  <div class="subtitle">Diario tecnico &middot; si aggiorna con il rifacimento del Walk-Forward &middot; formule proprietarie non divulgate</div>
+  <div class="date">XAU/USD &middot; 12 Giu 2026 &middot; v1.3</div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-value gold">1.86</div><div class="stat-label">B04+Trail PF 7.5y</div></div>
+  <div class="stat"><div class="stat-value green">8/8</div><div class="stat-label">Anni positivi B04</div></div>
+  <div class="stat"><div class="stat-value blue">+0.12</div><div class="stat-label">IC composito @8h</div></div>
+  <div class="stat"><div class="stat-value green">1.52</div><div class="stat-label">PF broker live 1m</div></div>
+  <div class="stat"><div class="stat-value" style="color:var(--purple)">6/6</div><div class="stat-label">Validator dati</div></div>
+  <div class="stat"><div class="stat-value red">3</div><div class="stat-label">Bug dati trovati</div></div>
+</div>
+
+<div class="caveat">
+  <p><strong>Cos'&egrave; questo documento.</strong> Il diario della rivalidazione post&ndash;12 giugno 2026: cosa &egrave; stato invalidato, cosa &egrave; sopravvissuto, cosa &egrave; stato scoperto, con quali numeri e con quale grado di evidenza. I risultati di backtest delle pagine precedenti (overview/methodology/validation) sono <strong>ritirati</strong> per i difetti dati descritti in &sect;01. Ogni numero qui gira su dati che passano un validatore di integrit&agrave; (6 check) e ha uno script-artefatto riproducibile. Friction 0.05% per trade. Le formule esatte dei segnali proprietari non sono incluse.</p>
+</div>
+
+<section>
+  <h2>01 &middot; Perch&eacute; si &egrave; rifatto tutto: i tre difetti dati</h2>
+  <div class="card"><div class="card-title">1. Candele storiche in fuso orario errato (look-ahead ~11h)</div>
+  <p>Le candele M15 del database storico erano timestampate in un fuso UTC+10/+11 salvato come UTC. Ogni backtest news&harr;prezzo comprava di fatto il prezzo di ~11 ore <em>prima</em> della news: i PF 3.7-4.1 storici erano look-ahead. Prova: il bug emulato su dati broker puliti riproduce PF 5.5; col fix la differenza col broker scende da 0.45% a 0.01% e il PF converge a ~1.0.</p></div>
+  <div class="card"><div class="card-title">2. News storiche: copertura censurata</div>
+  <p>Il download storico (finestre settimanali, ordinamento discendente, paginazione limitata) ha preso quasi solo la coda di ogni settimana: l'83% delle news risulta di venerd&igrave;. I timestamp sono genuini, ma il "flusso di 13 mesi" &egrave; in realt&agrave; un pannello di ~58 venerd&igrave; densi. Recuperabile con re-download per-giorno (budget API gi&agrave; disponibile).</p></div>
+  <div class="card"><div class="card-title">3. Fix di processo</div>
+  <p>Validatore di integrit&agrave; dati obbligatorio prima di ogni backtest (weekend bars, calendario di sessione, gap, lag-scan &plusmn;14h vs fonte reality-anchored, livelli vs broker, distribuzione weekday) + regola <strong>"nessun check senza artefatto"</strong> (script + output salvato).</p></div>
+  <div class="check"><p><strong>Non toccato dai bug:</strong> il sistema live (feed validato dai fill reali col broker), gli IC live, e le decisioni di produzione (ancorate ai trade reali, mai al backtest storico).</p></div>
+</section>
+
+<section>
+  <h2>02 &middot; Il ceiling onesto del sistema NLP</h2>
+  <p>Misurato su <strong>due dataset indipendenti e puliti</strong>: il pannello dei venerd&igrave; validi (13 mesi) e lo stream live (3.8 mesi, timestamp reali).</p>
+  <div class="table-wrap"><table>
+    <tr><th>Segnale</th><th>IC @4h</th><th>IC @8h</th><th>Dove</th></tr>
+    <tr><td>flusso news a breve, alta rilevanza</td><td>+0.060</td><td class="val-green">+0.104</td><td>panel 13m</td></tr>
+    <tr><td>consenso lento 24h</td><td>+0.053</td><td class="val-green">+0.093</td><td>live 3.8m</td></tr>
+    <tr class="winner"><td><strong>composito proprietario a 3 componenti</strong></td><td>+0.084</td><td class="val-gold">+0.110 / +0.125</td><td>live, 3 varianti filtro</td></tr>
+    <tr><td>componente contrarian within-day (mediana per-giorno)</td><td class="val-gold">+0.260</td><td>&mdash;</td><td>77% di 57 giorni positivi</td></tr>
+  </table></div>
+  <p>L'edge informativo vero del flusso news &egrave; <strong>IC 0.05-0.12 a 4-8 ore sulle news importanti</strong> &mdash; reale, episodico, in rafforzamento nel campione recente. Il vecchio 0.25-0.30 "ovunque" era il look-ahead e non torner&agrave;.</p>
+</section>
+
+<section>
+  <h2>03 &middot; B04-LONG &mdash; la gamba tecnica</h2>
+  <span class="badge">PRE-REGISTRATA &middot; GATE STORICO PASS</span>
+  <p><strong>Idea</strong>: compra il dip quando il momentum corto gira &mdash; un blend di due percentili causali di indicatori tecnici standard (momentum orario; posizione rispetto alla media di lungo periodo), soglia sui quantili alti. Solo LONG, una posizione alla volta, niente news. Parametri esatti non divulgati.</p>
+  <div class="table-wrap"><table>
+    <tr><th>Anno (dati tick-grade, hold 8h)</th><th>N</th><th>PF</th><th>Sum</th></tr>
+    <tr><td>2019</td><td>208</td><td>1.38</td><td>+8.9%</td></tr>
+    <tr><td>2020</td><td>206</td><td>1.95</td><td>+30.7%</td></tr>
+    <tr><td>2021 (gold flat)</td><td>195</td><td class="val-green">1.25</td><td>+7.7%</td></tr>
+    <tr><td>2022 (gold bear)</td><td>206</td><td class="val-green">1.45</td><td>+15.6%</td></tr>
+    <tr><td>2023</td><td>205</td><td>1.66</td><td>+16.4%</td></tr>
+    <tr><td>2024</td><td>216</td><td>1.57</td><td>+16.7%</td></tr>
+    <tr><td>2025</td><td>175</td><td>2.26</td><td>+31.4%</td></tr>
+    <tr><td>2026 (parz.)</td><td>118</td><td>1.78</td><td>+23.5%</td></tr>
+  </table></div>
+  <p><strong>Gate pre-registrato</strong> (criteri fissati <em>prima</em> del test su 7.5 anni mai visti): PF &ge; 1.15 ogni biennio, nessun anno sotto &minus;10%. <strong>Esito: PASS</strong> &mdash; bienni 1.71/1.36/1.61/1.99, 8/8 anni positivi, profittevole anche negli anni flat/bear: <strong>non &egrave; beta del bull market</strong>.</p>
+  <h3>Exit lab</h3>
+  <p>Stesse entry, 12 exit testate (tutte 8/8 anni positive): <strong>trailing ATR = PF 1.86</strong> su 7.5y (capcom train/test 2.61/2.42, avg per trade raddoppiato), absorption 1.77 (maxDD 3.9%), breakeven-style 1.75. Gli stop fissi tolgono (1.59-1.62), i take-profit fissi tolgono di pi&ugrave; (1.37). Profilo di rischio hold-8h: WR 55.8%, peggior perdita singola &minus;3.3% in 1.530 trade, 95% delle loss sotto l'1%, Sharpe 2.1-2.7.</p>
+  <h3>Simulazione prop-challenge (descrittiva)</h3>
+  <p>Finestre rolling 60gg, target +10% prima di &minus;10%: a 3&times; di sizing &asymp; 47% pass / 3% bust / 50% timeout (ritentabile), worst-day &minus;5.8%; oltre 4&times; si rompono i daily-limit tipici.</p>
+</section>
+
+<section>
+  <h2>04 &middot; Il composito news proprietario (la gamba NLP)</h2>
+  <span class="badge">NATO SUI DATI LIVE &middot; IN FORWARD DAL 12-GIU</span>
+  <p>Composito di tre componenti del flusso news classificato (consenso lento; direzione pesata per la convinzione del classificatore; componente <em>contrarian</em> sui cluster di notizie ad alto impatto &mdash; la scoperta semantica: l'ammassarsi di titoli grossi in una direzione tende a esaurirla). Normalizzazione causale a percentili. Formule e finestre non divulgate.</p>
+  <p><strong>IC@8h +0.110/+0.125</strong> (met&agrave;-campioni entrambi positivi). <strong>Strategia</strong> (estremi + entry a retrace-limit + hold a orizzonte, short solo regime-gated): met&agrave;1 PF 1.65 (N224) / met&agrave;2 PF 1.36 (N197), ~110 trade/mese, bidirezionale.</p>
+  <h3>Raffinamenti (in-sample dichiarato &mdash; v. &sect;07)</h3>
+  <div class="table-wrap"><table>
+    <tr><th>Variante</th><th>met&agrave;1</th><th>met&agrave;2</th></tr>
+    <tr><td>baseline hold</td><td>1.65</td><td>1.36</td></tr>
+    <tr><td>gates di regime (taglio ~37% dei trade)</td><td>&mdash;</td><td>PF 1.94 &middot; maxDD 19.9&rarr;8.6%</td></tr>
+    <tr><td>trailing exit</td><td>1.96</td><td>1.42</td></tr>
+    <tr><td>finestra London</td><td>2.32</td><td>1.54</td></tr>
+    <tr class="winner"><td><strong>trailing + sizing-per-stato</strong></td><td class="val-gold">2.44</td><td class="val-gold">1.53</td></tr>
+  </table></div>
+  <p>Il gate singolo migliore &egrave; il pi&ugrave; semplice: <strong>circuit-breaker</strong> (3 perdite consecutive &rarr; pausa 24h) &mdash; le perdite si addensano e l'addensamento &egrave; auto-riconoscibile. In shadow girer&agrave; la versione gated E quella raw come controllo.</p>
+</section>
+
+<section>
+  <h2>05 &middot; Big move: anatomia e "seconda gamba"</h2>
+  <p><strong>La mappa</strong> (264 episodi &ge;1%/30min + 134 &ge;2%/4h su 7.5 anni): dopo il trigger la continuazione pulita &egrave; il 31%/25%; <strong>il 77%/67% ritraccia met&agrave; del movimento entro 4h</strong>. La compressione pre-move non predice. Inseguire perde (anche presto, anche sul breakout dell'estremo: 0/8 anni); faddare pure (WR alta, code letali).</p>
+  <div class="highlight"><p><strong>Quello che funziona: la seconda gamba</strong> &mdash; ordine limit su livelli di ritracciamento profondi del move, nella direzione del move, target il retest dell'estremo. Tipo-B: PF ~2 con maxDD 3-4% e 5/7 anni positivi; positiva su tutto il range di parametri testato (16/16 celle). Caveat onesto (&sect;07): sensibile all'implementazione dell'ancoraggio del livello; sulle definizioni pi&ugrave; estreme regge in entrambe le implementazioni (PF 1.3-1.6, recente fino a 2.1).</p></div>
+  <p>Lezione collaterale dal what-if sui trade reali del sistema: l'<strong>entry a retrace</strong> (limit sotto il segnale) trasforma i trade perdenti in vincenti su tutte le coorti (+0.2-0.4%/trade sui fillati) a parit&agrave; di totale con met&agrave; esposizione &mdash; upgrade di profilo di rischio, in corso di verifica come "gemello shadow" di ogni segnale reale.</p>
+</section>
+
+<section>
+  <h2>06 &middot; Il pilastro live</h2>
+  <div class="check"><p><strong>Broker reale, ultimo mese: PF 1.52 su 55 trade.</strong> L'80% delle perdite concentrato in una settimana il cui pattern &egrave; coperto dal gate di governance news-vs-trend, che continua a bloccare trade negativi in tempo reale. Tutto ci&ograve; che questa ricerca produce passa da shadow/forward prima di toccare il capitale.</p></div>
+</section>
+
+<section>
+  <h2>07 &middot; Audit statistico &mdash; cosa &egrave; confermato e cosa &egrave; in-sample</h2>
+  <div class="table-wrap"><table>
+    <tr><th>Finding</th><th>Evidenza</th><th>Azione coerente</th></tr>
+    <tr class="winner"><td>B04-LONG</td><td>gate pre-registrato su 7.5y out-of-sample, 8/8 anni, N=1.529</td><td>shadow subito</td></tr>
+    <tr><td>composito news (livello IC)</td><td>2 dataset indipendenti, met&agrave; concordi</td><td>forward congelato (attivo)</td></tr>
+    <tr><td>composito news (strategia)</td><td>3.8 mesi, half-split</td><td>shadow raw</td></tr>
+    <tr><td>gates/trailing/sizing</td><td class="val-red">in-sample dichiarato</td><td>shadow gated vs raw: la differenza live &egrave; la verit&agrave;</td></tr>
+    <tr><td>seconda gamba big-move</td><td class="val-red">direzione solida, numeri implementation-sensitive</td><td>spec con ancoraggio esplicito, poi forward</td></tr>
+    <tr><td>retrace sul deck</td><td>uniforme su 3 coorti, exit-fisse</td><td>retrace-twin shadow</td></tr>
+    <tr><td>broker live 1.52</td><td>reale, N=55 (CI largo)</td><td>cresce da solo</td></tr>
+  </table></div>
+  <p><strong>Principio operativo</strong>: niente va creduto; tutto &egrave; messo in condizione di dimostrarsi &mdash; controlli raw accanto alle versioni gated, gate di promozione fissati prima dell'osservazione, forward con configurazioni congelate. &Egrave; la differenza strutturale rispetto ai numeri ritirati delle pagine precedenti.</p>
+</section>
+
+<section>
+  <h2>08 &middot; Roadmap</h2>
+  <ol>
+    <li>Shadow per le due gambe nuove (con controlli raw) &mdash; spec pronta;</li>
+    <li>Re-download dello storico news per-giorno al reset della quota API &rarr; il vero dataset 13 mesi;</li>
+    <li>Rifacimento completo del Walk-Forward su dati pieni &rarr; questa pagina si aggiorna sezione per sezione;</li>
+    <li>Modello di classificazione proprietario (fine-tuning) &mdash; progetto estivo.</li>
+  </ol>
+</section>
+
+<footer>
+  Refract&trade; Research Journal v2 &middot; v1.3 &middot; 12 Giu 2026 &middot; formule proprietarie non divulgate<br>
+  <span style="font-size:10px">changelog: v1.0 rivalidazione e nuovi segnali &middot; v1.1 gates+full stats &middot; v1.2 anatomia big move, seconda gamba, retrace what-if, challenge-sim &middot; v1.3 raffinamenti composito, fragilit&agrave; seconda gamba, coorti pulite, audit statistico</span>
+</footer>
+
+</div>
+</body>
+</html>
