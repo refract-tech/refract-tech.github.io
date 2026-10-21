@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refract™ — Dataset</title>
+<meta name="title-it" content="Refract™ — Dataset">
+<meta name="title-en" content="Refract™ — Dataset">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<script src="site.js"></script>
+</head>
+<body>
+<div class="container">
+
+<header class="topbar">
+  <a class="brand" href="index.html">Refract<sup>™</sup><span class="beta">BETA</span></a>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="pipeline.html">Pipeline</a>
+    <a href="metodo.html"><span class="it">Metodo</span><span class="en">Method</span></a>
+    <a class="current" href="dataset.html">Dataset</a>
+    <a href="bitcoin.html">Bitcoin</a>
+  </nav>
+  <button class="lang" id="lang" type="button" aria-label="Lingua / Language">EN</button>
+</header>
+
+<div class="hero">
+  <div class="badge">Dataset</div>
+  <h1><span class="it">Ogni notizia, un record strutturato</span><span class="en">Every news item, a structured record</span></h1>
+  <p class="subtitle it">Classificazione, dati strutturati, contesto di mercato al momento della notizia e reazione del prezzo nelle ore successive.</p>
+  <p class="subtitle en">Classification, structured data, market context at the time of the news and price reaction in the hours that followed.</p>
+</div>
+
+<section>
+  <div class="numbers">
+    <div class="num"><div class="val"><span class="it">36.800+</span><span class="en">36,800+</span></div><div class="lbl it">notizie analizzate</div><div class="lbl en">news items analysed</div></div>
+    <div class="num"><div class="val">80+</div><div class="lbl it">campi per record</div><div class="lbl en">fields per record</div></div>
+    <div class="num"><div class="val">4</div><div class="lbl it">orizzonti di reazione del prezzo: 1, 4, 8 e 24 ore</div><div class="lbl en">price-reaction horizons: 1, 4, 8 and 24 hours</div></div>
+    <div class="num"><div class="val">2</div><div class="lbl it">mercati: oro ed EUR/USD</div><div class="lbl en">markets: gold and EUR/USD</div></div>
+  </div>
+  <p class="asof it">dati al 16 ottobre 2026 · date di inizio nella scheda tecnica più sotto</p>
+  <p class="asof en">data as of 16 October 2026 · start dates in the technical sheet below</p>
+  <p class="it">Nel dataset entra ogni notizia che supera il triage e viene analizzata, inviata come avviso o no: in media circa 110 al giorno per l'oro e 43 per EUR/USD. Gli avvisi sono il sottoinsieme che supera anche i controlli d'invio.</p>
+  <p class="en">The dataset holds every news item that passes triage and is analysed, whether or not it is sent as an alert: on average about 110 per day for gold and 43 for EUR/USD. Alerts are the subset that also passes the delivery checks.</p>
+</section>
+
+<section>
+  <h2><span class="label it">Contenuto</span><span class="label en">Content</span>
+    <span class="it">I gruppi di campi</span><span class="en">Field groups</span></h2>
+  <div class="cards two">
+    <div class="card">
+      <div class="k it">Classificazione AI</div><div class="k en">AI classification</div>
+      <p class="it">Direzione per il mercato, impatto da 0 a 100 e impatto corretto per urgenza, categoria, probabilità di rialzo. Accanto ai valori normalizzati resta quello originale del modello.</p>
+      <p class="en">Direction for the market, impact from 0 to 100 and urgency-adjusted impact, category, probability of an upside move. The model's original value is kept next to the normalised one.</p>
+    </div>
+    <div class="card">
+      <div class="k it">Dati strutturati</div><div class="k en">Structured data</div>
+      <p class="it">Tipo di evento, paese e periodo; meccanismo e catena di trasmissione verso il prezzo; sorpresa rispetto al consenso e valori del dato, quando presenti.</p>
+      <p class="en">Event type, country and period; mechanism and transmission chain to the price; surprise versus consensus and data values, when present.</p>
+    </div>
+    <div class="card">
+      <div class="k it">Contesto di mercato</div><div class="k en">Market context</div>
+      <p class="it">Prezzo e quadro di mercato al momento dell'analisi; densità di notizie; per gli avvisi inviati, sessione di mercato e ritardo dalla pubblicazione.</p>
+      <p class="en">Price and market picture at the time of analysis; news density; for alerts sent, market session and delay from publication.</p>
+    </div>
+    <div class="card">
+      <div class="k it">Reazione del prezzo</div><div class="k en">Price reaction</div>
+      <p class="it">Prezzo dopo 1, 4, 8 e 24 ore; massimo e minimo delle 24 ore successive con il loro orario. Aggiunti in seguito, in campi separati, senza toccare la classificazione.</p>
+      <p class="en">Price after 1, 4, 8 and 24 hours; high and low of the following 24 hours with their timestamps. Added later, in separate fields, without touching the classification.</p>
+    </div>
+  </div>
+  <p class="dim small it">Completano il record i metadati di fonte, versione e modello, e i campi di consegna e raggruppamento degli eventi. Il catalogo completo dei campi è disponibile su richiesta.</p>
+  <p class="dim small en">The record is completed by source, version and model metadata, and by delivery and event-clustering fields. The full field catalogue is available on request.</p>
+</section>
+
+<section>
+  <h2><span class="label it">Esempio</span><span class="label en">Example</span>
+    <span class="it">Un record reale, in sintesi</span><span class="en">A real record, in brief</span></h2>
+  <p class="dim it">La notizia Bloomberg sull'inflazione USA del 14 ottobre 2026, inviata come avviso per l'oro. Estratto ridotto.</p>
+  <p class="dim en">The Bloomberg story on US inflation of 14 October 2026, sent as a gold alert. Short excerpt.</p>
+<pre class="record"><span class="c it">// notizia</span><span class="c en">// news</span>
+<span class="k it">titolo         </span><span class="k en">headline       </span>US Consumer Prices Climb by Most Since April on Fuel Costs
+<span class="k it">pubblicata     </span><span class="k en">published      </span>2026-10-14 12:38 UTC
+<span class="k it">analizzata     </span><span class="k en">analysed       </span>2026-10-14 12:54 UTC
+
+<span class="c it">// classificazione</span><span class="c en">// classification</span>
+<span class="k it">direzione      </span><span class="k en">direction      </span>BEARISH
+<span class="k it">impatto        </span><span class="k en">impact         </span>85
+<span class="k it">evento         </span><span class="k en">event          </span>INFLATION_DATA · US · SEPTEMBER
+<span class="k it">sorpresa       </span><span class="k en">surprise       </span>ABOVE
+<span class="k it">meccanismo     </span><span class="k en">mechanism      </span>CPI above → rate expectations up → real rates up → XAU/USD down
+
+<span class="c it">// reazione del prezzo</span><span class="c en">// price reaction</span>
+<span class="k it">all'analisi    </span><span class="k en">at analysis    </span>4103.90
+<span class="k it">dopo 1 ora     </span><span class="k en">after 1 hour   </span>4097.40
+<span class="k it">dopo 4 ore     </span><span class="k en">after 4 hours  </span>4082.40
+<span class="k it">dopo 24 ore    </span><span class="k en">after 24 hours </span>4147.40</pre>
+</section>
+
+<section>
+  <h2><span class="label it">Integrità</span><span class="label en">Integrity</span>
+    <span class="it">Come si mantiene affidabile</span><span class="en">How it stays reliable</span></h2>
+  <ul class="plain it">
+    <li><strong>Prompt congelato.</strong> Le istruzioni del modello per l'oro hanno un'impronta SHA-256 verificata all'avvio: se cambiano, il servizio non parte.</li>
+    <li><strong>Tracciabilità.</strong> Ogni record porta la versione dello schema e, dalla seconda versione, l'impronta del prompt di classificazione e il modello che l'ha prodotto.</li>
+    <li><strong>Valori originali conservati.</strong> Quando una regola cambia la direzione o la categoria decise dal modello, il valore originale resta in un campo a parte.</li>
+    <li><strong>Campi vincolati.</strong> Direzione, urgenza e categoria accettano solo valori ammessi; i dati macro sono separati in valore, atteso e precedente.</li>
+    <li><strong>Prima e dopo separati.</strong> Classificazione e contesto sono scritti al momento dell'analisi; la reazione del prezzo arriva dopo, in campi propri.</li>
+  </ul>
+  <ul class="plain en">
+    <li><strong>Frozen prompt.</strong> The gold model instructions carry a SHA-256 fingerprint checked at start-up: if they change, the service does not start.</li>
+    <li><strong>Traceability.</strong> Every record carries the schema version and, from the second version on, the classification-prompt fingerprint and the model that produced it.</li>
+    <li><strong>Original values kept.</strong> When a rule changes the direction or category set by the model, the original value stays in a separate field.</li>
+    <li><strong>Constrained fields.</strong> Direction, urgency and category accept only allowed values; macro data are split into actual, expected and prior.</li>
+    <li><strong>Before and after kept apart.</strong> Classification and context are written at the time of analysis; the price reaction comes later, in its own fields.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="label it">Scheda tecnica</span><span class="label en">Technical sheet</span>
+    <span class="it">In breve</span><span class="en">In brief</span></h2>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><td class="it">Oro (XAU/USD)</td><td class="en">Gold (XAU/USD)</td><td class="dim it">dal 18 febbraio 2026</td><td class="dim en">since 18 February 2026</td></tr>
+    <tr><td class="it">EUR/USD</td><td class="en">EUR/USD</td><td class="dim it">dal 7 marzo 2026</td><td class="dim en">since 7 March 2026</td></tr>
+    <tr><td class="it">Versione dello schema</td><td class="en">Schema version</td><td class="dim">4</td></tr>
+    <tr><td class="it">Aggiornamento</td><td class="en">Updates</td><td class="dim it">continuo; reazione del prezzo aggiunta a 1, 4, 8 e 24 ore</td><td class="dim en">continuous; price reaction added at 1, 4, 8 and 24 hours</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2><span class="label it">Accesso</span><span class="label en">Access</span>
+    <span class="it">Su richiesta</span><span class="en">On request</span></h2>
+  <p class="it">Estrazioni del dataset, catalogo completo dei campi e accesso via API su richiesta, per ricerca e analisi quantitativa.</p>
+  <p class="en">Dataset extracts, the full field catalogue and API access on request, for research and quantitative analysis.</p>
+  <p><a href="mailto:info@refractmacro.com">info@refractmacro.com</a></p>
+</section>
+
+<footer>
+  <p class="it">Refract™ · dataset · schema v4 · dati al 16 ottobre 2026</p>
+  <p class="en">Refract™ · dataset · schema v4 · data as of 16 October 2026</p>
+</footer>
+
+</div>
+</body>
+</html>

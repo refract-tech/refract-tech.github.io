@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refract™ — Pipeline</title>
+<meta name="title-it" content="Refract™ — Pipeline">
+<meta name="title-en" content="Refract™ — Pipeline">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<script src="site.js"></script>
+</head>
+<body>
+<div class="container">
+
+<header class="topbar">
+  <a class="brand" href="index.html">Refract<sup>™</sup><span class="beta">BETA</span></a>
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a class="current" href="pipeline.html">Pipeline</a>
+    <a href="metodo.html"><span class="it">Metodo</span><span class="en">Method</span></a>
+    <a href="dataset.html">Dataset</a>
+    <a href="bitcoin.html">Bitcoin</a>
+  </nav>
+  <button class="lang" id="lang" type="button" aria-label="Lingua / Language">EN</button>
+</header>
+
+<div class="hero">
+  <div class="badge">Pipeline</div>
+  <h1><span class="it">Da mille notizie al giorno a pochi avvisi che contano</span><span class="en">From a thousand news items a day to a few alerts that matter</span></h1>
+  <p class="subtitle it">Il percorso di una notizia sull'oro, dalla fonte al telefono.</p>
+  <p class="subtitle en">The path of a gold news item, from source to phone.</p>
+</div>
+
+<section>
+  <div class="numbers">
+    <div class="num"><div class="val"><span class="it">~1.000</span><span class="en">~1,000</span></div><div class="lbl it">notizie scaricate al giorno (feriali)</div><div class="lbl en">news items downloaded per weekday</div></div>
+    <div class="num"><div class="val">12 %</div><div class="lbl it">promosse dal triage AI</div><div class="lbl en">promoted by AI triage</div></div>
+    <div class="num"><div class="val">~1 %</div><div class="lbl it">diventano avvisi</div><div class="lbl en">become alerts</div></div>
+    <div class="num"><div class="val"><span class="it">8,6</span><span class="en">8.6</span></div><div class="lbl it">avvisi al giorno in media</div><div class="lbl en">alerts per day on average</div></div>
+  </div>
+  <p class="asof it">oro · imbuto 9-14 ottobre 2026 · media avvisi 15 settembre - 14 ottobre</p>
+  <p class="asof en">gold · funnel 9-14 October 2026 · alert average 15 September - 14 October</p>
+</section>
+
+<section>
+  <h2><span class="label it">Il percorso</span><span class="label en">The path</span>
+    <span class="it">Otto passaggi</span><span class="en">Eight steps</span></h2>
+
+  <div class="step"><div class="n">1</div><div>
+    <h3 class="it">Raccolta</h3><h3 class="en">Collection</h3>
+    <p class="it">Notizie di testate finanziarie internazionali e comunicati ufficiali, acquisiti tramite aggregatori e feed e raccolti di continuo. Su EUR/USD anche i comunicati della Fed e i discorsi dei banchieri centrali.</p>
+    <p class="en">News from international financial outlets and official releases, acquired through aggregators and feeds and collected continuously. On EUR/USD also Fed releases and central bankers' speeches.</p>
+  </div></div>
+
+  <div class="step"><div class="n">2</div><div>
+    <h3 class="it">Primi filtri</h3><h3 class="en">First filters</h3>
+    <p class="it">Scartate le notizie non più attuali, quelle già viste e i titoli quasi identici.</p>
+    <p class="en">Discarded: items no longer current, items already seen and near-identical headlines.</p>
+  </div></div>
+
+  <div class="step"><div class="n">3</div><div>
+    <h3 class="it">Triage AI</h3><h3 class="en">AI triage</h3>
+    <p class="it">Un primo passaggio AI decide se la notizia merita un'analisi per quel mercato, scartando anche i doppioni dello stesso evento. Oggi ne promuove circa una su otto.</p>
+    <p class="en">A first AI pass decides whether the item deserves analysis for that market, also discarding duplicates of the same event. Today it promotes about one in eight.</p>
+  </div></div>
+
+  <div class="step"><div class="n">4</div><div>
+    <h3 class="it">Agente di classificazione</h3><h3 class="en">Classification agent</h3>
+    <p class="it">Decide, senza scrivere testo per l'utente: direzione per il mercato (rialzista, ribassista, neutrale), impatto da 0 a 100, urgenza, categoria (macro, geopolitica, evento estremo), tipo di evento, paese, periodo, meccanismo di trasmissione, sorpresa rispetto al consenso.</p>
+    <p class="en">Decides, without writing user-facing text: direction for the market (bullish, bearish, neutral), impact from 0 to 100, urgency, category (macro, geopolitics, extreme event), event type, country, period, transmission mechanism, surprise versus consensus.</p>
+    <div class="ex">BEARISH · 85 · ALTA · INFLATION_DATA · US · REAL_RATES · consensus ABOVE</div>
+  </div></div>
+
+  <div class="step"><div class="n">5</div><div>
+    <h3 class="it">Agente di comunicazione</h3><h3 class="en">Communication agent</h3>
+    <p class="it">Riceve la classificazione e scrive l'avviso in italiano: titolo, spiegazione in due righe e, quando serve, una nota di contesto (per esempio se il segnale va contro il quadro di fondo). Non decide nulla: spiega.</p>
+    <p class="en">Receives the classification and writes the alert in Italian: headline, two-line explanation and, when needed, a context note (for instance when the signal runs against the broader picture). It decides nothing: it explains.</p>
+  </div></div>
+
+  <div class="step"><div class="n">6</div><div>
+    <h3 class="it">Stima di probabilità</h3><h3 class="en">Probability estimate</h3>
+    <p class="it">Una stima separata della probabilità che la notizia spinga il prezzo al rialzo, alla luce del flusso di notizie recente. Alimenta i briefing; non compare negli avvisi.</p>
+    <p class="en">A separate estimate of the probability that the item pushes the price higher, in light of the recent news flow. It feeds the briefings; it does not appear in alerts.</p>
+  </div></div>
+
+  <div class="step"><div class="n">7</div><div>
+    <h3 class="it">Cancelli d'invio</h3><h3 class="en">Delivery gates</h3>
+    <p class="it">Ogni notizia analizzata viene salvata nel dataset. Diventa un avviso solo se supera i controlli descritti qui sotto.</p>
+    <p class="en">Every analysed item is stored in the dataset. It becomes an alert only if it passes the checks described below.</p>
+  </div></div>
+
+  <div class="step"><div class="n">8</div><div>
+    <h3 class="it">Consegna</h3><h3 class="en">Delivery</h3>
+    <p class="it">L'avviso parte su Telegram e compare sul sito tra le notizie ad alto impatto; le notizie del giorno entrano nel briefing serale, negli scenari e nel Refract Index.</p>
+    <p class="en">The alert goes out on Telegram and appears on the site among the high-impact news; the day's items feed the evening briefing, the scenarios and the Refract Index.</p>
+  </div></div>
+  <p class="dim small it">Fra i modelli in uso, ciascuno scelto per il proprio compito: Gemini di Google, Claude di Anthropic e Jev di TypeSafe.</p>
+  <p class="dim small en">Among the models in use, each chosen for its task: Google's Gemini, Anthropic's Claude and TypeSafe's Jev.</p>
+</section>
+
+<section>
+  <h2><span class="label it">Controllo qualità</span><span class="label en">Quality control</span>
+    <span class="it">I controlli prima dell'invio</span><span class="en">The checks before delivery</span></h2>
+  <div class="tbl-wrap"><table class="tbl">
+    <tr><th class="it">Controllo</th><th class="en">Check</th><th class="it">Cosa fa</th><th class="en">What it does</th></tr>
+    <tr><td class="it">Già consegnata</td><td class="en">Already delivered</td>
+      <td class="dim it">la stessa notizia non riparte, nemmeno dopo un riavvio</td><td class="dim en">the same item is not sent again, even after a restart</td></tr>
+    <tr><td class="it">Testo completo</td><td class="en">Complete text</td>
+      <td class="dim it">senza spiegazione la notizia resta nel dataset ma non parte</td><td class="dim en">without an explanation the item stays in the dataset but is not sent</td></tr>
+    <tr><td class="it">Soglie d'impatto</td><td class="en">Impact thresholds</td>
+      <td class="dim it">diverse per categoria e mercato; gli eventi estremi passano sempre</td><td class="dim en">different by category and market; extreme events always pass</td></tr>
+    <tr><td class="it">Selettività adattiva</td><td class="en">Adaptive selectivity</td>
+      <td class="dim it">più avvisi sono già partiti nella giornata, più alta è l'asticella per i successivi</td><td class="dim en">the more alerts have gone out during the day, the higher the bar for the next ones</td></tr>
+    <tr><td class="it">Pause</td><td class="en">Cooldowns</td>
+      <td class="dim it">intervalli minimi fra un avviso e l'altro, superabili solo dalle notizie di impatto più alto</td><td class="dim en">minimum intervals between alerts, which only the highest-impact items can override</td></tr>
+    <tr><td class="it">Doppioni dello stesso evento</td><td class="en">Duplicates of the same event</td>
+      <td class="dim it">confronto con gli avvisi recenti su titolo, numeri, dato, paese e direzione</td><td class="dim en">comparison with recent alerts on headline, figures, data point, country and direction</td></tr>
+    <tr><td class="it">Giudice AI</td><td class="en">AI judge</td>
+      <td class="dim it">un modello valuta se la notizia aggiorna una storia già comunicata o è un evento nuovo</td><td class="dim en">a model judges whether the item updates a story already reported or is a new event</td></tr>
+  </table></div>
+  <p class="dim small it">La maggior parte delle notizie analizzate e non inviate resta sotto le soglie d'impatto; una parte minore viene fermata come doppione o nelle pause.</p>
+  <p class="dim small en">Most items analysed and not sent stay below the impact thresholds; a smaller share is stopped as duplicates or during cooldowns.</p>
+</section>
+
+<section id="tempi">
+  <h2><span class="label it">Tempi</span><span class="label en">Timing</span>
+    <span class="it">Dalla pubblicazione all'avviso</span><span class="en">From publication to alert</span></h2>
+  <div class="numbers">
+    <div class="num"><div class="val">~15 min</div><div class="lbl it">tempo tipico attuale, dalla pubblicazione all'analisi registrata</div><div class="lbl en">current typical time, from publication to recorded analysis</div></div>
+  </div>
+  <p class="asof it">mediana sugli avvisi inviati dal 15 settembre al 14 ottobre 2026, oro ed EUR/USD</p>
+  <p class="asof en">median over alerts sent 15 September to 14 October 2026, gold and EUR/USD</p>
+  <p class="it">Il tempo comprende raccolta, triage, analisi e controlli d'invio. I comunicati ufficiali letti direttamente, come quelli della Fed, arrivano in pochi minuti. È un valore attuale: fonti dirette e modelli dedicati permettono di ridurlo.</p>
+  <p class="en">The time covers collection, triage, analysis and delivery checks. Official releases read directly, such as the Fed's, arrive within minutes. It is a current value: direct sources and dedicated models make it possible to reduce it.</p>
+</section>
+
+<footer>
+  <p class="it">Refract™ · pipeline in produzione · misure al 16 ottobre 2026</p>
+  <p class="en">Refract™ · production pipeline · measurements as of 16 October 2026</p>
+  <p><a href="mailto:info@refractmacro.com">info@refractmacro.com</a></p>
+</footer>
+
+</div>
+</body>
+</html>
